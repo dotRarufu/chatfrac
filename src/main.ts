@@ -1,7 +1,23 @@
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+import { AppComponent } from './components/app.component';
+import { bootstrapApplication } from '@angular/platform-browser';
+import { Routes, provideRouter } from '@angular/router';
 
-import { AppModule } from './app/app.module';
+const routes: Routes = [
+  {
+    path: '',
+    redirectTo: 'chat',
+    pathMatch: 'full',
+  },
+  {
+    path: 'chat',
+    loadComponent: () => import('./app/pages/show-message.component'),
+  },
+  // {
+  //   path: 'pre-test',
+  //   loadComponent: () => import('../app/pages/pre-test.component'),
+  // },
+];
 
-
-platformBrowserDynamic().bootstrapModule(AppModule)
-  .catch(err => console.error(err));
+bootstrapApplication(AppComponent, {
+  providers: [provideRouter(routes)],
+}).catch((err) => console.error(err));
