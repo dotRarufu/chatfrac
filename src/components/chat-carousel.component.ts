@@ -1,31 +1,34 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { CarouselItem } from 'src/app/types/Message';
+import MessengerIconComponent from './icons/messenger.component';
 
 @Component({
   selector: 'chat-carousel',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, MessengerIconComponent],
   template: `
-    <div
-      class="carousel carousel-center max-w-md p-4 space-x-4 bg-neutral rounded-box my-[8px]"
-    >
-      <div *ngFor="let c of content" class="carousel-item">
-        <div class="card w-[200px] h-[100px] bg-primary text-primary-content">
-          <div class="card-body">
-            <h2 class="card-title">{{ c.message }}</h2>
-
-            <div class="card-actions justify-end">
-              <button
-                (click)="handleClick(c.clickCallback)"
-                class="btn btn-secondary"
-                [class.btn-disabled]="shouldDisableButtons"
-              >
-                Select
-              </button>
-            </div>
-          </div>
-        </div>
+    <div class=" flex gap-[16px] carousel px-[16px] ">
+      <div
+        *ngFor="let item of content"
+        class="carousel-item rounded-[12px] bg-secondary  px-[12px] py-[8px]  normal-case  w-[143px] flex flex-col gap-[8px]"
+      >
+        <img
+          class="w-[167px] h-[80px] rounded-[8px] "
+          src="https://cdn.matthewjamestaylor.com/img/matthew-james-taylor.jpg"
+        />
+        <span class="font-normal text-base text-secondary-content">
+          Person Name
+        </span>
+        <div class="h-[1px] w-full bg-secondary-content "></div>
+        <button
+          class="px-[4px] py-[8px] flex justify-center w-full btn btn-ghost gap-[8px]"
+        >
+          <messenger-icon />
+          <span class="font-normal text-base text-primary capitalize">
+            Message
+          </span>
+        </button>
       </div>
     </div>
   `,

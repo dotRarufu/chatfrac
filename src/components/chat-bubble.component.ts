@@ -9,7 +9,15 @@ import { Component, Input } from '@angular/core';
       [class.chat-end]="sender === 'user'"
       [class.chat-start]="sender === 'bot'"
     >
-      <div class="chat-bubble">{{ message }}</div>
+      <div
+        class="chat-bubble  text-secondary-content"
+        [class.bg-primary]="sender === 'user'"
+        [class.bg-secondary]="sender === 'bot'"
+        [class.text-primary-content]="sender === 'user'"
+        [class.text-secondary-content]="sender === 'bot'"
+      >
+        {{ message }}
+      </div>
     </div>
   `,
 })
