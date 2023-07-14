@@ -8,6 +8,8 @@ import Phases from '../types/Phases';
 import { Carousel, ChatBubble } from '../types/Message';
 import { StateService } from '../services/state.service';
 import { ActionsService } from '../services/actions.service';
+import ChatComponent from './chat.component';
+import randomNumber from '../utils/randomNumber';
 
 // const messages: Carousel[] = [
 //   {
@@ -32,7 +34,7 @@ import { ActionsService } from '../services/actions.service';
 //   },
 // ];
 
-const DELAY = 500; // can make this random, for a better effect
+const DELAY = 2500; // can make this random, for a better effect
 
 @Component({
   selector: 'show-message',
@@ -40,7 +42,7 @@ const DELAY = 500; // can make this random, for a better effect
   imports: [CommonModule],
   template: `<div></div>`,
 })
-export default class ShowMessageComponent implements OnInit {
+export class ShowMessageComponent implements OnInit {
   private newBotMessage(text: string) {
     const res: ChatBubble = {
       content: text,
@@ -106,6 +108,22 @@ export default class ShowMessageComponent implements OnInit {
       switch (step) {
         case Phases.SELECT_CATEGORY_1:
           {
+            const noMoreCategories = !Object.values(
+              this.userService.getCurrentvalue().categories,
+            ).includes(null);
+            console.log('asd:', noMoreCategories);
+            console.log(
+              'acats:',
+              this.userService.getCurrentvalue().categories,
+            );
+            if (noMoreCategories) {
+              setTimeout(() => {
+                this.moveToPhase(Phases.END);
+              }, 100);
+
+              break;
+            }
+
             const messages: ChatBubble[] = [
               this.newBotMessage('Select a category.'),
             ];
@@ -116,10 +134,7 @@ export default class ShowMessageComponent implements OnInit {
                 items: [
                   {
                     label: 'Animals',
-                    callback: () => {
-                      this.moveToPhase(Phases.ANIMALS_INTRO);
-                      console.log('quick reply | select animals category');
-                    },
+                    callback: () => this.moveToPhase(Phases.ANIMALS_INTRO),
                   },
                   {
                     label: 'Numbers',
@@ -287,7 +302,7 @@ export default class ShowMessageComponent implements OnInit {
                 'Congratulations, you have finished the pre-test.',
               ),
               this.newBotMessage(
-                `Pre-test result: ${score === -1 ? 0 : score}/2`,
+                `Pre-test result: ${score === null ? 0 : score}/2`,
               ),
               this.newBotMessage('You may now proceed to the next step.'),
             ];
@@ -298,7 +313,7 @@ export default class ShowMessageComponent implements OnInit {
 
         case Phases.ANIMALS_INTRO:
           {
-            console.log('show-message| animals intro ');
+            // console.log('show-message| animals intro ');
             const messages: ChatBubble[] = [
               this.newBotMessage('You selected animals category.'),
               this.newBotMessage('This category is about animals'),
@@ -311,7 +326,7 @@ export default class ShowMessageComponent implements OnInit {
           break;
         case Phases.ANIMALS_1:
           {
-            console.log('show mesage  | animals 1');
+            // console.log('show mesage  | animals 1');
             const messages: ChatBubble[] = [
               this.newBotMessage('Question 1'),
               this.newBotMessage(
@@ -364,7 +379,7 @@ export default class ShowMessageComponent implements OnInit {
         case Phases.ANIMALS_2_WRONG:
           {
             const messages: ChatBubble[] = [
-              this.newBotMessage('Correct'),
+              this.newBotMessage('Wrong'),
               this.newBotMessage('Its still a cat'),
             ];
 
@@ -378,14 +393,213 @@ export default class ShowMessageComponent implements OnInit {
 
             const messages: ChatBubble[] = [
               this.newBotMessage(
-                'Congratulations, you have the animals category.',
+                'Congratulations, you have finished the animals category.',
               ),
               this.newBotMessage(
-                `Animals category result: ${score === -1 ? 0 : score}/2`,
+                `Animals category result: ${score === null ? 0 : score}/2`,
               ),
             ];
 
             this.showMessages(messages, undefined, () => this.runLogicUpdate());
+          }
+          break;
+
+        case Phases.PLACES_INTRO:
+          {
+            // console.log('show-message| animals intro ');
+            const messages: ChatBubble[] = [
+              this.newBotMessage('You selected places category.'),
+              this.newBotMessage('This category is about places'),
+            ];
+
+            this.showMessages(messages, undefined, () =>
+              this.moveToPhase(Phases.PLACES_1),
+            );
+          }
+          break;
+        case Phases.PLACES_1:
+          {
+            // console.log('show mesage  | animals 1');
+            const messages: ChatBubble[] = [
+              this.newBotMessage('Question 1'),
+              this.newBotMessage('What is the capital of the Philippines? '),
+            ];
+
+            this.showMessages(messages);
+          }
+          break;
+        case Phases.PLACES_1_CORRECT:
+          {
+            const messages: ChatBubble[] = [this.newBotMessage('Correct')];
+
+            this.showMessages(messages, undefined, () => this.runLogicUpdate());
+          }
+          break;
+        case Phases.PLACES_1_WRONG:
+          {
+            const messages: ChatBubble[] = [
+              this.newBotMessage('Wrong'),
+              this.newBotMessage('Correct answer is Manila'),
+            ];
+
+            this.showMessages(messages, undefined, () => this.runLogicUpdate());
+          }
+          break;
+        case Phases.PLACES_2:
+          {
+            const messages: ChatBubble[] = [
+              this.newBotMessage('Question 2'),
+              this.newBotMessage('What is the capital of Japan'),
+            ];
+
+            this.showMessages(messages);
+          }
+          break;
+        case Phases.PLACES_2_CORRECT:
+          {
+            const messages: ChatBubble[] = [
+              this.newBotMessage('Correct'),
+              this.newBotMessage('It is Tokyo'),
+            ];
+
+            this.showMessages(messages, undefined, () => this.runLogicUpdate());
+          }
+          break;
+        case Phases.PLACES_2_WRONG:
+          {
+            const messages: ChatBubble[] = [
+              this.newBotMessage('Wrong'),
+              this.newBotMessage('Its Tokyo'),
+            ];
+
+            this.showMessages(messages, undefined, () => this.runLogicUpdate());
+          }
+          break;
+        case Phases.PLACES_RESULT:
+          {
+            const score =
+              this.userService.getCurrentvalue().categories['places'];
+
+            const messages: ChatBubble[] = [
+              this.newBotMessage(
+                'Congratulations, you have finished the places category.',
+              ),
+              this.newBotMessage(
+                `Places category result: ${score === null ? 0 : score}/2`,
+              ),
+            ];
+
+            this.showMessages(messages, undefined, () => this.runLogicUpdate());
+          }
+          break;
+
+        case Phases.NUMBERS_INTRO:
+          {
+            // console.log('show-message| animals intro ');
+            const messages: ChatBubble[] = [
+              this.newBotMessage('You selected numbers category.'),
+              this.newBotMessage('This category is about numbers'),
+            ];
+
+            this.showMessages(messages, undefined, () =>
+              this.moveToPhase(Phases.NUMBERS_1),
+            );
+          }
+          break;
+        case Phases.NUMBERS_1:
+          {
+            // console.log('show mesage  | animals 1');
+            const messages: ChatBubble[] = [
+              this.newBotMessage('Question 1'),
+              this.newBotMessage('What is 1 x 1 '),
+            ];
+
+            this.showMessages(messages);
+          }
+          break;
+        case Phases.NUMBERS_1_CORRECT:
+          {
+            const messages: ChatBubble[] = [this.newBotMessage('Correct')];
+
+            this.showMessages(messages, undefined, () => this.runLogicUpdate());
+          }
+          break;
+        case Phases.NUMBERS_1_WRONG:
+          {
+            const messages: ChatBubble[] = [
+              this.newBotMessage('Wrong'),
+              this.newBotMessage('Correct answer is 1'),
+            ];
+
+            this.showMessages(messages, undefined, () => this.runLogicUpdate());
+          }
+          break;
+        case Phases.NUMBERS_2:
+          {
+            const messages: ChatBubble[] = [
+              this.newBotMessage('Question 2'),
+              this.newBotMessage('What is 1 / 1'),
+            ];
+
+            this.showMessages(messages);
+          }
+          break;
+        case Phases.NUMBERS_2_CORRECT:
+          {
+            const messages: ChatBubble[] = [
+              this.newBotMessage('Correct'),
+              this.newBotMessage('It is 1'),
+            ];
+
+            this.showMessages(messages, undefined, () => this.runLogicUpdate());
+          }
+          break;
+        case Phases.PLACES_2_WRONG:
+          {
+            const messages: ChatBubble[] = [
+              this.newBotMessage('Wrong'),
+              this.newBotMessage('Its 1'),
+            ];
+
+            this.showMessages(messages, undefined, () => this.runLogicUpdate());
+          }
+          break;
+        case Phases.NUMBERS_RESULT:
+          {
+            const score =
+              this.userService.getCurrentvalue().categories['numbers'];
+
+            const messages: ChatBubble[] = [
+              this.newBotMessage(
+                'Congratulations, you have finished the numbers category.',
+              ),
+              this.newBotMessage(
+                `Numbers category result: ${score === null ? 0 : score}/2`,
+              ),
+            ];
+
+            this.showMessages(messages, undefined, () => this.runLogicUpdate());
+          }
+          break;
+
+        case Phases.END:
+          {
+            const messages: ChatBubble[] = [
+              this.newBotMessage(
+                'Congratulations, you have finished all the categories.',
+              ),
+              this.newBotMessage('Thank you.'),
+            ];
+
+            this.showMessages(messages, undefined, () => showButton());
+
+            const showButton = () => {
+              this.actionsService.content.set({
+                type: 'Button',
+                label: 'Go Back',
+                callback: () => this.runLogicUpdate(),
+              });
+            };
           }
           break;
 

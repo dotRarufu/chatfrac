@@ -10,10 +10,12 @@ export class UserService {
     name: 'default name',
     school: 'default school',
     categories: {
-      animals: -1,
+      animals: null,
+      places: null,
+      numbers: null,
     },
-    preTestScore: -1,
-    postTestScore: -1,
+    preTestScore: null,
+    postTestScore: null,
   });
   userData$ = this.userDataSubject.asObservable();
 
@@ -29,18 +31,28 @@ export class UserService {
 
   increasePreTestScore() {
     const old = this.getCurrentvalue();
-    this.set({ ...old, preTestScore: old.preTestScore + 1 });
+    const newValue = {
+      ...old,
+      preTestScore: old.preTestScore === null ? 1 : old.preTestScore + 1,
+    };
+
+    this.set(newValue);
   }
 
   increaseCategoryScore(category: string) {
     const old = this.getCurrentvalue();
     const oldCategoryValue = old.categories[category];
-    this.set({
+    const newCategoryValue = {
       ...old,
       categories: {
         ...old.categories,
-        [category]: oldCategoryValue + 1,
+        [category]: oldCategoryValue === null ? 1 : oldCategoryValue + 1,
       },
-    });
+    };
+
+    console.log('old:', old);
+    console.log('new:', newCategoryValue);
+
+    this.set(newCategoryValue);
   }
 }

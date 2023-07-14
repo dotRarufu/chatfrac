@@ -5,6 +5,7 @@ import { UserService } from './user.service';
 import showMessages from '../utils/showMessages';
 import Phases from '../types/Phases';
 import { StateService } from './state.service';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -19,6 +20,7 @@ export class StepService {
     private messageService: MessageService,
     private userService: UserService,
     private stateService: StateService,
+    private router: Router,
   ) {}
 
   getCurrent() {
@@ -47,6 +49,16 @@ export class StepService {
 
   update() {
     switch (this.current()) {
+      case Phases.END:
+        {
+          this.router.navigate(['/']);
+        }
+        break;
+      case Phases.CATEGORY_ALREADY_SELECTED:
+        {
+          this.moveToPhase(Phases.SELECT_CATEGORY_1);
+        }
+        break;
       case Phases.GREET:
         {
           this.moveToPhase(Phases.DEMOGRAPHICS_NAME_1);
@@ -139,9 +151,9 @@ export class StepService {
           const score =
             this.userService.getCurrentvalue().categories['animals'];
 
-          console.log('steps | animals intro runs');
+          // console.log('steps | animals intro runs');
 
-          if (score !== -1) {
+          if (score !== null) {
             this.moveToPhase(Phases.CATEGORY_ALREADY_SELECTED);
           } else {
             this.moveToPhase(Phases.ANIMALS_INTRO);
@@ -197,15 +209,150 @@ export class StepService {
           const score =
             this.userService.getCurrentvalue().categories['animals'];
 
-          if (score === -1) {
+          if (score === null) {
             this.userService.increaseCategoryScore('animals');
           }
 
           this.moveToPhase(Phases.SELECT_CATEGORY_1);
         }
         break;
-      case Phases.CATEGORY_ALREADY_SELECTED:
+
+      case Phases.PLACES_INTRO:
         {
+          const score = this.userService.getCurrentvalue().categories['places'];
+
+          // console.log('steps | animals intro runs');
+
+          if (score !== null) {
+            this.moveToPhase(Phases.CATEGORY_ALREADY_SELECTED);
+          } else {
+            this.moveToPhase(Phases.PLACES_INTRO);
+          }
+        }
+        break;
+      case Phases.PLACES_1:
+        {
+          const message = this.getUserMessage();
+
+          if (message === 'Manila') {
+            this.userService.increaseCategoryScore('places');
+            this.moveToPhase(Phases.PLACES_1_CORRECT);
+            break;
+          }
+          this.moveToPhase(Phases.PLACES_1_WRONG);
+        }
+        break;
+      case Phases.PLACES_1_CORRECT:
+        {
+          this.moveToPhase(Phases.PLACES_2);
+        }
+        break;
+      case Phases.PLACES_1_WRONG:
+        {
+          this.moveToPhase(Phases.PLACES_2);
+        }
+        break;
+      case Phases.PLACES_2:
+        {
+          const message = this.getUserMessage();
+
+          if (message === 'Tokyo') {
+            this.userService.increaseCategoryScore('places');
+            this.moveToPhase(Phases.PLACES_2_CORRECT);
+            break;
+          }
+          this.moveToPhase(Phases.PLACES_2_WRONG);
+        }
+        break;
+      case Phases.PLACES_2_CORRECT:
+        {
+          this.moveToPhase(Phases.PLACES_RESULT);
+        }
+        break;
+      case Phases.PLACES_2_WRONG:
+        {
+          this.moveToPhase(Phases.PLACES_RESULT);
+        }
+        break;
+      case Phases.PLACES_RESULT:
+        {
+          const score = this.userService.getCurrentvalue().categories['places'];
+
+          if (score === null) {
+            this.userService.increaseCategoryScore('places');
+          }
+
+          this.moveToPhase(Phases.SELECT_CATEGORY_1);
+        }
+        break;
+
+      case Phases.NUMBERS_INTRO:
+        {
+          const score =
+            this.userService.getCurrentvalue().categories['numbers'];
+
+          // console.log('steps | animals intro runs');
+
+          if (score !== null) {
+            this.moveToPhase(Phases.CATEGORY_ALREADY_SELECTED);
+          } else {
+            this.moveToPhase(Phases.NUMBERS_INTRO);
+          }
+        }
+        break;
+      case Phases.NUMBERS_1:
+        {
+          const message = this.getUserMessage();
+
+          if (message === '1') {
+            this.userService.increaseCategoryScore('numbers');
+            this.moveToPhase(Phases.NUMBERS_1_CORRECT);
+            break;
+          }
+          this.moveToPhase(Phases.NUMBERS_1_WRONG);
+        }
+        break;
+      case Phases.NUMBERS_1_CORRECT:
+        {
+          this.moveToPhase(Phases.NUMBERS_2);
+        }
+        break;
+      case Phases.NUMBERS_1_WRONG:
+        {
+          this.moveToPhase(Phases.NUMBERS_2);
+        }
+        break;
+      case Phases.NUMBERS_2:
+        {
+          const message = this.getUserMessage();
+
+          if (message === '1') {
+            this.userService.increaseCategoryScore('numbers');
+            this.moveToPhase(Phases.NUMBERS_2_CORRECT);
+            break;
+          }
+          this.moveToPhase(Phases.NUMBERS_2_WRONG);
+        }
+        break;
+      case Phases.NUMBERS_2_CORRECT:
+        {
+          this.moveToPhase(Phases.NUMBERS_RESULT);
+        }
+        break;
+      case Phases.NUMBERS_2_WRONG:
+        {
+          this.moveToPhase(Phases.NUMBERS_RESULT);
+        }
+        break;
+      case Phases.NUMBERS_RESULT:
+        {
+          const score =
+            this.userService.getCurrentvalue().categories['numbers'];
+
+          if (score === null) {
+            this.userService.increaseCategoryScore('numbers');
+          }
+
           this.moveToPhase(Phases.SELECT_CATEGORY_1);
         }
         break;

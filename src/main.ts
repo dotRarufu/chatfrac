@@ -5,17 +5,12 @@ import { Routes, provideRouter } from '@angular/router';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'chat',
-    pathMatch: 'full',
+    loadComponent: () => import('./app/pages/landing.component'),
   },
   {
     path: 'chat',
-    loadComponent: () => import('./app/pages/show-message.component'),
+    loadComponent: () => import('./app/pages/chat.component'),
   },
-  // {
-  //   path: 'pre-test',
-  //   loadComponent: () => import('../app/pages/pre-test.component'),
-  // },
 ];
 
 bootstrapApplication(AppComponent, {

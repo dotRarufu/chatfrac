@@ -18,13 +18,13 @@ import { StateService } from 'src/app/services/state.service';
         [(ngModel)]="value"
         type="text"
         placeholder="Type something"
-        class="input w-full join-item bg-secondary text-secondary-content"
-        [disabled]="checkIsDisabled()"
+        class="input w-full outline-none join-item bg-secondary text-secondary-content"
       />
+      <!-- [disabled]="inputIsDisabled || false" -->
       <button
         (click)="handleSend()"
         class="btn join-item btn-primary"
-        [class.btn-disabled]="checkIsDisabled()"
+        [class.btn-disabled]="inputIsDisabled || false"
       >
         <send-icon />
       </button>
@@ -38,6 +38,7 @@ export default class ChatInputComponent {
 
   checkIsDisabled() {
     const currentAction = this.actionsService.content();
+
     if (currentAction.type === 'Input') {
       const currentActionIsDisabled = currentAction.isDisabled || false;
       const res =
@@ -64,6 +65,10 @@ export default class ChatInputComponent {
   }
 
   handleSend() {
+    if (this.checkIsDisabled()) return;
+
+    if (!this.value) return;
+
     const data: Message = {
       content: this.value,
       sender: 'user',

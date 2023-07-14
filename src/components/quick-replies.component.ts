@@ -19,12 +19,13 @@ export type QuickReplyContent = {
   imports: [CommonModule],
   template: `
     <div class=" flex gap-[16px] carousel px-[16px] ">
-      <div
-        *ngFor="let item of content.items"
-        class="carousel-item rounded-[24px] font-normal btn-sm  text-base px-[10px]   btn btn-primary  normal-case min-h-[28px] h-[28px] "
-        (click)="handleCallback(item.label, item.callback)"
-      >
-        {{ item.label }}
+      <div *ngFor="let item of content.items" class="carousel-item ">
+        <div
+          class="rounded-[24px] font-normal btn-sm  text-[20px] px-[28px] py-[4px]   btn btn-primary w-full normal-case min-h-[28px] h-[28px] "
+          (click)="handleCallback(item.label, item.callback)"
+        >
+          {{ item.label }}
+        </div>
       </div>
     </div>
   `,
@@ -51,11 +52,8 @@ export default class QuickRepliesComponent {
       type: 'ChatBubble',
     };
 
-    // dapat pagka-click, hindi agad mage-enable yung input
-    // * enable here
-
     this.messageService.add(data);
-    // this.actionsService.content.set({ type: 'Input', isDisabled: true });
+    // might have conflict when next action is a button
     this.actionsService.content.set({ type: 'Input', isDisabled: false });
     this.runLogicUpdate();
   }

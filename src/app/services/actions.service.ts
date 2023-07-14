@@ -8,11 +8,15 @@ export type ButtonContent = {
   callback: () => void;
 };
 
-type Actions = ButtonContent | QuickReplyContent | { type: 'Input', isDisabled?: boolean };
+type Actions =
+  | ButtonContent
+  | QuickReplyContent
+  | { type: 'Input'; isDisabled?: boolean }
+  | { type: 'Null' };
 
 @Injectable({
   providedIn: 'root',
 })
 export class ActionsService {
-  content = signal<Actions>({ type: 'Input' });
+  content = signal<Actions>({ type: 'Null' });
 }

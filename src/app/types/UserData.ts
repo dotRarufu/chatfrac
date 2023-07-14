@@ -2,8 +2,8 @@ export default interface UserData {
   name: string;
   school: string;
   categories: {
-    [key: string]: number;
+    [key: string]: number | null;
   };
-  preTestScore: number;
-  postTestScore: number;
+  preTestScore: number | null;
+  postTestScore: number | null;
 }
