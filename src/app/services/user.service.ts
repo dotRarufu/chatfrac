@@ -9,8 +9,11 @@ export class UserService {
   private readonly userDataSubject = new BehaviorSubject<UserData>({
     name: 'default name',
     school: 'default school',
-    preTestScore: 0,
-    postTestScore: 0,
+    categories: {
+      animals: -1,
+    },
+    preTestScore: -1,
+    postTestScore: -1,
   });
   userData$ = this.userDataSubject.asObservable();
 
@@ -27,5 +30,17 @@ export class UserService {
   increasePreTestScore() {
     const old = this.getCurrentvalue();
     this.set({ ...old, preTestScore: old.preTestScore + 1 });
+  }
+
+  increaseCategoryScore(category: string) {
+    const old = this.getCurrentvalue();
+    const oldCategoryValue = old.categories[category];
+    this.set({
+      ...old,
+      categories: {
+        ...old.categories,
+        [category]: oldCategoryValue + 1,
+      },
+    });
   }
 }

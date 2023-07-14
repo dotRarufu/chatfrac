@@ -12,7 +12,7 @@ import { StateService } from './state.service';
 export class StepService {
   private readonly currentSubject = new BehaviorSubject(1);
   current$ = this.currentSubject.asObservable();
-  current = signal(Phases.SELECT_CATEGORY_1);
+  current = signal(Phases.GREET);
   // current = signal(Phases.GREET);
 
   constructor(
@@ -42,6 +42,7 @@ export class StepService {
 
   private moveToPhase(p: Phases) {
     this.current.set(p);
+    // console.log('step servce | move to:', p);
   }
 
   update() {
@@ -88,7 +89,7 @@ export class StepService {
         {
           const message = this.getUserMessage();
 
-          if (message === 'a correct answer') {
+          if (message === '2') {
             this.userService.increasePreTestScore();
             this.moveToPhase(Phases.PRETEST_1_CORRECT);
           } else {
@@ -110,7 +111,7 @@ export class StepService {
         {
           const message = this.getUserMessage();
 
-          if (message === 'a correct answer') {
+          if (message === '4') {
             this.userService.increasePreTestScore();
             this.moveToPhase(Phases.PRETEST_2_CORRECT);
           } else {
@@ -129,6 +130,81 @@ export class StepService {
         }
         break;
       case Phases.PRETEST_RESULT:
+        {
+          this.moveToPhase(Phases.SELECT_CATEGORY_1);
+        }
+        break;
+      case Phases.ANIMALS_INTRO:
+        {
+          const score =
+            this.userService.getCurrentvalue().categories['animals'];
+
+          console.log('steps | animals intro runs');
+
+          if (score !== -1) {
+            this.moveToPhase(Phases.CATEGORY_ALREADY_SELECTED);
+          } else {
+            this.moveToPhase(Phases.ANIMALS_INTRO);
+          }
+        }
+        break;
+      case Phases.ANIMALS_1:
+        {
+          const message = this.getUserMessage();
+
+          if (message === 'cat') {
+            this.userService.increaseCategoryScore('animals');
+            this.moveToPhase(Phases.ANIMALS_1_CORRECT);
+            break;
+          }
+          this.moveToPhase(Phases.ANIMALS_1_WRONG);
+        }
+        break;
+      case Phases.ANIMALS_1_CORRECT:
+        {
+          this.moveToPhase(Phases.ANIMALS_2);
+        }
+        break;
+      case Phases.ANIMALS_1_WRONG:
+        {
+          this.moveToPhase(Phases.ANIMALS_2);
+        }
+        break;
+      case Phases.ANIMALS_2:
+        {
+          const message = this.getUserMessage();
+
+          if (message === 'cat') {
+            this.userService.increaseCategoryScore('animals');
+            this.moveToPhase(Phases.ANIMALS_2_CORRECT);
+            break;
+          }
+          this.moveToPhase(Phases.ANIMALS_2_WRONG);
+        }
+        break;
+      case Phases.ANIMALS_2_CORRECT:
+        {
+          this.moveToPhase(Phases.ANIMALS_RESULT);
+        }
+        break;
+      case Phases.ANIMALS_2_WRONG:
+        {
+          this.moveToPhase(Phases.ANIMALS_RESULT);
+        }
+        break;
+      case Phases.ANIMALS_RESULT:
+        {
+          const score =
+            this.userService.getCurrentvalue().categories['animals'];
+
+          if (score === -1) {
+            this.userService.increaseCategoryScore('animals');
+          }
+
+          this.moveToPhase(Phases.SELECT_CATEGORY_1);
+        }
+        break;
+      case Phases.CATEGORY_ALREADY_SELECTED:
         {
           this.moveToPhase(Phases.SELECT_CATEGORY_1);
         }

@@ -68,9 +68,14 @@ import { StateService } from 'src/app/services/state.service';
           <chat-input *ngSwitchCase="'Input'" />
           <!-- [isDisabled]="stateService.isChatInputDisabled$ | async" -->
 
-          <button *ngSwitchCase="'Button'" class="btn w-full btn-primary">
-            {{ getButtonContent() }}
-          </button>
+          <ng-container *ngSwitchCase="'Button'">
+            <button
+              (click)="getButtonContent().callback()"
+              class="btn w-full btn-primary"
+            >
+              {{ getButtonContent().label }}
+            </button>
+          </ng-container>
 
           <div *ngSwitchDefault class="">Error</div>
         </ng-container>
