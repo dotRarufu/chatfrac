@@ -5,34 +5,11 @@ import { StepService } from 'src/app/services/step.service';
 import { UserService } from 'src/app/services/user.service';
 import showMessages from 'src/app/utils/showMessages';
 import Phases from '../types/Phases';
-import { Carousel, ChatBubble } from '../types/Message';
+import { Carousel, ChatBubble, Message } from '../types/Message';
 import { StateService } from '../services/state.service';
 import { ActionsService } from '../services/actions.service';
 import ChatComponent from './chat.component';
 import randomNumber from '../utils/randomNumber';
-
-// const messages: Carousel[] = [
-//   {
-//     content: [
-//       {
-//         message: 'ABC',
-//         image: '',
-//         clickCallback: () => console.log('ABC!'),
-//       },
-//       {
-//         message: '123',
-//         image: '',
-//         clickCallback: () => console.log('123!'),
-//       },
-//       {
-//         message: '123',
-//         image: '',
-//         clickCallback: () => console.log('123!'),
-//       },
-//     ],
-//     type: 'Carousel',
-//   },
-// ];
 
 const DELAY = 2500; // can make this random, for a better effect
 
@@ -43,25 +20,27 @@ const DELAY = 2500; // can make this random, for a better effect
   template: `<div></div>`,
 })
 export class ShowMessageComponent implements OnInit {
-  private newBotMessage(text: string) {
+  private newBotMessage(text: string, options?: { isLink: boolean }) {
     const res: ChatBubble = {
       content: text,
       sender: 'bot',
       type: 'ChatBubble',
+      isLink: options?.isLink,
     };
 
     return res;
   }
 
   private showMessages(
-    messages: ChatBubble[],
+    messages: Message[],
     mapFn?: () => void,
     lastly?: () => void,
   ) {
     this.stateService.setIsChatInputDisabled(true);
     // console.log('input is disabled');
+    // set typing to true
 
-    const mapFnWrapper = (message: ChatBubble) => {
+    const mapFnWrapper = (message: Message) => {
       // runs every item
       this.messageService.add(message);
       mapFn && mapFn();
@@ -69,11 +48,12 @@ export class ShowMessageComponent implements OnInit {
 
     const lastFnWrapper = () => {
       // console.log('input is enabled');
+      // set typing to false
       this.stateService.setIsChatInputDisabled(false);
       lastly && lastly();
     };
 
-    showMessages(DELAY, messages, mapFnWrapper, lastFnWrapper);
+    showMessages<Message>(DELAY, messages, mapFnWrapper, lastFnWrapper);
   }
 
   private runLogicUpdate() {
@@ -118,7 +98,7 @@ export class ShowMessageComponent implements OnInit {
             );
             if (noMoreCategories) {
               setTimeout(() => {
-                this.moveToPhase(Phases.END);
+                this.moveToPhase(Phases.CATEGORIES_END_1);
               }, 100);
 
               break;
@@ -231,13 +211,21 @@ export class ShowMessageComponent implements OnInit {
             this.showMessages(messages);
           }
           break;
-        case Phases.PRETEST_1:
+        case Phases.PRETEST_INTRO:
           {
             const messages: ChatBubble[] = [
               this.newBotMessage('Thank you.'),
               this.newBotMessage(
                 'In order to help you further, please proceed answering the pre-test.',
               ),
+            ];
+
+            this.showMessages(messages, undefined, () => this.runLogicUpdate());
+          }
+          break;
+        case Phases.PRETEST_1:
+          {
+            const messages: ChatBubble[] = [
               this.newBotMessage('Question 1:'),
               this.newBotMessage('1 + 1 = ?'),
             ];
@@ -582,11 +570,11 @@ export class ShowMessageComponent implements OnInit {
           }
           break;
 
-        case Phases.END:
+        case Phases.CHAT_END:
           {
             const messages: ChatBubble[] = [
               this.newBotMessage(
-                'Congratulations, you have finished all the categories.',
+                'You have answered all of the questions I have.',
               ),
               this.newBotMessage('Thank you.'),
             ];
@@ -600,6 +588,168 @@ export class ShowMessageComponent implements OnInit {
                 callback: () => this.runLogicUpdate(),
               });
             };
+          }
+          break;
+        case Phases.CATEGORIES_END_1:
+          {
+            const messages: Message[] = [
+              this.newBotMessage(
+                'Job well done, you accomplished all the categories',
+              ),
+              this.newBotMessage('Do you still have any questions?'),
+            ];
+
+            const showQuickReplies = () => {
+              this.actionsService.content.set({
+                type: 'QuickReply',
+                items: [
+                  {
+                    label: 'Yes',
+                    callback: () =>
+                      this.moveToPhase(Phases.CATEGORIES_END_CAROUSEL),
+                  },
+                  {
+                    label: 'No',
+                    callback: () => this.moveToPhase(Phases.POSTTEST_INTRO),
+                  },
+                ],
+              });
+            };
+
+            this.showMessages(messages, undefined, showQuickReplies);
+          }
+          break;
+        case Phases.CATEGORIES_END_CAROUSEL:
+          {
+            const messages: Message[] = [
+              {
+                content: [
+                  {
+                    message: 'ABC',
+                    image: '',
+                    clickCallback: () => console.log('ABC!'),
+                    link: 'https://www.fb.com/dotRarufu',
+                  },
+                  {
+                    message: '123',
+                    image: '',
+                    clickCallback: () => console.log('123!'),
+                    link: 'https://www.fb.com/dotRarufu',
+                  },
+                  {
+                    message: '123',
+                    image: '',
+                    clickCallback: () => console.log('123!'),
+                    link: 'https://www.fb.com/dotRarufu',
+                  },
+                ],
+                type: 'Carousel',
+              },
+              this.newBotMessage(
+                'You may also take a look on this gdrive to further improve your mastery level on addition and subtraction of dissimilar fractions',
+              ),
+              this.newBotMessage('https://gdrive.link.here', { isLink: true }),
+            ];
+
+            const showButton = () => {
+              this.actionsService.content.set({
+                type: 'Button',
+                label: 'Okay',
+                callback: () => {
+                  this.moveToPhase(Phases.POSTTEST_1);
+                  this.actionsService.content.set({ type: 'Input' });
+                },
+              });
+            };
+
+            this.showMessages(messages, undefined, () => showButton());
+          }
+          break;
+        case Phases.POSTTEST_1:
+          {
+            const messages: ChatBubble[] = [
+              this.newBotMessage('You may now proceed to the last step.'),
+              this.newBotMessage('Question 1:'),
+              this.newBotMessage('1 + 1 = ?'),
+            ];
+
+            this.showMessages(messages);
+          }
+          break;
+
+        case Phases.POSTTEST_INTRO:
+          {
+            const messages: ChatBubble[] = [
+              this.newBotMessage('You will be answering post-test questions'),
+              this.newBotMessage(
+                'This is to gauge your understanding of the topic',
+              ),
+            ];
+
+            this.showMessages(messages, undefined, () => this.runLogicUpdate());
+          }
+          break;
+        case Phases.POSTTEST_1_WRONG:
+          {
+            const messages: ChatBubble[] = [
+              this.newBotMessage('Wrong:'),
+              this.newBotMessage('The correct answer is 2'),
+              this.newBotMessage('Solution: 1 + 1 = 2'),
+            ];
+
+            this.showMessages(messages, undefined, () => this.runLogicUpdate());
+          }
+          break;
+        case Phases.POSTTEST_1_CORRECT:
+          {
+            const messages: ChatBubble[] = [this.newBotMessage('Correct')];
+
+            this.showMessages(messages, undefined, () => this.runLogicUpdate());
+          }
+          break;
+        case Phases.POSTTEST_2:
+          {
+            const messages: ChatBubble[] = [
+              this.newBotMessage('Question 2'),
+              this.newBotMessage('2 + 2 = ?'),
+            ];
+
+            this.showMessages(messages);
+          }
+          break;
+        case Phases.POSTTEST_2_CORRECT:
+          {
+            const messages: ChatBubble[] = [
+              this.newBotMessage('Correct'),
+              this.newBotMessage('Because 2 + 2 is simply equals to 4'),
+            ];
+
+            this.showMessages(messages, undefined, () => this.runLogicUpdate());
+          }
+          break;
+        case Phases.POSTTEST_2_WRONG:
+          {
+            const messages: ChatBubble[] = [
+              this.newBotMessage('Wrong ❌'),
+              this.newBotMessage('Solution: 2 + 2 = 4 '),
+            ];
+
+            this.showMessages(messages, undefined, () => this.runLogicUpdate());
+          }
+          break;
+        case Phases.POSTTEST_RESULT:
+          {
+            const score = this.userService.getCurrentvalue().postTestScore;
+            const messages: ChatBubble[] = [
+              this.newBotMessage(
+                'Congratulations, you have finished the post-test.',
+              ),
+              this.newBotMessage(
+                `Post-test result: ${score === null ? 0 : score}/2`,
+              ),
+            ];
+
+            this.showMessages(messages, undefined, () => this.runLogicUpdate());
           }
           break;
 

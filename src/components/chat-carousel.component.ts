@@ -15,20 +15,24 @@ import MessengerIconComponent from './icons/messenger.component';
       >
         <img
           class="w-[167px] h-[80px] rounded-[8px] "
-          src="https://cdn.matthewjamestaylor.com/img/matthew-james-taylor.jpg"
+          [src]="
+            item.image ||
+            'https://cdn.matthewjamestaylor.com/img/matthew-james-taylor.jpg'
+          "
         />
         <span class="font-normal text-base text-secondary-content">
-          Person Name
+          {{ item.message || 'Person Name' }}
         </span>
         <div class="h-[1px] w-full bg-secondary-content "></div>
-        <button
+        <a
+          [href]="item.link"
           class="px-[4px] py-[8px] flex justify-center w-full btn btn-ghost gap-[8px]"
         >
           <messenger-icon />
           <span class="font-normal text-base text-primary capitalize">
             Message
           </span>
-        </button>
+        </a>
       </div>
     </div>
   `,

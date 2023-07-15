@@ -50,6 +50,7 @@ import { ShowMessageComponent } from './show-message.component';
             *ngIf="message.type === 'ChatBubble'"
             [sender]="message.sender"
             [message]="message.content"
+            [link]="message.isLink ? message.content : undefined"
           />
           <chat-carousel
             *ngIf="message.type === 'Carousel'"

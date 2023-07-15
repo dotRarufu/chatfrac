@@ -1,8 +1,10 @@
+import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'chat-bubble',
   standalone: true,
+  imports: [CommonModule],
   template: `
     <div
       class="chat "
@@ -16,7 +18,16 @@ import { Component, Input } from '@angular/core';
         [class.text-primary-content]="sender === 'user'"
         [class.text-secondary-content]="sender === 'bot'"
       >
-        {{ message }}
+        <a
+          class="text-blue-500 underline "
+          [href]="link"
+          *ngIf="link !== undefined"
+        >
+          {{ message }}
+        </a>
+        <span *ngIf="link === undefined">
+          {{ message }}
+        </span>
       </div>
     </div>
   `,
@@ -24,4 +35,5 @@ import { Component, Input } from '@angular/core';
 export default class ChatBubbleComponent {
   @Input() sender: 'user' | 'bot' = 'user';
   @Input() message = '';
+  @Input() link?: string;
 }

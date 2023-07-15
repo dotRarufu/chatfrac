@@ -49,9 +49,14 @@ export class StepService {
 
   update() {
     switch (this.current()) {
-      case Phases.END:
+      case Phases.CHAT_END:
         {
           this.router.navigate(['/']);
+        }
+        break;
+      case Phases.CATEGORIES_END_1:
+        {
+          this.moveToPhase(Phases.POSTTEST_1);
         }
         break;
       case Phases.CATEGORY_ALREADY_SELECTED:
@@ -94,6 +99,11 @@ export class StepService {
           const message = this.getUserMessage();
           const data = this.userService.getCurrentvalue();
           this.userService.set({ ...data, school: message });
+          this.moveToPhase(Phases.PRETEST_INTRO);
+        }
+        break;
+      case Phases.PRETEST_INTRO:
+        {
           this.moveToPhase(Phases.PRETEST_1);
         }
         break;
@@ -357,6 +367,60 @@ export class StepService {
         }
         break;
 
+      case Phases.POSTTEST_INTRO:
+        {
+          this.moveToPhase(Phases.POSTTEST_1);
+        }
+        break;
+      case Phases.POSTTEST_1:
+        {
+          const message = this.getUserMessage();
+
+          if (message === '2') {
+            this.userService.increasePreTestScore();
+            this.moveToPhase(Phases.POSTTEST_1_CORRECT);
+          } else {
+            this.moveToPhase(Phases.POSTTEST_1_WRONG);
+          }
+        }
+        break;
+      case Phases.POSTTEST_1_CORRECT:
+        {
+          this.moveToPhase(Phases.POSTTEST_2);
+        }
+        break;
+      case Phases.POSTTEST_1_WRONG:
+        {
+          this.moveToPhase(Phases.POSTTEST_2);
+        }
+        break;
+      case Phases.POSTTEST_2:
+        {
+          const message = this.getUserMessage();
+
+          if (message === '4') {
+            this.userService.increasePreTestScore();
+            this.moveToPhase(Phases.POSTTEST_2_CORRECT);
+          } else {
+            this.moveToPhase(Phases.POSTTEST_2_WRONG);
+          }
+        }
+        break;
+      case Phases.POSTTEST_2_CORRECT:
+        {
+          this.moveToPhase(Phases.POSTTEST_RESULT);
+        }
+        break;
+      case Phases.POSTTEST_2_WRONG:
+        {
+          this.moveToPhase(Phases.POSTTEST_RESULT);
+        }
+        break;
+      case Phases.POSTTEST_RESULT:
+        {
+          this.moveToPhase(Phases.CHAT_END);
+        }
+        break;
       default:
         break;
     }
