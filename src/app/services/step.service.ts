@@ -13,8 +13,7 @@ import { Router } from '@angular/router';
 export class StepService {
   private readonly currentSubject = new BehaviorSubject(1);
   current$ = this.currentSubject.asObservable();
-  current = signal(Phases.GREET);
-  // current = signal(Phases.GREET);
+  current = signal(Phases.POSTTEST_RESULT);
 
   constructor(
     private messageService: MessageService,
@@ -48,15 +47,27 @@ export class StepService {
   }
 
   update() {
+    console.log('update runs:', this.current());
     switch (this.current()) {
+      case Phases.NO_MORE:
+        {
+          this.router.navigate(['/']);
+        }
+        break;
       case Phases.CHAT_END:
         {
+          this.moveToPhase(Phases.CHAT_END_BACK_BUTTON);
+        }
+        break;
+      case Phases.CHAT_END_BACK_BUTTON:
+        {
+          this.moveToPhase(Phases.NO_MORE);
           this.router.navigate(['/']);
         }
         break;
       case Phases.CATEGORIES_END_1:
         {
-          this.moveToPhase(Phases.POSTTEST_1);
+          this.moveToPhase(Phases.POSTTEST_INTRO);
         }
         break;
       case Phases.CATEGORY_ALREADY_SELECTED:
@@ -82,7 +93,7 @@ export class StepService {
           const message = this.getUserMessage();
 
           if (message === 'Yes') {
-            const data = this.userService.getCurrentvalue();
+            const data = this.userService.getCurrentValue();
             this.userService.set({
               ...data,
               name: this.stateService.string()['name'],
@@ -97,7 +108,7 @@ export class StepService {
       case Phases.DEMOGRAPHICS_SCHOOL:
         {
           const message = this.getUserMessage();
-          const data = this.userService.getCurrentvalue();
+          const data = this.userService.getCurrentValue();
           this.userService.set({ ...data, school: message });
           this.moveToPhase(Phases.PRETEST_INTRO);
         }
@@ -159,7 +170,7 @@ export class StepService {
       case Phases.ANIMALS_INTRO:
         {
           const score =
-            this.userService.getCurrentvalue().categories['animals'];
+            this.userService.getCurrentValue().categories['animals'];
 
           // console.log('steps | animals intro runs');
 
@@ -217,7 +228,7 @@ export class StepService {
       case Phases.ANIMALS_RESULT:
         {
           const score =
-            this.userService.getCurrentvalue().categories['animals'];
+            this.userService.getCurrentValue().categories['animals'];
 
           if (score === null) {
             this.userService.increaseCategoryScore('animals');
@@ -229,7 +240,7 @@ export class StepService {
 
       case Phases.PLACES_INTRO:
         {
-          const score = this.userService.getCurrentvalue().categories['places'];
+          const score = this.userService.getCurrentValue().categories['places'];
 
           // console.log('steps | animals intro runs');
 
@@ -286,7 +297,7 @@ export class StepService {
         break;
       case Phases.PLACES_RESULT:
         {
-          const score = this.userService.getCurrentvalue().categories['places'];
+          const score = this.userService.getCurrentValue().categories['places'];
 
           if (score === null) {
             this.userService.increaseCategoryScore('places');
@@ -299,7 +310,7 @@ export class StepService {
       case Phases.NUMBERS_INTRO:
         {
           const score =
-            this.userService.getCurrentvalue().categories['numbers'];
+            this.userService.getCurrentValue().categories['numbers'];
 
           // console.log('steps | animals intro runs');
 
@@ -357,7 +368,7 @@ export class StepService {
       case Phases.NUMBERS_RESULT:
         {
           const score =
-            this.userService.getCurrentvalue().categories['numbers'];
+            this.userService.getCurrentValue().categories['numbers'];
 
           if (score === null) {
             this.userService.increaseCategoryScore('numbers');
@@ -366,7 +377,11 @@ export class StepService {
           this.moveToPhase(Phases.SELECT_CATEGORY_1);
         }
         break;
-
+      case Phases.CATEGORIES_END_NO:
+        {
+          this.moveToPhase(Phases.POSTTEST_INTRO);
+        }
+        break;
       case Phases.POSTTEST_INTRO:
         {
           this.moveToPhase(Phases.POSTTEST_1);
@@ -377,7 +392,7 @@ export class StepService {
           const message = this.getUserMessage();
 
           if (message === '2') {
-            this.userService.increasePreTestScore();
+            this.userService.increasePostTestScore();
             this.moveToPhase(Phases.POSTTEST_1_CORRECT);
           } else {
             this.moveToPhase(Phases.POSTTEST_1_WRONG);
@@ -399,7 +414,7 @@ export class StepService {
           const message = this.getUserMessage();
 
           if (message === '4') {
-            this.userService.increasePreTestScore();
+            this.userService.increasePostTestScore();
             this.moveToPhase(Phases.POSTTEST_2_CORRECT);
           } else {
             this.moveToPhase(Phases.POSTTEST_2_WRONG);

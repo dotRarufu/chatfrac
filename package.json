@@ -6,7 +6,8 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "updateTypes": "npx supabase gen types typescript --project-id 'sysebcpqnqjthlfowqtl' --schema public > ./src/app/types/supabase.ts"
   },
   "private": true,
   "dependencies": {
@@ -18,7 +19,10 @@
     "@angular/platform-browser": "^16.0.0",
     "@angular/platform-browser-dynamic": "^16.0.0",
     "@angular/router": "^16.0.0",
+    "@supabase/supabase-js": "^2.26.0",
+    "json-2-csv": "^4.0.0",
     "rxjs": "~7.8.0",
+    "supabase": "^1.77.9",
     "tslib": "^2.3.0",
     "zone.js": "~0.13.0"
   },

@@ -45,6 +45,7 @@ enum Phases {
   CATEGORIES_END_1,
   CATEGORIES_END_2,
   CATEGORIES_END_CAROUSEL,
+  CATEGORIES_END_NO,
 
   POSTTEST_INTRO,
   POSTTEST_1,
@@ -56,6 +57,9 @@ enum Phases {
   POSTTEST_RESULT,
 
   CHAT_END,
+  CHAT_END_BACK_BUTTON,
+
+  NO_MORE,
 }
 
 export default Phases;

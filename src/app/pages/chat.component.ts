@@ -23,6 +23,7 @@ import QuickRepliesComponent, {
   QuickReplyContent,
 } from 'src/components/quick-replies.component';
 import { ShowMessageComponent } from './show-message.component';
+import { SupabaseService } from '../services/supabase.service';
 
 @Component({
   selector: 'chat',
@@ -73,6 +74,16 @@ import { ShowMessageComponent } from './show-message.component';
 
           <ng-container *ngSwitchCase="'Button'">
             <button
+              *ngIf="supabaseService.isSavingData()"
+              class="btn w-full btn-primary"
+              [disabled]="true"
+            >
+              <span class="loading loading-spinner loading-md"></span>
+              Saving data
+            </button>
+
+            <button
+              *ngIf="!supabaseService.isSavingData()"
               (click)="getButtonContent().callback()"
               class="btn w-full btn-primary"
             >
@@ -116,6 +127,7 @@ export default class ChatComponent implements OnInit, AfterViewChecked {
     public messageService: MessageService,
     public actionsService: ActionsService,
     public stateService: StateService,
+    public supabaseService: SupabaseService,
   ) {
     console.log('chat comp runs');
   }

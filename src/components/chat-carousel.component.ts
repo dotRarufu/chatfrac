@@ -8,7 +8,7 @@ import MessengerIconComponent from './icons/messenger.component';
   standalone: true,
   imports: [CommonModule, MessengerIconComponent],
   template: `
-    <div class=" flex gap-[16px] carousel px-[16px] ">
+    <div class=" flex gap-[16px] carousel px-[16px] py-[8px]">
       <div
         *ngFor="let item of content"
         class="carousel-item rounded-[12px] bg-secondary  px-[12px] py-[8px]  normal-case  w-[143px] flex flex-col gap-[8px]"

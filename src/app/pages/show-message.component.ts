@@ -10,8 +10,10 @@ import { StateService } from '../services/state.service';
 import { ActionsService } from '../services/actions.service';
 import ChatComponent from './chat.component';
 import randomNumber from '../utils/randomNumber';
+import { SupabaseService } from '../services/supabase.service';
+import { from, map } from 'rxjs';
 
-const DELAY = 2500; // can make this random, for a better effect
+const DELAY = 100; // can make this random, for a better effect
 
 @Component({
   selector: 'show-message',
@@ -82,6 +84,7 @@ export class ShowMessageComponent implements OnInit {
     private userService: UserService,
     private stateService: StateService,
     private actionsService: ActionsService,
+    private supabaseService: SupabaseService,
   ) {
     effect(() => {
       const step = this.stepService.current();
@@ -90,12 +93,12 @@ export class ShowMessageComponent implements OnInit {
         case Phases.SELECT_CATEGORY_1:
           {
             const noMoreCategories = !Object.values(
-              this.userService.getCurrentvalue().categories,
+              this.userService.getCurrentValue().categories,
             ).includes(null);
             console.log('asd:', noMoreCategories);
             console.log(
               'acats:',
-              this.userService.getCurrentvalue().categories,
+              this.userService.getCurrentValue().categories,
             );
             if (noMoreCategories) {
               setTimeout(() => {
@@ -204,7 +207,7 @@ export class ShowMessageComponent implements OnInit {
           {
             const messages: ChatBubble[] = [
               this.newBotMessage(
-                `Cool, ${this.userService.getCurrentvalue().name}`,
+                `Cool, ${this.userService.getCurrentValue().name}`,
               ),
               this.newBotMessage('Which school are you from?'),
             ];
@@ -285,7 +288,7 @@ export class ShowMessageComponent implements OnInit {
           break;
         case Phases.PRETEST_RESULT:
           {
-            const score = this.userService.getCurrentvalue().preTestScore;
+            const score = this.userService.getCurrentValue().preTestScore;
             const messages: ChatBubble[] = [
               this.newBotMessage(
                 'Congratulations, you have finished the pre-test.',
@@ -378,7 +381,7 @@ export class ShowMessageComponent implements OnInit {
         case Phases.ANIMALS_RESULT:
           {
             const score =
-              this.userService.getCurrentvalue().categories['animals'];
+              this.userService.getCurrentValue().categories['animals'];
 
             const messages: ChatBubble[] = [
               this.newBotMessage(
@@ -467,7 +470,7 @@ export class ShowMessageComponent implements OnInit {
         case Phases.PLACES_RESULT:
           {
             const score =
-              this.userService.getCurrentvalue().categories['places'];
+              this.userService.getCurrentValue().categories['places'];
 
             const messages: ChatBubble[] = [
               this.newBotMessage(
@@ -556,7 +559,7 @@ export class ShowMessageComponent implements OnInit {
         case Phases.NUMBERS_RESULT:
           {
             const score =
-              this.userService.getCurrentvalue().categories['numbers'];
+              this.userService.getCurrentValue().categories['numbers'];
 
             const messages: ChatBubble[] = [
               this.newBotMessage(
@@ -577,18 +580,33 @@ export class ShowMessageComponent implements OnInit {
               this.newBotMessage(
                 'You have answered all of the questions I have.',
               ),
-              this.newBotMessage('Thank you.'),
             ];
 
-            this.showMessages(messages, undefined, () => showButton());
-
             const showButton = () => {
+              console.log('buitton shown');
               this.actionsService.content.set({
                 type: 'Button',
                 label: 'Go Back',
                 callback: () => this.runLogicUpdate(),
               });
             };
+
+            this.showMessages(messages, undefined, () => {
+              showButton();
+              this.runLogicUpdate();
+            });
+          }
+          break;
+        case Phases.CHAT_END_BACK_BUTTON:
+          {
+            const messages: ChatBubble[] = [this.newBotMessage('Thank you.')];
+
+            this.supabaseService.save().subscribe({
+              next: () => console.log('done saving data'),
+              error: () => console.log('error saving data, retrying'),
+            });
+
+            this.showMessages(messages);
           }
           break;
         case Phases.CATEGORIES_END_1:
@@ -611,7 +629,7 @@ export class ShowMessageComponent implements OnInit {
                   },
                   {
                     label: 'No',
-                    callback: () => this.moveToPhase(Phases.POSTTEST_INTRO),
+                    callback: () => this.moveToPhase(Phases.CATEGORIES_END_NO),
                   },
                 ],
               });
@@ -620,6 +638,7 @@ export class ShowMessageComponent implements OnInit {
             this.showMessages(messages, undefined, showQuickReplies);
           }
           break;
+
         case Phases.CATEGORIES_END_CAROUSEL:
           {
             const messages: Message[] = [
@@ -657,7 +676,7 @@ export class ShowMessageComponent implements OnInit {
                 type: 'Button',
                 label: 'Okay',
                 callback: () => {
-                  this.moveToPhase(Phases.POSTTEST_1);
+                  this.moveToPhase(Phases.POSTTEST_INTRO);
                   this.actionsService.content.set({ type: 'Input' });
                 },
               });
@@ -669,7 +688,6 @@ export class ShowMessageComponent implements OnInit {
         case Phases.POSTTEST_1:
           {
             const messages: ChatBubble[] = [
-              this.newBotMessage('You may now proceed to the last step.'),
               this.newBotMessage('Question 1:'),
               this.newBotMessage('1 + 1 = ?'),
             ];
@@ -740,7 +758,8 @@ export class ShowMessageComponent implements OnInit {
           break;
         case Phases.POSTTEST_RESULT:
           {
-            const score = this.userService.getCurrentvalue().postTestScore;
+            const score = this.userService.getCurrentValue().postTestScore;
+
             const messages: ChatBubble[] = [
               this.newBotMessage(
                 'Congratulations, you have finished the post-test.',
@@ -753,14 +772,53 @@ export class ShowMessageComponent implements OnInit {
             this.showMessages(messages, undefined, () => this.runLogicUpdate());
           }
           break;
+        case Phases.NO_MORE:
+          {
+            this.getRandomQuote().subscribe({
+              next: (quote) => {
+                const messages: ChatBubble[] = [
+                  this.newBotMessage(`${quote.text} - ${quote.author}`),
+                ];
+
+                this.showMessages(messages);
+              },
+              error: () => {
+                const messages: ChatBubble[] = [
+                  this.newBotMessage(
+                    'You already answered all of the questions',
+                  ),
+                ];
+
+                this.showMessages(messages);
+              },
+            });
+          }
+          break;
 
         default:
           break;
       }
     });
-
-    // this.stepService.increase();
   }
 
   ngOnInit(): void {}
+
+  private getRandomQuote() {
+    const request = fetch('https://type.fit/api/quotes').then((r) => r.json());
+    const request$ = from(request);
+    const quote = request$.pipe(
+      map((r) => {
+        const response = r as { text: string; author: string }[];
+
+        return response;
+      }),
+      map((r) => {
+        const index = randomNumber(0, r.length - 1);
+
+        return r[index];
+      }),
+    );
+
+    return quote;
+  }
 }

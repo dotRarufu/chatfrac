@@ -11,6 +11,10 @@ const routes: Routes = [
     path: 'chat',
     loadComponent: () => import('./app/pages/chat.component'),
   },
+  {
+    path: 'download-result',
+    loadComponent: () => import('./app/pages/result.component'),
+  },
 ];
 
 bootstrapApplication(AppComponent, {
