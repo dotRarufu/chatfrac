@@ -18,7 +18,7 @@ import { StateService } from 'src/app/services/state.service';
         [(ngModel)]="value"
         type="text"
         placeholder="Type something"
-        class="input w-full outline-none join-item bg-secondary text-secondary-content"
+        class="input w-full outline-none join-item bg-secondary text-secondary-content focus:outline-0 relative"
       />
       <!-- [disabled]="inputIsDisabled || false" -->
       <button

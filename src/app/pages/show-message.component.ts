@@ -38,7 +38,7 @@ export class ShowMessageComponent implements OnInit {
   ) {
     this.stateService.setIsChatInputDisabled(true);
     // console.log('input is disabled');
-    // set typing to true
+    this.messageService.isTyping(true);
 
     const mapFnWrapper = (message: Message) => {
       // runs every item
@@ -48,7 +48,8 @@ export class ShowMessageComponent implements OnInit {
 
     const lastFnWrapper = () => {
       // console.log('input is enabled');
-      // set typing to false
+      this.messageService.isTyping(false);
+
       this.stateService.setIsChatInputDisabled(false);
       lastly && lastly();
     };

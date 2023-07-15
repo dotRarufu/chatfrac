@@ -4,7 +4,15 @@ import plugin from "tailwindcss/plugin";
 module.exports = {
   content: ["./src/**/*.{html,ts}"],
   theme: {
-    extend: {},
+    extend: {
+      keyframes: {
+        mercury: {
+          "0%": { transform: "translateY(0px)", backgroundColor: "#6CAD96" },
+          "28%": { transform: "translateY(-7px)", backgroundColor: "#9ECAB9" },
+          "44%": { transform: "translateY(0px)", backgroundColor: "#B5D9CB" },
+        },
+      },
+    },
   },
   daisyui: {
     themes: [
