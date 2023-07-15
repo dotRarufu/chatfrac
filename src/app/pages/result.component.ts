@@ -30,6 +30,8 @@ export default class ResultComponent implements OnInit {
   downloadUrl = '';
 
   async handleDownloadClick(anchorElem: HTMLAnchorElement) {
+    await this.prepareDownloadLink();
+
     if (this.downloadUrl === '')
       throw new Error('download url not prepared yet');
 
@@ -47,7 +49,7 @@ export default class ResultComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.prepareDownloadLink();
+    // this.prepareDownloadLink();
   }
 
   private async getResults() {

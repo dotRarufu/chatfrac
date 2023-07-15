@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
 export class StepService {
   private readonly currentSubject = new BehaviorSubject(1);
   current$ = this.currentSubject.asObservable();
-  current = signal(Phases.POSTTEST_RESULT);
+  current = signal(Phases.GREET);
 
   constructor(
     private messageService: MessageService,

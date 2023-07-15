@@ -13,7 +13,7 @@ import randomNumber from '../utils/randomNumber';
 import { SupabaseService } from '../services/supabase.service';
 import { from, map } from 'rxjs';
 
-const DELAY = 100; // can make this random, for a better effect
+const DELAY = 2500; // can make this random, for a better effect
 
 @Component({
   selector: 'show-message',
