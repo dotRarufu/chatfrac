@@ -14,7 +14,7 @@ import { preTestQuestions } from '../questions';
 export class StepService {
   private readonly currentSubject = new BehaviorSubject(1);
   current$ = this.currentSubject.asObservable();
-  current = signal(Phases.CATEGORIES_END_CAROUSEL);
+  current = signal(Phases.GREET);
 
   constructor(
     private messageService: MessageService,
