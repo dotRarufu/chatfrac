@@ -17,6 +17,7 @@ export class StateService {
     false,
   );
   isChatInputDisabled$ = this.isChatInputDisabledSubject.asObservable();
+  currentPreTestQuestion = signal(0);
   // .pipe(map((s) => (s === null ? false : s)));
 
   constructor() {}

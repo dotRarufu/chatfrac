@@ -27,6 +27,7 @@ import MessengerIconComponent from './icons/messenger.component';
         <a
           [href]="item.link"
           class="px-[4px] py-[8px] flex justify-center w-full btn btn-ghost gap-[8px]"
+          target="_blank"
         >
           <messenger-icon />
           <span class="font-normal text-base text-primary capitalize">

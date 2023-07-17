@@ -12,6 +12,12 @@ import ChatComponent from './chat.component';
 import randomNumber from '../utils/randomNumber';
 import { SupabaseService } from '../services/supabase.service';
 import { from, map } from 'rxjs';
+import {
+  correctMessages,
+  expectationMessages,
+  incorrectMessages,
+  preTestQuestions,
+} from '../questions';
 
 const DELAY = 2500; // can make this random, for a better effect
 
@@ -63,19 +69,16 @@ export class ShowMessageComponent implements OnInit {
     this.stepService.update();
   }
 
-  private newUserMessage(message: string) {
-    const data: ChatBubble = {
-      content: message,
-      sender: 'user',
-      type: 'ChatBubble',
-    };
-
-    this.messageService.add(data);
-  }
-
   private moveToPhase(p: Phases) {
     this.stepService.current.set(p);
     // console.log('show message | move to:', p);
+  }
+
+  private getCurrentPreTestQuestion() {
+    const currentIndex = this.stateService.currentPreTestQuestion();
+    const questions = preTestQuestions;
+
+    return questions[currentIndex].question;
   }
 
   constructor(
@@ -227,74 +230,50 @@ export class ShowMessageComponent implements OnInit {
             this.showMessages(messages, undefined, () => this.runLogicUpdate());
           }
           break;
-        case Phases.PRETEST_1:
+        case Phases.PRETEST_QUESTION:
           {
-            const messages: ChatBubble[] = [
-              this.newBotMessage('Question 1:'),
-              this.newBotMessage('1 + 1 = ?'),
+            const expectationMessage = expectationMessages[randomNumber(1, 29)];
+            const currentQuestion = this.getCurrentPreTestQuestion();
+            const messages = [
+              this.newBotMessage(expectationMessage),
+              this.newBotMessage(currentQuestion),
             ];
 
             this.showMessages(messages);
           }
           break;
-
-        case Phases.PRETEST_1_WRONG:
+        case Phases.PRETEST_WRONG:
           {
-            const messages: ChatBubble[] = [
-              this.newBotMessage('Wrong:'),
-              this.newBotMessage('The correct answer is 2'),
-              this.newBotMessage('Solution: 1 + 1 = 2'),
+            const currentIndex = this.stateService.currentPreTestQuestion();
+            const correctAnswer = preTestQuestions[currentIndex].answers[0];
+            const incorrectMessage = incorrectMessages[randomNumber(1, 29)];
+            const messages = [
+              this.newBotMessage(incorrectMessage),
+              this.newBotMessage('Correct answer is ' + correctAnswer),
             ];
 
             this.showMessages(messages, undefined, () => this.runLogicUpdate());
           }
           break;
-        case Phases.PRETEST_1_CORRECT:
+        case Phases.PRETEST_CORRECT:
           {
-            const messages: ChatBubble[] = [this.newBotMessage('Correct')];
+            const correctMessage = correctMessages[randomNumber(1, 29)];
+            const messages = [this.newBotMessage(correctMessage)];
 
             this.showMessages(messages, undefined, () => this.runLogicUpdate());
           }
           break;
-        case Phases.PRETEST_2:
-          {
-            const messages: ChatBubble[] = [
-              this.newBotMessage('Question 2'),
-              this.newBotMessage('2 + 2 = ?'),
-            ];
 
-            this.showMessages(messages);
-          }
-          break;
-        case Phases.PRETEST_2_CORRECT:
-          {
-            const messages: ChatBubble[] = [
-              this.newBotMessage('Correct'),
-              this.newBotMessage('Because 2 + 2 is simply equals to 4'),
-            ];
-
-            this.showMessages(messages, undefined, () => this.runLogicUpdate());
-          }
-          break;
-        case Phases.PRETEST_2_WRONG:
-          {
-            const messages: ChatBubble[] = [
-              this.newBotMessage('Wrong ❌'),
-              this.newBotMessage('Solution: 2 + 2 = 4 '),
-            ];
-
-            this.showMessages(messages, undefined, () => this.runLogicUpdate());
-          }
-          break;
         case Phases.PRETEST_RESULT:
           {
+            const total = preTestQuestions.length;
             const score = this.userService.getCurrentValue().preTestScore;
             const messages: ChatBubble[] = [
               this.newBotMessage(
                 'Congratulations, you have finished the pre-test.',
               ),
               this.newBotMessage(
-                `Pre-test result: ${score === null ? 0 : score}/2`,
+                `Pre-test result: ${score === null ? 0 : score}/${total}`,
               ),
               this.newBotMessage('You may now proceed to the next step.'),
             ];

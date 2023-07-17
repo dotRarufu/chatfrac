@@ -9,7 +9,7 @@ import DownloadIconComponent from './icons/download.component';
   imports: [CommonModule, DownloadIconComponent],
   template: `
     <div
-      class=" bg-primary p-[16px] flex items-center justify-between h-[92px]"
+      class=" bg-primary p-[16px] py-[8px] flex items-center justify-between h-[76px]"
     >
       <div class=" flex gap-[12px] items-center">
         <div class="avatar">
