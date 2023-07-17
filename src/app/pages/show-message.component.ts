@@ -232,7 +232,7 @@ export class ShowMessageComponent implements OnInit {
           break;
         case Phases.PRETEST_QUESTION:
           {
-            const expectationMessage = expectationMessages[randomNumber(1, 29)];
+            const expectationMessage = expectationMessages[randomNumber(0, 29)];
             const currentQuestion = this.getCurrentPreTestQuestion();
             const messages = [
               this.newBotMessage(expectationMessage),
@@ -246,10 +246,20 @@ export class ShowMessageComponent implements OnInit {
           {
             const currentIndex = this.stateService.currentPreTestQuestion();
             const correctAnswer = preTestQuestions[currentIndex].answers[0];
-            const incorrectMessage = incorrectMessages[randomNumber(1, 29)];
+            const incorrectMessage = incorrectMessages[randomNumber(0, 29)];
+            const solution = preTestQuestions[currentIndex].solutions;
+            const solutionMessages =
+              solution !== undefined
+                ? [
+                    this.newBotMessage('Solution:'),
+                    ...solution.map((s) => this.newBotMessage(s)),
+                  ]
+                : [];
+
             const messages = [
               this.newBotMessage(incorrectMessage),
               this.newBotMessage('Correct answer is ' + correctAnswer),
+              ...solutionMessages,
             ];
 
             this.showMessages(messages, undefined, () => this.runLogicUpdate());
@@ -257,7 +267,7 @@ export class ShowMessageComponent implements OnInit {
           break;
         case Phases.PRETEST_CORRECT:
           {
-            const correctMessage = correctMessages[randomNumber(1, 29)];
+            const correctMessage = correctMessages[randomNumber(0, 29)];
             const messages = [this.newBotMessage(correctMessage)];
 
             this.showMessages(messages, undefined, () => this.runLogicUpdate());
