@@ -1,5 +1,5 @@
 export type Question = {
-  question: string;
+  content: { text: string | { videoLink: string } };
   answers: string[];
   solutions?: string[];
 };

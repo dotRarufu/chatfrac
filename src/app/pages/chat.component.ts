@@ -24,6 +24,7 @@ import QuickRepliesComponent, {
 } from 'src/components/quick-replies.component';
 import { ShowMessageComponent } from './show-message.component';
 import { SupabaseService } from '../services/supabase.service';
+import ChatVideoComponent from 'src/components/chat-video.component';
 
 @Component({
   selector: 'chat',
@@ -38,6 +39,7 @@ import { SupabaseService } from '../services/supabase.service';
     HeaderComponent,
     QuickRepliesComponent,
     ShowMessageComponent,
+    ChatVideoComponent,
   ],
   template: `
     <div
@@ -56,6 +58,10 @@ import { SupabaseService } from '../services/supabase.service';
           <chat-carousel
             *ngIf="message.type === 'Carousel'"
             [content]="message.content"
+          />
+          <chat-video
+            *ngIf="message.type === 'ChatVideo'"
+            [url]="message.videoLink"
           />
         </div>
       </div>

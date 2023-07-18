@@ -2,7 +2,9 @@
 //   content: string;
 //   sender: 'user' | 'bot';
 // }
-export type Message = ChatBubble | Carousel | ChatMenu;
+export type ChatVideo = { type: 'ChatVideo'; videoLink: string };
+
+export type Message = ChatBubble | Carousel | ChatMenu | ChatVideo;
 
 export type ChatBubble = {
   type: 'ChatBubble';
