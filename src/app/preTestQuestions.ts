@@ -104,14 +104,6 @@ export const incorrectMessages = [
 
 export const preTestQuestions: Question[] = [
   {
-    content: {
-      text: {
-        videoLink: 'https://www.youtube.com/embed/Ks9vndiO5sQ',
-      },
-    },
-    answers: ['22/35'],
-  },
-  {
     content: { text: '1/5 + 3/7 =' },
     answers: ['22/35'],
   },
@@ -123,8 +115,8 @@ export const preTestQuestions: Question[] = [
     content: {
       text: 'Kevin received 3/4 blocks of chocolate from his mother and another 1/3 block of chocolate from his father. How many blocks of chocolate does he have now?',
     },
-    solutions: ['3/4 + 1/3 ='],
-    answers: ['13/12', '1 and 1/12 blocks of chocolate'],
+    solutions: ['3/4 + 1/3 =', '= 13/12 or 1 and 1/12 blocks of chocolate'],
+    answers: ['13/12', '1 and 1/12 blocks of chocolate', '1 1/12'],
   },
   {
     content: { text: '7/4 - 3/2=' },
@@ -132,13 +124,13 @@ export const preTestQuestions: Question[] = [
   },
   {
     content: { text: '23/2 – 3/5=' },
-    answers: ['109/10', '10 and 9/10'],
+    answers: ['109/10', '10 and 9/10', '10 9/10'],
   },
   {
     content: {
       text: 'Rodel has 11/4 packets of clay. If he crafts a sculpture using 5/3 packets, how much clay does he have left?',
     },
-    answers: ['13/12 packets of clay'],
+    answers: ['13/12', '=13/12 packets of clay'],
     solutions: ['11/4 - 5/3 =', '= 33/12-20/12'],
   },
   {
@@ -153,8 +145,8 @@ export const preTestQuestions: Question[] = [
     content: {
       text: 'In the afternoon, your mother cooks 3/4 kg of rice before she fetches your younger brother in the school, however, she remembered that your relatives would pay a visit later in the evening. She decided to call and tell you to cook an additional 3/2 kg for dinner. How many kg of rice is prepared for dinner later?',
     },
-    answers: ['9/4', '2 and 1/4 kg of rice'],
-    solutions: ['3/4 + 3/2 ='],
+    answers: ['9/4', '2 and 1/4', '2 1/4'],
+    solutions: ['3/4 + 3/2 =', '= 9/4 or 2 and 1/4 kg of rice'],
   },
   {
     content: { text: '1/8 - 1/16=' },
@@ -168,8 +160,8 @@ export const preTestQuestions: Question[] = [
     content: {
       text: 'You bought three boxes of 12 inch pizza as your birthday present for your mother for her 60th birthday. If the sum of the slice of pizzas is 24/8 and your family already ate 3/2 of its portion, how many pizza slices were left?',
     },
+    solutions: ['24/8 - 3/2=', '= 24/8 - 12/8', '= 12/8 or 3/2'],
     answers: ['12/8', '3/2'],
-    solutions: ['24/8 - 3/2=', '= 24/8 - 12/8'],
   },
   {
     content: { text: '2/6 + 1/7 =' },
@@ -201,7 +193,7 @@ export const preTestQuestions: Question[] = [
   },
   {
     content: { text: '15/4- 2/3 =' },
-    answers: ['37/12', '3 and 1/12'],
+    answers: ['37/12', '3 and 1/12', '3 1/12'],
   },
   {
     content: { text: '13/15- 7/9 =' },
@@ -209,7 +201,7 @@ export const preTestQuestions: Question[] = [
   },
   {
     content: { text: '17/9 – 1/3 =' },
-    answers: ['14/9', '1 and 5/9'],
+    answers: ['14/9', '1 and 5/9', '1 5/9'],
   },
   {
     content: { text: '7/12 + 4/6 =' },
@@ -223,36 +215,36 @@ export const preTestQuestions: Question[] = [
     content: {
       text: 'Analene caught fish weighing 5 and 2/3 kg. She gave 3 and 1/6 kg of fish to Cj, how many kilograms does Analene have left?',
     },
-    answers: ['2 3/6', '2 1/2 kg of fish'],
-    solutions: ['5 2/3 - 3 1/6 ='],
+    solutions: ['5 2/3 - 3 1/6 =', '= 2 3/6 or 2 1/2 kg of fish'],
+    answers: ['2 3/6', '2 and 1/2', '2 1/2'],
   },
   {
     content: {
       text: 'Sheila found that her car tank is running out of gas and it only has 1/8 gas so she decided to go to the nearest gasoline station. If she would like to fill it up to 3/4 of its tank, how much gasoline should she add? (5/8)',
     },
+    solutions: ['3/4 - 1/8', '= 5/8'],
     answers: ['5/8'],
-    solutions: ['3/4 - 1/8'],
   },
   {
     content: {
       text: "Yesterday, Joseph's family ate 14/7 kilos of Mangoes and 38/12 kilos of Avocados. What were the total kilograms of fruits they ate?",
     },
-    answers: ['31/6', '5 and 1/6 kilos of fruits'],
-    solutions: ['14/7 + 38/12 ='],
+    solutions: ['14/7 + 38/12 =', '= 31/6 or 5 and 1/6 kilos of fruits'],
+    answers: ['31/6', '5 and 1/6', '5 1/6'],
   },
   {
     content: {
       text: 'Angeline walked 2/7 kilometers and stopped at the nearest convenience store to buy snacks and to rest. She then walked 5/9 kilometers again to see her best friend at the park. What was the total distance she walked?',
     },
-    answers: ['53/63 kilometers'],
-    solutions: ['2/7 + 5/9 ='],
+    solutions: ['2/7 + 5/9 =', '= 53/63 kilometers'],
+    answers: ['53/63'],
   },
   {
     content: {
       text: 'A recipe needs 7/4 teaspoon of soy sauce and 1/2 teaspoon of Vinegar. How much more Soy Sauce does the recipe need?',
     },
-    solutions: ['7/4-1/2='],
-    answers: ['5/4 teaspoon of Soy Sauce'],
+    solutions: ['7/4-1/2=', '= 5/4 teaspoon of Soy Sauce'],
+    answers: ['5/4'],
   },
   {
     content: {
@@ -262,6 +254,7 @@ export const preTestQuestions: Question[] = [
       'For caramel cake, 9/9 - 2/9 = 7/9',
       'For chocolate chip cake 3/3 - 1/3 = 2/3',
       'Then add both remaining cakes, 7/9 + 2/3= 21/27 +18 /27',
+      '= 39/27 or 13/9',
     ],
     answers: ['39/27', '13/9'],
   },

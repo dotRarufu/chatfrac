@@ -23,7 +23,7 @@ import {
   expectationMessages,
   incorrectMessages,
   preTestQuestions,
-} from '../questions';
+} from '../preTestQuestions';
 import Question from '../types/Question';
 import {
   definitionQuestions,
@@ -40,6 +40,7 @@ import {
   examplesIntro3Messages,
   examplesQuestions,
 } from '../examplesCategory';
+import { postTestQuestions } from '../postTestQuestions';
 
 const DELAY = 100; // can make this random, for a better effect
 
@@ -132,6 +133,12 @@ export class ShowMessageComponent implements OnInit {
 
     return questions[currentIndex].content.text;
   }
+  private getCurrentPostTestQuestion() {
+    const currentIndex = this.stateService.currentPostTestQuestion();
+    const questions = postTestQuestions;
+
+    return questions[currentIndex].content.text;
+  }
   private getCurrentDefinitionQuestion() {
     const currentIndex = this.stateService.currentDefinitionQuestion();
     const questions = definitionQuestions;
@@ -184,10 +191,6 @@ export class ShowMessageComponent implements OnInit {
                   {
                     label: 'Examples',
                     callback: () => this.moveToPhase(Phases.EXAMPLES_INTRO_1),
-                  },
-                  {
-                    label: 'Places',
-                    callback: () => this.moveToPhase(Phases.PLACES_INTRO),
                   },
                 ],
               });
@@ -820,288 +823,6 @@ export class ShowMessageComponent implements OnInit {
           }
           break;
 
-        case Phases.ANIMALS_INTRO:
-          {
-            const messages: Message[] = [
-              this.newBotMessage({ text: 'You selected animals category.' }),
-              this.newBotMessage({ text: 'This category is about animals' }),
-            ];
-
-            this.showMessages(messages, undefined, () =>
-              this.moveToPhase(Phases.ANIMALS_1),
-            );
-          }
-          break;
-        case Phases.ANIMALS_1:
-          {
-            // console.log('show mesage  | animals 1');
-            const messages: Message[] = [
-              this.newBotMessage({ text: 'Question 1' }),
-              this.newBotMessage({
-                text: 'What is a small domesticated carnivorous mammal with soft fur, a short snout, and retractable claws',
-              }),
-            ];
-
-            this.showMessages(messages);
-          }
-          break;
-        case Phases.ANIMALS_1_CORRECT:
-          {
-            const messages: Message[] = [
-              this.newBotMessage({ text: 'Correct' }),
-            ];
-
-            this.showMessages(messages, undefined, () => this.runLogicUpdate());
-          }
-          break;
-        case Phases.ANIMALS_1_WRONG:
-          {
-            const messages: Message[] = [
-              this.newBotMessage({ text: 'Wrong' }),
-              this.newBotMessage({ text: 'Correct answer is cat' }),
-            ];
-
-            this.showMessages(messages, undefined, () => this.runLogicUpdate());
-          }
-          break;
-        case Phases.ANIMALS_2:
-          {
-            const messages: Message[] = [
-              this.newBotMessage({ text: 'Question 2' }),
-              this.newBotMessage({
-                text: 'What is a widely kept as a pet or for catching mice, and many breeds have been developed',
-              }),
-            ];
-
-            this.showMessages(messages);
-          }
-          break;
-        case Phases.ANIMALS_2_CORRECT:
-          {
-            const messages: Message[] = [
-              this.newBotMessage({ text: 'Correct' }),
-              this.newBotMessage({ text: 'It is a cat' }),
-            ];
-
-            this.showMessages(messages, undefined, () => this.runLogicUpdate());
-          }
-          break;
-        case Phases.ANIMALS_2_WRONG:
-          {
-            const messages: Message[] = [
-              this.newBotMessage({ text: 'Wrong' }),
-              this.newBotMessage({ text: 'Its still a cat' }),
-            ];
-
-            this.showMessages(messages, undefined, () => this.runLogicUpdate());
-          }
-          break;
-        case Phases.ANIMALS_RESULT:
-          {
-            const score =
-              this.userService.getCurrentValue().categories['animals'];
-
-            const messages: Message[] = [
-              this.newBotMessage({
-                text: 'Congratulations, you have finished the animals category.',
-              }),
-              this.newBotMessage({
-                text: `Animals category result: ${
-                  score === null ? 0 : score
-                }/2`,
-              }),
-            ];
-
-            this.showMessages(messages, undefined, () => this.runLogicUpdate());
-          }
-          break;
-
-        case Phases.PLACES_INTRO:
-          {
-            // console.log('show-message| animals intro ');
-            const messages: Message[] = [
-              this.newBotMessage({ text: 'You selected places category.' }),
-              this.newBotMessage({ text: 'This category is about places' }),
-            ];
-
-            this.showMessages(messages, undefined, () =>
-              this.moveToPhase(Phases.PLACES_1),
-            );
-          }
-          break;
-        case Phases.PLACES_1:
-          {
-            // console.log('show mesage  | animals 1');
-            const messages: Message[] = [
-              this.newBotMessage({ text: 'Question 1' }),
-              this.newBotMessage({
-                text: 'What is the capital of the Philippines? ',
-              }),
-            ];
-
-            this.showMessages(messages);
-          }
-          break;
-        case Phases.PLACES_1_CORRECT:
-          {
-            const messages: Message[] = [
-              this.newBotMessage({ text: 'Correct' }),
-            ];
-
-            this.showMessages(messages, undefined, () => this.runLogicUpdate());
-          }
-          break;
-        case Phases.PLACES_1_WRONG:
-          {
-            const messages: Message[] = [
-              this.newBotMessage({ text: 'Wrong' }),
-              this.newBotMessage({ text: 'Correct answer is Manila' }),
-            ];
-
-            this.showMessages(messages, undefined, () => this.runLogicUpdate());
-          }
-          break;
-        case Phases.PLACES_2:
-          {
-            const messages: Message[] = [
-              this.newBotMessage({ text: 'Question 2' }),
-              this.newBotMessage({ text: 'What is the capital of Japan' }),
-            ];
-
-            this.showMessages(messages);
-          }
-          break;
-        case Phases.PLACES_2_CORRECT:
-          {
-            const messages: Message[] = [
-              this.newBotMessage({ text: 'Correct' }),
-              this.newBotMessage({ text: 'It is Tokyo' }),
-            ];
-
-            this.showMessages(messages, undefined, () => this.runLogicUpdate());
-          }
-          break;
-        case Phases.PLACES_2_WRONG:
-          {
-            const messages: Message[] = [
-              this.newBotMessage({ text: 'Wrong' }),
-              this.newBotMessage({ text: 'Its Tokyo' }),
-            ];
-
-            this.showMessages(messages, undefined, () => this.runLogicUpdate());
-          }
-          break;
-        case Phases.PLACES_RESULT:
-          {
-            const score =
-              this.userService.getCurrentValue().categories['places'];
-
-            const messages: Message[] = [
-              this.newBotMessage({
-                text: 'Congratulations, you have finished the places category.',
-              }),
-              this.newBotMessage({
-                text: `Places category result: ${score === null ? 0 : score}/2`,
-              }),
-            ];
-
-            this.showMessages(messages, undefined, () => this.runLogicUpdate());
-          }
-          break;
-
-        case Phases.NUMBERS_INTRO:
-          {
-            // console.log('show-message| animals intro ');
-            const messages: Message[] = [
-              this.newBotMessage({ text: 'You selected numbers category.' }),
-              this.newBotMessage({ text: 'This category is about numbers' }),
-            ];
-
-            this.showMessages(messages, undefined, () =>
-              this.moveToPhase(Phases.NUMBERS_1),
-            );
-          }
-          break;
-        case Phases.NUMBERS_1:
-          {
-            // console.log('show mesage  | animals 1');
-            const messages: Message[] = [
-              this.newBotMessage({ text: 'Question 1' }),
-              this.newBotMessage({ text: 'What is 1 x 1 ' }),
-            ];
-
-            this.showMessages(messages);
-          }
-          break;
-        case Phases.NUMBERS_1_CORRECT:
-          {
-            const messages: Message[] = [
-              this.newBotMessage({ text: 'Correct' }),
-            ];
-
-            this.showMessages(messages, undefined, () => this.runLogicUpdate());
-          }
-          break;
-        case Phases.NUMBERS_1_WRONG:
-          {
-            const messages: Message[] = [
-              this.newBotMessage({ text: 'Wrong' }),
-              this.newBotMessage({ text: 'Correct answer is 1' }),
-            ];
-
-            this.showMessages(messages, undefined, () => this.runLogicUpdate());
-          }
-          break;
-        case Phases.NUMBERS_2:
-          {
-            const messages: Message[] = [
-              this.newBotMessage({ text: 'Question 2' }),
-              this.newBotMessage({ text: 'What is 1 / 1' }),
-            ];
-
-            this.showMessages(messages);
-          }
-          break;
-        case Phases.NUMBERS_2_CORRECT:
-          {
-            const messages: Message[] = [
-              this.newBotMessage({ text: 'Correct' }),
-              this.newBotMessage({ text: 'It is 1' }),
-            ];
-
-            this.showMessages(messages, undefined, () => this.runLogicUpdate());
-          }
-          break;
-        case Phases.PLACES_2_WRONG:
-          {
-            const messages: Message[] = [
-              this.newBotMessage({ text: 'Wrong' }),
-              this.newBotMessage({ text: 'Its 1' }),
-            ];
-
-            this.showMessages(messages, undefined, () => this.runLogicUpdate());
-          }
-          break;
-        case Phases.NUMBERS_RESULT:
-          {
-            const score =
-              this.userService.getCurrentValue().categories['numbers'];
-
-            const messages: Message[] = [
-              this.newBotMessage({
-                text: 'Congratulations, you have finished the numbers category.',
-              }),
-              this.newBotMessage({
-                text: `Numbers category result: ${
-                  score === null ? 0 : score
-                }/2`,
-              }),
-            ];
-
-            this.showMessages(messages, undefined, () => this.runLogicUpdate());
-          }
-          break;
-
         case Phases.CHAT_END:
           {
             const messages: Message[] = [
@@ -1218,93 +939,78 @@ export class ShowMessageComponent implements OnInit {
             this.showMessages(messages, undefined, () => showButton());
           }
           break;
-        case Phases.POSTTEST_1:
-          {
-            const messages: Message[] = [
-              this.newBotMessage({ text: 'Question 1:' }),
-              this.newBotMessage({ text: '1 + 1 = ?' }),
-            ];
-
-            this.showMessages(messages);
-          }
-          break;
 
         case Phases.POSTTEST_INTRO:
           {
             const messages: Message[] = [
               this.newBotMessage({
-                text: 'You will be answering post-test questions',
-              }),
-              this.newBotMessage({
-                text: 'This is to gauge your understanding of the topic',
+                text: 'In order assess your understanding of the topic, please proceed answering the post-test.',
               }),
             ];
 
-            this.showMessages(messages, undefined, () => this.runLogicUpdate());
+            this.showMessages(messages, undefined, () =>
+              this.moveToPhase(Phases.POSTTEST_QUESTION),
+            );
           }
           break;
-        case Phases.POSTTEST_1_WRONG:
+        case Phases.POSTTEST_QUESTION:
           {
-            const messages: Message[] = [
-              this.newBotMessage({ text: 'Wrong:' }),
-              this.newBotMessage({ text: 'The correct answer is 2' }),
-              this.newBotMessage({ text: 'Solution: 1 + 1 = 2' }),
-            ];
-
-            this.showMessages(messages, undefined, () => this.runLogicUpdate());
-          }
-          break;
-        case Phases.POSTTEST_1_CORRECT:
-          {
-            const messages: Message[] = [
-              this.newBotMessage({ text: 'Correct' }),
-            ];
-
-            this.showMessages(messages, undefined, () => this.runLogicUpdate());
-          }
-          break;
-        case Phases.POSTTEST_2:
-          {
-            const messages: Message[] = [
-              this.newBotMessage({ text: 'Question 2' }),
-              this.newBotMessage({ text: '2 + 2 = ?' }),
+            const expectationMessage = expectationMessages[randomNumber(0, 29)];
+            const currentQuestion = this.getCurrentPostTestQuestion();
+            const messages = [
+              this.newBotMessage({ text: expectationMessage }),
+              this.newBotMessage({ text: currentQuestion }),
             ];
 
             this.showMessages(messages);
           }
           break;
-        case Phases.POSTTEST_2_CORRECT:
+        case Phases.POSTTEST_WRONG:
           {
-            const messages: Message[] = [
-              this.newBotMessage({ text: 'Correct' }),
+            const currentIndex = this.stateService.currentPostTestQuestion();
+            const correctAnswer = postTestQuestions[currentIndex].answers[0];
+            const incorrectMessage = incorrectMessages[randomNumber(0, 29)];
+            const solution = postTestQuestions[currentIndex].solutions;
+            const solutionMessages =
+              solution !== undefined
+                ? [
+                    this.newBotMessage({ text: 'Solution:' }),
+                    ...solution.map((s) => this.newBotMessage({ text: s })),
+                  ]
+                : [];
+
+            const messages = [
+              this.newBotMessage({ text: incorrectMessage }),
               this.newBotMessage({
-                text: 'Because 2 + 2 is simply equals to 4',
+                text: 'Correct answer is ' + correctAnswer,
               }),
+              ...solutionMessages,
             ];
 
             this.showMessages(messages, undefined, () => this.runLogicUpdate());
           }
           break;
-        case Phases.POSTTEST_2_WRONG:
+        case Phases.POSTTEST_CORRECT:
           {
-            const messages: Message[] = [
-              this.newBotMessage({ text: 'Wrong ❌' }),
-              this.newBotMessage({ text: 'Solution: 2 + 2 = 4 ' }),
-            ];
+            const correctMessage = correctMessages[randomNumber(0, 29)];
+            const messages = [this.newBotMessage({ text: correctMessage })];
 
             this.showMessages(messages, undefined, () => this.runLogicUpdate());
           }
           break;
+
         case Phases.POSTTEST_RESULT:
           {
+            const total = postTestQuestions.length;
             const score = this.userService.getCurrentValue().postTestScore;
-
             const messages: Message[] = [
               this.newBotMessage({
                 text: 'Congratulations, you have finished the post-test.',
               }),
               this.newBotMessage({
-                text: `Post-test result: ${score === null ? 0 : score}/2`,
+                text: `Post-test result: ${
+                  score === null ? 0 : score
+                }/${total}`,
               }),
             ];
 

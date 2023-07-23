@@ -6,10 +6,11 @@ import showMessages from '../utils/showMessages';
 import Phases from '../types/Phases';
 import { StateService } from './state.service';
 import { Router } from '@angular/router';
-import { preTestQuestions } from '../questions';
+import { preTestQuestions } from '../preTestQuestions';
 import { ActionsService } from './actions.service';
 import { definitionQuestions } from '../definitionCategory';
 import { examplesQuestions } from '../examplesCategory';
+import { postTestQuestions } from '../postTestQuestions';
 
 @Injectable({
   providedIn: 'root',
@@ -17,7 +18,7 @@ import { examplesQuestions } from '../examplesCategory';
 export class StepService {
   private readonly currentSubject = new BehaviorSubject(1);
   current$ = this.currentSubject.asObservable();
-  current = signal(Phases.PRETEST_RESULT);
+  current = signal(Phases.GREET);
 
   constructor(
     private messageService: MessageService,
@@ -57,6 +58,12 @@ export class StepService {
 
     return questions[currentIndex].answers;
   }
+  private getCurrentPostTestAnswers() {
+    const currentIndex = this.stateService.currentPostTestQuestion();
+    const questions = postTestQuestions;
+
+    return questions[currentIndex].answers;
+  }
   private getCurrentDefinitionAnswers() {
     const currentIndex = this.stateService.currentDefinitionQuestion();
     const questions = definitionQuestions;
@@ -83,6 +90,11 @@ export class StepService {
       this.stateService.currentPreTestQuestion() >= preTestQuestions.length
     );
   }
+  private checkPostTestIsLastQuestion() {
+    return (
+      this.stateService.currentPostTestQuestion() >= postTestQuestions.length
+    );
+  }
   private checkDefinitionIsLastQuestion() {
     return (
       this.stateService.currentDefinitionQuestion() >=
@@ -100,11 +112,26 @@ export class StepService {
       this.userService.getCurrentValue().categories[category];
     const newUserData = this.userService.getCurrentValue();
     newUserData.categories[category] = 0;
-    console.log('category:', category);
-    console.log('category score:', categoryScore);
-    console.log('newUserData:', newUserData);
 
     if (categoryScore === null) {
+      this.userService.set(newUserData);
+    }
+  }
+  private updatePostTestScoreToNonNull() {
+    const score = this.userService.getCurrentValue().postTestScore;
+    const newUserData = this.userService.getCurrentValue();
+    newUserData.postTestScore = 0;
+
+    if (score === null) {
+      this.userService.set(newUserData);
+    }
+  }
+  private updatePreTestScoreToNonNull() {
+    const score = this.userService.getCurrentValue().preTestScore;
+    const newUserData = this.userService.getCurrentValue();
+    newUserData.preTestScore = 0;
+
+    if (score === null) {
       this.userService.set(newUserData);
     }
   }
@@ -199,6 +226,7 @@ export class StepService {
 
           if (isLastQuestion) {
             this.moveToPhase(Phases.PRETEST_RESULT);
+            this.updatePreTestScoreToNonNull();
 
             return;
           }
@@ -213,7 +241,7 @@ export class StepService {
 
           if (isLastQuestion) {
             this.moveToPhase(Phases.PRETEST_RESULT);
-
+            this.updatePreTestScoreToNonNull();
             return;
           }
 
@@ -389,214 +417,57 @@ export class StepService {
         }
         break;
 
-      case Phases.ANIMALS_INTRO:
-        {
-          const score =
-            this.userService.getCurrentValue().categories['animals'];
-
-          // console.log('steps | animals intro runs');
-
-          if (score !== null) {
-            this.moveToPhase(Phases.CATEGORY_ALREADY_SELECTED);
-          } else {
-            this.moveToPhase(Phases.ANIMALS_INTRO);
-          }
-        }
-        break;
-      case Phases.ANIMALS_1:
+      case Phases.POSTTEST_QUESTION:
         {
           const message = this.getUserMessage();
+          const answers = this.getCurrentPostTestAnswers();
+          const isCorrect = this.checkAnswer(message, answers);
 
-          if (message === 'cat') {
-            this.userService.increaseCategoryScore('animals');
-            this.moveToPhase(Phases.ANIMALS_1_CORRECT);
-            break;
-          }
-          this.moveToPhase(Phases.ANIMALS_1_WRONG);
-        }
-        break;
-      case Phases.ANIMALS_1_CORRECT:
-        {
-          this.moveToPhase(Phases.ANIMALS_2);
-        }
-        break;
-      case Phases.ANIMALS_1_WRONG:
-        {
-          this.moveToPhase(Phases.ANIMALS_2);
-        }
-        break;
-      case Phases.ANIMALS_2:
-        {
-          const message = this.getUserMessage();
+          if (isCorrect) {
+            this.userService.increasePostTestScore();
+            this.stateService.currentPostTestQuestion.update((old) => old + 1);
 
-          if (message === 'cat') {
-            this.userService.increaseCategoryScore('animals');
-            this.moveToPhase(Phases.ANIMALS_2_CORRECT);
-            break;
-          }
-          this.moveToPhase(Phases.ANIMALS_2_WRONG);
-        }
-        break;
-      case Phases.ANIMALS_2_CORRECT:
-        {
-          this.moveToPhase(Phases.ANIMALS_RESULT);
-        }
-        break;
-      case Phases.ANIMALS_2_WRONG:
-        {
-          this.moveToPhase(Phases.ANIMALS_RESULT);
-        }
-        break;
-      case Phases.ANIMALS_RESULT:
-        {
-          const score =
-            this.userService.getCurrentValue().categories['animals'];
+            this.moveToPhase(Phases.POSTTEST_CORRECT);
 
-          if (score === null) {
-            this.userService.increaseCategoryScore('animals');
+            return;
           }
 
-          this.moveToPhase(Phases.SELECT_CATEGORY_1);
+          this.moveToPhase(Phases.POSTTEST_WRONG);
         }
         break;
+      case Phases.POSTTEST_CORRECT:
+        {
+          const isLastQuestion = this.checkPostTestIsLastQuestion();
 
-      case Phases.PLACES_INTRO:
-        {
-          const score = this.userService.getCurrentValue().categories['places'];
+          if (isLastQuestion) {
+            this.moveToPhase(Phases.POSTTEST_RESULT);
+            this.updatePostTestScoreToNonNull();
 
-          // console.log('steps | animals intro runs');
-
-          if (score !== null) {
-            this.moveToPhase(Phases.CATEGORY_ALREADY_SELECTED);
-          } else {
-            this.moveToPhase(Phases.PLACES_INTRO);
-          }
-        }
-        break;
-      case Phases.PLACES_1:
-        {
-          const message = this.getUserMessage();
-
-          if (message === 'Manila') {
-            this.userService.increaseCategoryScore('places');
-            this.moveToPhase(Phases.PLACES_1_CORRECT);
-            break;
-          }
-          this.moveToPhase(Phases.PLACES_1_WRONG);
-        }
-        break;
-      case Phases.PLACES_1_CORRECT:
-        {
-          this.moveToPhase(Phases.PLACES_2);
-        }
-        break;
-      case Phases.PLACES_1_WRONG:
-        {
-          this.moveToPhase(Phases.PLACES_2);
-        }
-        break;
-      case Phases.PLACES_2:
-        {
-          const message = this.getUserMessage();
-
-          if (message === 'Tokyo') {
-            this.userService.increaseCategoryScore('places');
-            this.moveToPhase(Phases.PLACES_2_CORRECT);
-            break;
-          }
-          this.moveToPhase(Phases.PLACES_2_WRONG);
-        }
-        break;
-      case Phases.PLACES_2_CORRECT:
-        {
-          this.moveToPhase(Phases.PLACES_RESULT);
-        }
-        break;
-      case Phases.PLACES_2_WRONG:
-        {
-          this.moveToPhase(Phases.PLACES_RESULT);
-        }
-        break;
-      case Phases.PLACES_RESULT:
-        {
-          const score = this.userService.getCurrentValue().categories['places'];
-
-          if (score === null) {
-            this.userService.increaseCategoryScore('places');
+            return;
           }
 
-          this.moveToPhase(Phases.SELECT_CATEGORY_1);
+          this.moveToPhase(Phases.POSTTEST_QUESTION);
         }
         break;
+      case Phases.POSTTEST_WRONG:
+        {
+          this.stateService.currentPostTestQuestion.update((old) => old + 1);
+          const isLastQuestion = this.checkPostTestIsLastQuestion();
 
-      case Phases.NUMBERS_INTRO:
-        {
-          const score =
-            this.userService.getCurrentValue().categories['numbers'];
+          if (isLastQuestion) {
+            this.moveToPhase(Phases.POSTTEST_RESULT);
+            this.updatePostTestScoreToNonNull();
 
-          // console.log('steps | animals intro runs');
-
-          if (score !== null) {
-            this.moveToPhase(Phases.CATEGORY_ALREADY_SELECTED);
-          } else {
-            this.moveToPhase(Phases.NUMBERS_INTRO);
-          }
-        }
-        break;
-      case Phases.NUMBERS_1:
-        {
-          const message = this.getUserMessage();
-
-          if (message === '1') {
-            this.userService.increaseCategoryScore('numbers');
-            this.moveToPhase(Phases.NUMBERS_1_CORRECT);
-            break;
-          }
-          this.moveToPhase(Phases.NUMBERS_1_WRONG);
-        }
-        break;
-      case Phases.NUMBERS_1_CORRECT:
-        {
-          this.moveToPhase(Phases.NUMBERS_2);
-        }
-        break;
-      case Phases.NUMBERS_1_WRONG:
-        {
-          this.moveToPhase(Phases.NUMBERS_2);
-        }
-        break;
-      case Phases.NUMBERS_2:
-        {
-          const message = this.getUserMessage();
-
-          if (message === '1') {
-            this.userService.increaseCategoryScore('numbers');
-            this.moveToPhase(Phases.NUMBERS_2_CORRECT);
-            break;
-          }
-          this.moveToPhase(Phases.NUMBERS_2_WRONG);
-        }
-        break;
-      case Phases.NUMBERS_2_CORRECT:
-        {
-          this.moveToPhase(Phases.NUMBERS_RESULT);
-        }
-        break;
-      case Phases.NUMBERS_2_WRONG:
-        {
-          this.moveToPhase(Phases.NUMBERS_RESULT);
-        }
-        break;
-      case Phases.NUMBERS_RESULT:
-        {
-          const score =
-            this.userService.getCurrentValue().categories['numbers'];
-
-          if (score === null) {
-            this.userService.increaseCategoryScore('numbers');
+            return;
           }
 
-          this.moveToPhase(Phases.SELECT_CATEGORY_1);
+          this.moveToPhase(Phases.POSTTEST_QUESTION);
+        }
+        break;
+
+      case Phases.POSTTEST_RESULT:
+        {
+          this.moveToPhase(Phases.CHAT_END);
         }
         break;
       case Phases.CATEGORIES_END_NO:
@@ -604,60 +475,7 @@ export class StepService {
           this.moveToPhase(Phases.POSTTEST_INTRO);
         }
         break;
-      case Phases.POSTTEST_INTRO:
-        {
-          this.moveToPhase(Phases.POSTTEST_1);
-        }
-        break;
-      case Phases.POSTTEST_1:
-        {
-          const message = this.getUserMessage();
 
-          if (message === '2') {
-            this.userService.increasePostTestScore();
-            this.moveToPhase(Phases.POSTTEST_1_CORRECT);
-          } else {
-            this.moveToPhase(Phases.POSTTEST_1_WRONG);
-          }
-        }
-        break;
-      case Phases.POSTTEST_1_CORRECT:
-        {
-          this.moveToPhase(Phases.POSTTEST_2);
-        }
-        break;
-      case Phases.POSTTEST_1_WRONG:
-        {
-          this.moveToPhase(Phases.POSTTEST_2);
-        }
-        break;
-      case Phases.POSTTEST_2:
-        {
-          const message = this.getUserMessage();
-
-          if (message === '4') {
-            this.userService.increasePostTestScore();
-            this.moveToPhase(Phases.POSTTEST_2_CORRECT);
-          } else {
-            this.moveToPhase(Phases.POSTTEST_2_WRONG);
-          }
-        }
-        break;
-      case Phases.POSTTEST_2_CORRECT:
-        {
-          this.moveToPhase(Phases.POSTTEST_RESULT);
-        }
-        break;
-      case Phases.POSTTEST_2_WRONG:
-        {
-          this.moveToPhase(Phases.POSTTEST_RESULT);
-        }
-        break;
-      case Phases.POSTTEST_RESULT:
-        {
-          this.moveToPhase(Phases.CHAT_END);
-        }
-        break;
       default:
         break;
     }
