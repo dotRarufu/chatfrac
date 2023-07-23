@@ -34,6 +34,12 @@ import {
   introMessages3,
   introMessages4,
 } from '../definitionCategory';
+import {
+  examplesIntro1Messages,
+  examplesIntro2Messages,
+  examplesIntro3Messages,
+  examplesQuestions,
+} from '../examplesCategory';
 
 const DELAY = 100; // can make this random, for a better effect
 
@@ -129,8 +135,11 @@ export class ShowMessageComponent implements OnInit {
   private getCurrentDefinitionQuestion() {
     const currentIndex = this.stateService.currentDefinitionQuestion();
     const questions = definitionQuestions;
-    console.log('definition questions length:', definitionQuestions.length);
-    console.log('currentIndex:', currentIndex);
+    return questions[currentIndex].content.text;
+  }
+  private getCurrentExamplesQuestion() {
+    const currentIndex = this.stateService.currentExamplesQuestion();
+    const questions = examplesQuestions;
     return questions[currentIndex].content.text;
   }
 
@@ -173,8 +182,8 @@ export class ShowMessageComponent implements OnInit {
                     callback: () => this.moveToPhase(Phases.DEFINITION_INTRO),
                   },
                   {
-                    label: 'Numbers',
-                    callback: () => this.moveToPhase(Phases.NUMBERS_INTRO),
+                    label: 'Examples',
+                    callback: () => this.moveToPhase(Phases.EXAMPLES_INTRO_1),
                   },
                   {
                     label: 'Places',
@@ -567,6 +576,237 @@ export class ShowMessageComponent implements OnInit {
             const messages: Message[] = [
               this.newBotMessage({
                 text: 'Congratulations on finishing this Definition Category, you did well in the exercises.',
+              }),
+              this.newBotMessage({
+                text: `Result: ${score === null ? 0 : score}/${total}`,
+              }),
+              this.newBotMessage({
+                text: 'You may now proceed to the next step.',
+              }),
+            ];
+
+            this.showMessages(messages, undefined, () => this.runLogicUpdate());
+          }
+          break;
+
+        case Phases.EXAMPLES_INTRO_1:
+          {
+            const introMessagesBubble = examplesIntro1Messages.map((m) =>
+              this.newBotMessage(m.content),
+            );
+
+            const messages: Message[] = [...introMessagesBubble];
+
+            const showButton = () => {
+              this.actionsService.content.set({
+                type: 'Button',
+                label: 'Yes',
+                callback: () => {
+                  this.moveToPhase(Phases.EXAMPLES_INTRO_2);
+                  this.actionsService.content.set({ type: 'Input' });
+                },
+              });
+            };
+            this.showMessages(messages, undefined, showButton, 100);
+          }
+          break;
+        case Phases.EXAMPLES_INTRO_2:
+          {
+            const introMessagesBubble = examplesIntro2Messages.map((m) =>
+              this.newBotMessage(m.content),
+            );
+
+            const messages: Message[] = [...introMessagesBubble];
+
+            const showButton = () => {
+              this.actionsService.content.set({
+                type: 'Button',
+                label: 'Yes',
+                callback: () => {
+                  this.moveToPhase(Phases.EXAMPLES_INTRO_3);
+                  this.actionsService.content.set({ type: 'Input' });
+                },
+              });
+            };
+            this.showMessages(messages, undefined, showButton, 100);
+          }
+          break;
+        case Phases.EXAMPLES_INTRO_3:
+          {
+            const introMessagesBubble = examplesIntro3Messages.map((m) =>
+              this.newBotMessage(m.content),
+            );
+
+            const messages: Message[] = [...introMessagesBubble];
+
+            const showButton = () => {
+              this.actionsService.content.set({
+                type: 'Button',
+                label: 'Yes',
+                callback: () => {
+                  this.moveToPhase(Phases.EXAMPLES_INTRO_4);
+                  this.actionsService.content.set({ type: 'Input' });
+                },
+              });
+            };
+            this.showMessages(messages, undefined, showButton, 100);
+          }
+          break;
+        case Phases.EXAMPLES_INTRO_4:
+          {
+            const introMessagesBubble = examplesIntro3Messages.map((m) =>
+              this.newBotMessage(m.content),
+            );
+
+            const messages: Message[] = [...introMessagesBubble];
+
+            const showButton = () => {
+              this.actionsService.content.set({
+                type: 'Button',
+                label: 'Yes',
+                callback: () => {
+                  this.moveToPhase(Phases.EXAMPLES_INTRO_5);
+                  this.actionsService.content.set({ type: 'Input' });
+                },
+              });
+            };
+            this.showMessages(messages, undefined, showButton, 100);
+          }
+          break;
+        case Phases.EXAMPLES_INTRO_5:
+          {
+            const introMessagesBubble = examplesIntro3Messages.map((m) =>
+              this.newBotMessage(m.content),
+            );
+
+            const messages: Message[] = [...introMessagesBubble];
+
+            const showButton = () => {
+              this.actionsService.content.set({
+                type: 'Button',
+                label: 'Yes',
+                callback: () => {
+                  this.moveToPhase(Phases.EXAMPLES_INTRO_6);
+                  this.actionsService.content.set({ type: 'Input' });
+                },
+              });
+            };
+            this.showMessages(messages, undefined, showButton, 100);
+          }
+          break;
+        case Phases.EXAMPLES_INTRO_6:
+          {
+            const introMessagesBubble = examplesIntro3Messages.map((m) =>
+              this.newBotMessage(m.content),
+            );
+
+            const messages: Message[] = [...introMessagesBubble];
+
+            const showButton = () => {
+              this.actionsService.content.set({
+                type: 'Button',
+                label: 'Yes',
+                callback: () => {
+                  this.moveToPhase(Phases.EXAMPLES_INTRO_7);
+                  this.actionsService.content.set({ type: 'Input' });
+                },
+              });
+            };
+            this.showMessages(messages, undefined, showButton, 100);
+          }
+          break;
+        case Phases.EXAMPLES_INTRO_7:
+          {
+            const introMessagesBubble = examplesIntro3Messages.map((m) =>
+              this.newBotMessage(m.content),
+            );
+
+            const messages: Message[] = [...introMessagesBubble];
+
+            const showButton = () => {
+              this.actionsService.content.set({
+                type: 'Button',
+                label: 'Yes',
+                callback: () => {
+                  // todo: move to question or ilalagay pa ba yung replay
+                  this.moveToPhase(Phases.EXAMPLES_QUESTION_INTRO);
+                  this.actionsService.content.set({ type: 'Input' });
+                },
+              });
+            };
+            this.showMessages(messages, undefined, showButton, 100);
+          }
+          break;
+
+        case Phases.EXAMPLES_QUESTION_INTRO:
+          {
+            const messages: Message[] = [
+              this.newBotMessage({
+                text: "Now, let's look if you increase your level of comprehension with regards Addition and Subtraction of Dissimilar Fractions",
+              }),
+              this.newBotMessage({ text: 'Are you ready?' }),
+            ];
+
+            this.showMessages(messages, undefined, () =>
+              this.moveToPhase(Phases.EXAMPLES_QUESTION),
+            );
+          }
+          break;
+
+        case Phases.EXAMPLES_QUESTION:
+          {
+            const expectationMessage = expectationMessages[randomNumber(0, 29)];
+            const currentQuestion = this.getCurrentExamplesQuestion();
+            const messages = [
+              this.newBotMessage({ text: expectationMessage }),
+              this.newBotMessage({ text: currentQuestion }),
+            ];
+
+            this.showMessages(messages);
+          }
+          break;
+        case Phases.EXAMPLES_WRONG:
+          {
+            const currentIndex = this.stateService.currentExamplesQuestion();
+            const correctAnswer = examplesQuestions[currentIndex].answers[0];
+            const incorrectMessage = incorrectMessages[randomNumber(0, 29)];
+            const solution = examplesQuestions[currentIndex].solutions;
+            const solutionMessages =
+              solution !== undefined
+                ? [
+                    this.newBotMessage({ text: 'Solution:' }),
+                    ...solution.map((s) => this.newBotMessage({ text: s })),
+                  ]
+                : [];
+
+            const messages = [
+              this.newBotMessage({ text: incorrectMessage }),
+              this.newBotMessage({
+                text: 'Correct answer is ' + correctAnswer,
+              }),
+              ...solutionMessages,
+            ];
+
+            this.showMessages(messages, undefined, () => this.runLogicUpdate());
+          }
+          break;
+        case Phases.EXAMPLES_CORRECT:
+          {
+            const correctMessage = correctMessages[randomNumber(0, 29)];
+            const messages = [this.newBotMessage({ text: correctMessage })];
+
+            this.showMessages(messages, undefined, () => this.runLogicUpdate());
+          }
+          break;
+
+        case Phases.EXAMPLES_RESULT:
+          {
+            const total = examplesQuestions.length;
+            const score =
+              this.userService.getCurrentValue().categories['examples'];
+            const messages: Message[] = [
+              this.newBotMessage({
+                text: 'Congratulations, you have finished the Examples category.',
               }),
               this.newBotMessage({
                 text: `Result: ${score === null ? 0 : score}/${total}`,

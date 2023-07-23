@@ -11,7 +11,7 @@ export class UserService {
     school: '',
     categories: {
       definition: null,
-      places: null,
+      examples: null,
       numbers: null,
     },
     preTestScore: null,

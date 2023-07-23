@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { preTestQuestions } from '../questions';
 import { ActionsService } from './actions.service';
 import { definitionQuestions } from '../definitionCategory';
+import { examplesQuestions } from '../examplesCategory';
 
 @Injectable({
   providedIn: 'root',
@@ -62,6 +63,12 @@ export class StepService {
 
     return questions[currentIndex].answers;
   }
+  private getCurrentExamplesAnswers() {
+    const currentIndex = this.stateService.currentExamplesQuestion();
+    const questions = examplesQuestions;
+
+    return questions[currentIndex].answers;
+  }
 
   private checkAnswer(message: string, answers: string[]) {
     const isCorrect = answers.includes(message);
@@ -82,9 +89,27 @@ export class StepService {
       definitionQuestions.length
     );
   }
+  private checkExamplesIsLastQuestion() {
+    return (
+      this.stateService.currentExamplesQuestion() >= examplesQuestions.length
+    );
+  }
+
+  private updateCategoryScoreToNonNull(category: string) {
+    const categoryScore =
+      this.userService.getCurrentValue().categories[category];
+    const newUserData = this.userService.getCurrentValue();
+    newUserData.categories[category] = 0;
+    console.log('category:', category);
+    console.log('category score:', categoryScore);
+    console.log('newUserData:', newUserData);
+
+    if (categoryScore === null) {
+      this.userService.set(newUserData);
+    }
+  }
 
   update() {
-    console.log('update runs:', this.current());
     switch (this.current()) {
       case Phases.NO_MORE:
         {
@@ -211,6 +236,7 @@ export class StepService {
         {
           const score =
             this.userService.getCurrentValue().categories['definition'];
+          console.log('category score:', score);
 
           if (score !== null) {
             this.moveToPhase(Phases.CATEGORY_ALREADY_SELECTED);
@@ -267,6 +293,7 @@ export class StepService {
 
           if (isLastQuestion) {
             this.moveToPhase(Phases.DEFINITION_RESULT);
+            this.updateCategoryScoreToNonNull('definition');
 
             return;
           }
@@ -281,6 +308,7 @@ export class StepService {
 
           if (isLastQuestion) {
             this.moveToPhase(Phases.DEFINITION_RESULT);
+            this.updateCategoryScoreToNonNull('definition');
 
             return;
           }
@@ -290,6 +318,72 @@ export class StepService {
         break;
 
       case Phases.DEFINITION_RESULT:
+        {
+          this.moveToPhase(Phases.SELECT_CATEGORY_1);
+        }
+        break;
+
+      case Phases.EXAMPLES_INTRO_1:
+        {
+          const score =
+            this.userService.getCurrentValue().categories['examples'];
+
+          if (score !== null) {
+            this.moveToPhase(Phases.CATEGORY_ALREADY_SELECTED);
+          } else {
+            this.moveToPhase(Phases.EXAMPLES_INTRO_1);
+          }
+        }
+        break;
+      case Phases.EXAMPLES_QUESTION:
+        {
+          const message = this.getUserMessage();
+          const answers = this.getCurrentExamplesAnswers();
+          const isCorrect = this.checkAnswer(message, answers);
+
+          if (isCorrect) {
+            this.userService.increaseCategoryScore('examples');
+            this.stateService.currentExamplesQuestion.update((old) => old + 1);
+
+            this.moveToPhase(Phases.EXAMPLES_CORRECT);
+
+            return;
+          }
+
+          this.moveToPhase(Phases.EXAMPLES_WRONG);
+        }
+        break;
+      case Phases.EXAMPLES_CORRECT:
+        {
+          const isLastQuestion = this.checkExamplesIsLastQuestion();
+
+          if (isLastQuestion) {
+            this.moveToPhase(Phases.EXAMPLES_RESULT);
+            this.updateCategoryScoreToNonNull('examples');
+
+            return;
+          }
+
+          this.moveToPhase(Phases.EXAMPLES_QUESTION);
+        }
+        break;
+      case Phases.EXAMPLES_WRONG:
+        {
+          this.stateService.currentExamplesQuestion.update((old) => old + 1);
+          const isLastQuestion = this.checkExamplesIsLastQuestion();
+
+          if (isLastQuestion) {
+            this.moveToPhase(Phases.EXAMPLES_RESULT);
+            this.updateCategoryScoreToNonNull('examples');
+
+            return;
+          }
+
+          this.moveToPhase(Phases.EXAMPLES_QUESTION);
+        }
+        break;
+
+      case Phases.EXAMPLES_RESULT:
         {
           this.moveToPhase(Phases.SELECT_CATEGORY_1);
         }

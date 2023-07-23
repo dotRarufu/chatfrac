@@ -1,6 +1,6 @@
 import Question from './types/Question';
 
-type MessageFormat = {
+export type MessageFormat = {
   content: { text: string | { videoLink: string } | { imgSrc: string } };
 };
 
