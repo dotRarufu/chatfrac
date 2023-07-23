@@ -7,6 +7,8 @@ import Phases from '../types/Phases';
 import { StateService } from './state.service';
 import { Router } from '@angular/router';
 import { preTestQuestions } from '../questions';
+import { ActionsService } from './actions.service';
+import { definitionQuestions } from '../definitionCategory';
 
 @Injectable({
   providedIn: 'root',
@@ -14,13 +16,14 @@ import { preTestQuestions } from '../questions';
 export class StepService {
   private readonly currentSubject = new BehaviorSubject(1);
   current$ = this.currentSubject.asObservable();
-  current = signal(Phases.GREET);
+  current = signal(Phases.PRETEST_RESULT);
 
   constructor(
     private messageService: MessageService,
     private userService: UserService,
     private stateService: StateService,
     private router: Router,
+    private actionsService: ActionsService,
   ) {}
 
   getCurrent() {
@@ -53,9 +56,17 @@ export class StepService {
 
     return questions[currentIndex].answers;
   }
+  private getCurrentDefinitionAnswers() {
+    const currentIndex = this.stateService.currentDefinitionQuestion();
+    const questions = definitionQuestions;
+
+    return questions[currentIndex].answers;
+  }
 
   private checkAnswer(message: string, answers: string[]) {
     const isCorrect = answers.includes(message);
+    console.log("user's answer:", message);
+    console.log('correct answers:', answers);
 
     return isCorrect;
   }
@@ -63,6 +74,12 @@ export class StepService {
   private checkIsLastQuestion() {
     return (
       this.stateService.currentPreTestQuestion() >= preTestQuestions.length
+    );
+  }
+  private checkDefinitionIsLastQuestion() {
+    return (
+      this.stateService.currentDefinitionQuestion() >=
+      definitionQuestions.length
     );
   }
 
@@ -189,6 +206,95 @@ export class StepService {
           this.moveToPhase(Phases.SELECT_CATEGORY_1);
         }
         break;
+
+      case Phases.DEFINITION_INTRO:
+        {
+          const score =
+            this.userService.getCurrentValue().categories['definition'];
+
+          if (score !== null) {
+            this.moveToPhase(Phases.CATEGORY_ALREADY_SELECTED);
+          } else {
+            this.moveToPhase(Phases.DEFINITION_INTRO);
+          }
+        }
+        break;
+      case Phases.DEFINITION_INTRO_2:
+        {
+          this.moveToPhase(Phases.DEFINITION_INTRO_2);
+        }
+        break;
+      case Phases.DEFINITION_INTRO_3:
+        {
+          this.actionsService.content.set({
+            type: 'Input',
+          });
+          this.moveToPhase(Phases.DEFINITION_INTRO_4);
+        }
+        break;
+      case Phases.DEFINITION_INTRO_4:
+        {
+          this.actionsService.content.set({
+            type: 'Input',
+          });
+          this.moveToPhase(Phases.DEFINITION_QUESTION);
+        }
+        break;
+
+      case Phases.DEFINITION_QUESTION:
+        {
+          const message = this.getUserMessage();
+          const answers = this.getCurrentDefinitionAnswers();
+          const isCorrect = this.checkAnswer(message, answers);
+
+          if (isCorrect) {
+            this.userService.increaseCategoryScore('definition');
+            this.stateService.currentDefinitionQuestion.update(
+              (old) => old + 1,
+            );
+
+            this.moveToPhase(Phases.DEFINITION_CORRECT);
+
+            return;
+          }
+
+          this.moveToPhase(Phases.DEFINITION_WRONG);
+        }
+        break;
+      case Phases.DEFINITION_CORRECT:
+        {
+          const isLastQuestion = this.checkDefinitionIsLastQuestion();
+
+          if (isLastQuestion) {
+            this.moveToPhase(Phases.DEFINITION_RESULT);
+
+            return;
+          }
+
+          this.moveToPhase(Phases.DEFINITION_QUESTION);
+        }
+        break;
+      case Phases.DEFINITION_WRONG:
+        {
+          this.stateService.currentDefinitionQuestion.update((old) => old + 1);
+          const isLastQuestion = this.checkDefinitionIsLastQuestion();
+
+          if (isLastQuestion) {
+            this.moveToPhase(Phases.DEFINITION_RESULT);
+
+            return;
+          }
+
+          this.moveToPhase(Phases.DEFINITION_QUESTION);
+        }
+        break;
+
+      case Phases.DEFINITION_RESULT:
+        {
+          this.moveToPhase(Phases.SELECT_CATEGORY_1);
+        }
+        break;
+
       case Phases.ANIMALS_INTRO:
         {
           const score =

@@ -10,7 +10,7 @@ export class UserService {
     name: '',
     school: '',
     categories: {
-      animals: null,
+      definition: null,
       places: null,
       numbers: null,
     },

@@ -6,8 +6,8 @@ import { SafePipeModule } from 'safe-pipe';
   standalone: true,
   imports: [SafePipeModule],
   template: `
-    <div class="rounded-[1rem]  max-w-[80vw] pl-[8px]">
-      <div class="rounded-[1rem] overflow-clip">
+    <div class="rounded-[1rem]  max-w-[80vw] pl-[8px] m-[8px] ml-0">
+      <div class="rounded-[1rem] overflow-clip ">
         <iframe
           class="w-full aspect-square"
           [src]="url | safe: 'resourceUrl'"

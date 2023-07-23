@@ -4,7 +4,9 @@
 // }
 export type ChatVideo = { type: 'ChatVideo'; videoLink: string };
 
-export type Message = ChatBubble | Carousel | ChatMenu | ChatVideo;
+export type Message = ChatBubble | Carousel | ChatMenu | ChatVideo | ChatImage;
+
+export type ChatImage = { type: 'ChatImage'; imgSrc: string };
 
 export type ChatBubble = {
   type: 'ChatBubble';

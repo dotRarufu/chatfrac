@@ -5,7 +5,13 @@ import { StepService } from 'src/app/services/step.service';
 import { UserService } from 'src/app/services/user.service';
 import showMessages from 'src/app/utils/showMessages';
 import Phases from '../types/Phases';
-import { Carousel, ChatBubble, ChatVideo, Message } from '../types/Message';
+import {
+  Carousel,
+  ChatBubble,
+  ChatImage,
+  ChatVideo,
+  Message,
+} from '../types/Message';
 import { StateService } from '../services/state.service';
 import { ActionsService } from '../services/actions.service';
 import ChatComponent from './chat.component';
@@ -19,8 +25,17 @@ import {
   preTestQuestions,
 } from '../questions';
 import Question from '../types/Question';
+import {
+  definitionQuestions,
+  introMessages1,
+  introMessages1Taglish,
+  introMessages2,
+  introMessages2Taglish,
+  introMessages3,
+  introMessages4,
+} from '../definitionCategory';
 
-const DELAY = 2500; // can make this random, for a better effect
+const DELAY = 100; // can make this random, for a better effect
 
 @Component({
   selector: 'show-message',
@@ -30,22 +45,31 @@ const DELAY = 2500; // can make this random, for a better effect
 })
 export class ShowMessageComponent implements OnInit {
   private newBotMessage(
-    question: { text: string | { videoLink: string } },
+    content: { text: string | { videoLink: string } | { imgSrc: string } },
     options?: { isLink: boolean },
   ) {
-    if (question.text instanceof Object && 'videoLink' in question.text) {
+    if (content.text instanceof Object && 'videoLink' in content.text) {
       const result: ChatVideo = {
         type: 'ChatVideo',
-        videoLink: question.text.videoLink,
+        videoLink: content.text.videoLink,
       };
 
       return result;
     }
 
-    if (question.text !== undefined) {
+    if (content.text instanceof Object && 'imgSrc' in content.text) {
+      const result: ChatImage = {
+        type: 'ChatImage',
+        imgSrc: content.text.imgSrc,
+      };
+
+      return result;
+    }
+
+    if (content.text !== undefined) {
       const result: ChatBubble = {
         sender: 'bot',
-        content: question.text,
+        content: content.text,
         type: 'ChatBubble',
         isLink: options?.isLink,
       };
@@ -59,6 +83,7 @@ export class ShowMessageComponent implements OnInit {
     messages: Message[],
     mapFn?: () => void,
     lastly?: () => void,
+    delay?: number,
   ) {
     this.stateService.setIsChatInputDisabled(true);
     // console.log('input is disabled');
@@ -78,7 +103,12 @@ export class ShowMessageComponent implements OnInit {
       lastly && lastly();
     };
 
-    showMessages<Message>(DELAY, messages, mapFnWrapper, lastFnWrapper);
+    showMessages<Message>(
+      delay || DELAY,
+      messages,
+      mapFnWrapper,
+      lastFnWrapper,
+    );
   }
 
   private runLogicUpdate() {
@@ -94,6 +124,13 @@ export class ShowMessageComponent implements OnInit {
     const currentIndex = this.stateService.currentPreTestQuestion();
     const questions = preTestQuestions;
 
+    return questions[currentIndex].content.text;
+  }
+  private getCurrentDefinitionQuestion() {
+    const currentIndex = this.stateService.currentDefinitionQuestion();
+    const questions = definitionQuestions;
+    console.log('definition questions length:', definitionQuestions.length);
+    console.log('currentIndex:', currentIndex);
     return questions[currentIndex].content.text;
   }
 
@@ -114,11 +151,7 @@ export class ShowMessageComponent implements OnInit {
             const noMoreCategories = !Object.values(
               this.userService.getCurrentValue().categories,
             ).includes(null);
-            console.log('asd:', noMoreCategories);
-            console.log(
-              'acats:',
-              this.userService.getCurrentValue().categories,
-            );
+
             if (noMoreCategories) {
               setTimeout(() => {
                 this.moveToPhase(Phases.CATEGORIES_END_1);
@@ -136,8 +169,8 @@ export class ShowMessageComponent implements OnInit {
                 type: 'QuickReply',
                 items: [
                   {
-                    label: 'Animals',
-                    callback: () => this.moveToPhase(Phases.ANIMALS_INTRO),
+                    label: 'Definition',
+                    callback: () => this.moveToPhase(Phases.DEFINITION_INTRO),
                   },
                   {
                     label: 'Numbers',
@@ -314,9 +347,241 @@ export class ShowMessageComponent implements OnInit {
           }
           break;
 
+        case Phases.DEFINITION_INTRO:
+          {
+            const introMessagesBubble = introMessages1.map((m) =>
+              this.newBotMessage(m.content),
+            );
+
+            const messages: Message[] = [
+              this.newBotMessage({ text: 'You selected definition category.' }),
+              ...introMessagesBubble,
+            ];
+
+            const showQuickReplies = () => {
+              this.actionsService.content.set({
+                type: 'QuickReply',
+                items: [
+                  {
+                    label: 'Yes',
+                    callback: () =>
+                      this.moveToPhase(Phases.DEFINITION_INTRO_TAGLISH),
+                  },
+                  {
+                    label: 'No',
+                    callback: () => this.moveToPhase(Phases.DEFINITION_INTRO_2),
+                  },
+                ],
+              });
+            };
+
+            this.showMessages(messages, undefined, showQuickReplies, 100);
+          }
+          break;
+        case Phases.DEFINITION_INTRO_TAGLISH:
+          {
+            const introMessagesBubble = introMessages1Taglish.map((m) =>
+              this.newBotMessage(m.content),
+            );
+
+            const messages: Message[] = [...introMessagesBubble];
+
+            const showButton = () => {
+              this.actionsService.content.set({
+                type: 'Button',
+                label: 'Next',
+                callback: () => this.moveToPhase(Phases.DEFINITION_INTRO_2),
+              });
+            };
+
+            this.showMessages(
+              messages,
+              undefined,
+              () => {
+                showButton();
+              },
+              100,
+            );
+          }
+          break;
+
+        case Phases.DEFINITION_INTRO_2_TAGLISH:
+          {
+            const introMessagesBubble = introMessages2Taglish.map((m) =>
+              this.newBotMessage(m.content),
+            );
+
+            const messages: Message[] = [...introMessagesBubble];
+
+            const showButton = () => {
+              this.actionsService.content.set({
+                type: 'Button',
+                label: 'Next',
+                callback: () => this.moveToPhase(Phases.DEFINITION_INTRO_2),
+              });
+            };
+
+            this.showMessages(
+              messages,
+              undefined,
+              () => {
+                showButton();
+              },
+              100,
+            );
+          }
+          break;
+        case Phases.DEFINITION_INTRO_2:
+          {
+            const introMessagesBubble = introMessages2.map((m) =>
+              this.newBotMessage(m.content),
+            );
+
+            const messages: Message[] = [...introMessagesBubble];
+
+            const showQuickReplies = () => {
+              this.actionsService.content.set({
+                type: 'QuickReply',
+                items: [
+                  {
+                    label: 'Yes',
+                    callback: () =>
+                      this.moveToPhase(Phases.DEFINITION_INTRO_2_TAGLISH),
+                  },
+                  {
+                    label: 'No',
+                    callback: () => this.moveToPhase(Phases.DEFINITION_INTRO_3),
+                  },
+                ],
+              });
+            };
+
+            this.showMessages(messages, undefined, showQuickReplies, 100);
+          }
+          break;
+        case Phases.DEFINITION_INTRO_3:
+          {
+            const introMessagesBubble = introMessages3.map((m) =>
+              this.newBotMessage(m.content),
+            );
+
+            const messages: Message[] = [...introMessagesBubble];
+
+            const showButton = () => {
+              this.actionsService.content.set({
+                type: 'Button',
+                label: 'Next',
+
+                // callback: () => this.moveToPhase(Phases.DEFINITION_INTRO_4),
+                callback: () => this.runLogicUpdate(),
+              });
+            };
+
+            this.showMessages(
+              messages,
+              undefined,
+              () => {
+                showButton();
+              },
+              100,
+            );
+          }
+          break;
+        case Phases.DEFINITION_INTRO_4:
+          {
+            const introMessagesBubble = introMessages4.map((m) =>
+              this.newBotMessage(m.content),
+            );
+
+            const messages: Message[] = [...introMessagesBubble];
+
+            const showButton = () => {
+              this.actionsService.content.set({
+                type: 'Button',
+                label: 'Next',
+                callback: () => this.runLogicUpdate(),
+              });
+            };
+
+            this.showMessages(
+              messages,
+              undefined,
+              () => {
+                showButton();
+              },
+              100,
+            );
+          }
+          break;
+        case Phases.DEFINITION_QUESTION:
+          {
+            const expectationMessage = expectationMessages[randomNumber(0, 29)];
+            const currentQuestion = this.getCurrentDefinitionQuestion();
+            const messages = [
+              this.newBotMessage({ text: expectationMessage }),
+              this.newBotMessage({ text: currentQuestion }),
+            ];
+
+            this.showMessages(messages);
+          }
+          break;
+        case Phases.DEFINITION_WRONG:
+          {
+            const currentIndex = this.stateService.currentDefinitionQuestion();
+            const correctAnswer = definitionQuestions[currentIndex].answers[0];
+            const incorrectMessage = incorrectMessages[randomNumber(0, 29)];
+            const solution = definitionQuestions[currentIndex].solutions;
+            const solutionMessages =
+              solution !== undefined
+                ? [
+                    this.newBotMessage({ text: 'Solution:' }),
+                    ...solution.map((s) => this.newBotMessage({ text: s })),
+                  ]
+                : [];
+
+            const messages = [
+              this.newBotMessage({ text: incorrectMessage }),
+              this.newBotMessage({
+                text: 'Correct answer is ' + correctAnswer,
+              }),
+              ...solutionMessages,
+            ];
+
+            this.showMessages(messages, undefined, () => this.runLogicUpdate());
+          }
+          break;
+        case Phases.DEFINITION_CORRECT:
+          {
+            const correctMessage = correctMessages[randomNumber(0, 29)];
+            const messages = [this.newBotMessage({ text: correctMessage })];
+
+            this.showMessages(messages, undefined, () => this.runLogicUpdate());
+          }
+          break;
+
+        case Phases.DEFINITION_RESULT:
+          {
+            const total = definitionQuestions.length;
+            const score =
+              this.userService.getCurrentValue().categories['definition'];
+            const messages: Message[] = [
+              this.newBotMessage({
+                text: 'Congratulations on finishing this Definition Category, you did well in the exercises.',
+              }),
+              this.newBotMessage({
+                text: `Result: ${score === null ? 0 : score}/${total}`,
+              }),
+              this.newBotMessage({
+                text: 'You may now proceed to the next step.',
+              }),
+            ];
+
+            this.showMessages(messages, undefined, () => this.runLogicUpdate());
+          }
+          break;
+
         case Phases.ANIMALS_INTRO:
           {
-            // console.log('show-message| animals intro ');
             const messages: Message[] = [
               this.newBotMessage({ text: 'You selected animals category.' }),
               this.newBotMessage({ text: 'This category is about animals' }),
