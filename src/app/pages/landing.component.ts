@@ -16,7 +16,7 @@ import { Router } from '@angular/router';
         >
           Logo
         </div>
-        Chatbot Name
+        ChatFrac
         <div class="h-full"></div>
         <button
           (click)="handleButtonClick()"

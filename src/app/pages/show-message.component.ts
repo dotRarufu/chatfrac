@@ -53,6 +53,7 @@ import {
   modelsQuestions,
   modelsQuestionsIntro,
 } from '../modelsCategory';
+import { correctAnswerGifs } from '../correctAnswerGifs';
 
 const DELAY = 2500; // can make this random, for a better effect
 
@@ -355,7 +356,11 @@ export class ShowMessageComponent implements OnInit {
         case Phases.PRETEST_CORRECT:
           {
             const correctMessage = correctMessages[randomNumber(0, 29)];
-            const messages = [this.newBotMessage({ text: correctMessage })];
+            const gif = correctAnswerGifs[randomNumber(0, 4)];
+            const messages = [
+              this.newBotMessage({ text: correctMessage }),
+              this.newBotMessage({ text: { imgSrc: gif } }),
+            ];
 
             this.showMessages(messages, undefined, () => this.runLogicUpdate());
           }
@@ -587,7 +592,11 @@ export class ShowMessageComponent implements OnInit {
         case Phases.DEFINITION_CORRECT:
           {
             const correctMessage = correctMessages[randomNumber(0, 29)];
-            const messages = [this.newBotMessage({ text: correctMessage })];
+            const gif = correctAnswerGifs[randomNumber(0, 4)];
+            const messages = [
+              this.newBotMessage({ text: correctMessage }),
+              this.newBotMessage({ text: { imgSrc: gif } }),
+            ];
 
             this.showMessages(messages, undefined, () => this.runLogicUpdate());
           }
@@ -818,7 +827,11 @@ export class ShowMessageComponent implements OnInit {
         case Phases.EXAMPLES_CORRECT:
           {
             const correctMessage = correctMessages[randomNumber(0, 29)];
-            const messages = [this.newBotMessage({ text: correctMessage })];
+            const gif = correctAnswerGifs[randomNumber(0, 4)];
+            const messages = [
+              this.newBotMessage({ text: correctMessage }),
+              this.newBotMessage({ text: { imgSrc: gif } }),
+            ];
 
             this.showMessages(messages, undefined, () => this.runLogicUpdate());
           }
@@ -1065,7 +1078,11 @@ export class ShowMessageComponent implements OnInit {
         case Phases.MODELS_CORRECT:
           {
             const correctMessage = correctMessages[randomNumber(0, 29)];
-            const messages = [this.newBotMessage({ text: correctMessage })];
+            const gif = correctAnswerGifs[randomNumber(0, 4)];
+            const messages = [
+              this.newBotMessage({ text: correctMessage }),
+              this.newBotMessage({ text: { imgSrc: gif } }),
+            ];
 
             this.showMessages(messages, undefined, () => this.runLogicUpdate());
           }
@@ -1282,7 +1299,11 @@ export class ShowMessageComponent implements OnInit {
         case Phases.POSTTEST_CORRECT:
           {
             const correctMessage = correctMessages[randomNumber(0, 29)];
-            const messages = [this.newBotMessage({ text: correctMessage })];
+            const gif = correctAnswerGifs[randomNumber(0, 4)];
+            const messages = [
+              this.newBotMessage({ text: correctMessage }),
+              this.newBotMessage({ text: { imgSrc: gif } }),
+            ];
 
             this.showMessages(messages, undefined, () => this.runLogicUpdate());
           }
