@@ -19,7 +19,7 @@ import { modelsQuestions } from '../modelsCategory';
 export class StepService {
   private readonly currentSubject = new BehaviorSubject(1);
   current$ = this.currentSubject.asObservable();
-  current = signal(Phases.PRETEST_RESULT);
+  current = signal(Phases.GREET);
 
   constructor(
     private messageService: MessageService,
@@ -86,8 +86,6 @@ export class StepService {
 
   private checkAnswer(message: string, answers: string[]) {
     const isCorrect = answers.includes(message);
-    console.log("user's answer:", message);
-    console.log('correct answers:', answers);
 
     return isCorrect;
   }
@@ -542,11 +540,6 @@ export class StepService {
       case Phases.POSTTEST_RESULT:
         {
           this.moveToPhase(Phases.CHAT_END);
-        }
-        break;
-      case Phases.CATEGORIES_END_NO:
-        {
-          this.moveToPhase(Phases.POSTTEST_INTRO);
         }
         break;
 

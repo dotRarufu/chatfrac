@@ -1157,7 +1157,34 @@ export class ShowMessageComponent implements OnInit {
             this.showMessages(messages, undefined, showQuickReplies);
           }
           break;
+        case Phases.CATEGORIES_END_NO:
+          {
+            const messages: Message[] = [
+              this.newBotMessage({
+                text: 'You may also take a look on this gdrive to further improve your mastery level on addition and subtraction of dissimilar fractions',
+              }),
+              this.newBotMessage(
+                {
+                  text: 'https://drive.google.com/drive/folders/150Aq1vu-XJHfNWlHxRp4nR4HwnFKLpWh',
+                },
+                { isLink: true },
+              ),
+            ];
 
+            const showButton = () => {
+              this.actionsService.content.set({
+                type: 'Button',
+                label: 'Okay',
+                callback: () => {
+                  this.moveToPhase(Phases.POSTTEST_INTRO);
+                  this.actionsService.content.set({ type: 'Input' });
+                },
+              });
+            };
+
+            this.showMessages(messages, undefined, () => showButton());
+          }
+          break;
         case Phases.CATEGORIES_END_CAROUSEL:
           {
             const messages: Message[] = [
@@ -1184,13 +1211,6 @@ export class ShowMessageComponent implements OnInit {
                 ],
                 type: 'Carousel',
               },
-              this.newBotMessage({
-                text: 'You may also take a look on this gdrive to further improve your mastery level on addition and subtraction of dissimilar fractions',
-              }),
-              this.newBotMessage(
-                { text: 'https://gdrive.link.here' },
-                { isLink: true },
-              ),
             ];
 
             const showButton = () => {

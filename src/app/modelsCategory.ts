@@ -5,7 +5,7 @@ export const modelsIntro1Block: MessageFormat[] = [
   {
     content: {
       text: {
-        videoLink: 'https://www.youtube.com/embed/Ks9vndiO5sQ',
+        videoLink: 'https://www.youtube.com/embed/5WCsDIDehTc',
       },
     },
   },
@@ -34,7 +34,7 @@ export const modelsIntro2Block: MessageFormat[] = [
   {
     content: {
       text: {
-        videoLink: 'https://www.youtube.com/embed/Ks9vndiO5sQ',
+        videoLink: 'https://www.youtube.com/embed/UxUPhbuEGEA',
       },
     },
   },
@@ -68,7 +68,7 @@ export const modelsIntro3Block: MessageFormat[] = [
   {
     content: {
       text: {
-        videoLink: 'https://www.youtube.com/embed/Ks9vndiO5sQ',
+        videoLink: 'https://www.youtube.com/embed/92WEt62O3k0',
       },
     },
   },
@@ -97,7 +97,7 @@ export const modelsIntro4Block: MessageFormat[] = [
   {
     content: {
       text: {
-        videoLink: 'https://www.youtube.com/embed/Ks9vndiO5sQ',
+        videoLink: 'https://www.youtube.com/embed/yrwb1ujALLs',
       },
     },
   },
@@ -131,7 +131,7 @@ export const modelsIntro5Linear: MessageFormat[] = [
   {
     content: {
       text: {
-        videoLink: 'https://www.youtube.com/embed/Ks9vndiO5sQ',
+        videoLink: 'https://www.youtube.com/embed/wQendenzfDM',
       },
     },
   },
@@ -170,7 +170,7 @@ export const modelsIntro6Linear: MessageFormat[] = [
   {
     content: {
       text: {
-        videoLink: 'https://www.youtube.com/embed/Ks9vndiO5sQ',
+        videoLink: 'https://www.youtube.com/embed/J3k6K4VlDSw',
       },
     },
   },
@@ -219,7 +219,7 @@ export const modelsIntro7Linear: MessageFormat[] = [
   {
     content: {
       text: {
-        videoLink: 'https://www.youtube.com/embed/Ks9vndiO5sQ',
+        videoLink: 'https://www.youtube.com/embed/anpmjyyai2Q',
       },
     },
   },
@@ -263,7 +263,7 @@ export const modelsIntro8Linear: MessageFormat[] = [
   {
     content: {
       text: {
-        videoLink: 'https://www.youtube.com/embed/Ks9vndiO5sQ',
+        videoLink: 'https://www.youtube.com/embed/KwtClEfAX_g',
       },
     },
   },

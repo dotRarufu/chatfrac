@@ -10,7 +10,7 @@ export const examplesIntro1Messages: MessageFormat[] = [
   {
     content: {
       text: {
-        videoLink: 'https://www.youtube.com/embed/Ks9vndiO5sQ',
+        videoLink: 'https://www.youtube.com/embed/Kzh04tWNDkQ',
       },
     },
   },
@@ -34,7 +34,7 @@ export const examplesIntro2Messages: MessageFormat[] = [
   {
     content: {
       text: {
-        videoLink: 'https://www.youtube.com/embed/Ks9vndiO5sQ',
+        videoLink: 'https://www.youtube.com/embed/opaJvQJyH00',
       },
     },
   },
@@ -58,7 +58,7 @@ export const examplesIntro3Messages: MessageFormat[] = [
   {
     content: {
       text: {
-        videoLink: 'https://www.youtube.com/embed/Ks9vndiO5sQ',
+        videoLink: 'https://www.youtube.com/embed/yqI7uaEXOt8',
       },
     },
   },
@@ -82,7 +82,7 @@ export const examplesIntro4Messages: MessageFormat[] = [
   {
     content: {
       text: {
-        videoLink: 'https://www.youtube.com/embed/Ks9vndiO5sQ',
+        videoLink: 'https://www.youtube.com/embed/JYfWinTqrCY',
       },
     },
   },
@@ -106,7 +106,7 @@ export const examplesIntro5Messages: MessageFormat[] = [
   {
     content: {
       text: {
-        videoLink: 'https://www.youtube.com/embed/Ks9vndiO5sQ',
+        videoLink: 'https://www.youtube.com/embed/wFoH8ioQm88',
       },
     },
   },
@@ -130,7 +130,7 @@ export const examplesIntro6Messages: MessageFormat[] = [
   {
     content: {
       text: {
-        videoLink: 'https://www.youtube.com/embed/Ks9vndiO5sQ',
+        videoLink: 'https://www.youtube.com/embed/UYkrQJrnoE0',
       },
     },
   },
@@ -154,7 +154,14 @@ export const examplesIntro7Messages: MessageFormat[] = [
   {
     content: {
       text: {
-        videoLink: 'https://www.youtube.com/embed/Ks9vndiO5sQ',
+        videoLink: 'https://www.youtube.com/embed/iPTvSUlRGYg',
+      },
+    },
+  },
+  {
+    content: {
+      text: {
+        videoLink: 'https://www.youtube.com/embed/Sso_xpZqW5U',
       },
     },
   },
