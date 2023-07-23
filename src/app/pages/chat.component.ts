@@ -49,26 +49,49 @@ import ChatImageComponent from 'src/components/chat-image.component';
     >
       <app-header />
 
-      <div class="h-full p-[16px] overflow-y-scroll overflow-x-clip" #scrollMe>
-        <div *ngFor="let message of messageService.messages()">
-          <chat-bubble
-            *ngIf="message.type === 'ChatBubble'"
-            [sender]="message.sender"
-            [message]="message.content"
-            [link]="message.isLink ? message.content : undefined"
-          />
-          <chat-carousel
-            *ngIf="message.type === 'Carousel'"
-            [content]="message.content"
-          />
-          <chat-video
-            *ngIf="message.type === 'ChatVideo'"
-            [url]="message.videoLink"
-          />
-          <chat-image
-            *ngIf="message.type === 'ChatImage'"
-            [url]="message.imgSrc"
-          />
+      <div
+        class="h-[calc(100vh-140px)] flex flex-col p-[16px] overflow-y-scroll overflow-x-clip  "
+        #scrollMe
+      >
+        <div class="flex-1  ">
+          <div *ngFor="let message of messageService.messages()">
+            <chat-bubble
+              *ngIf="message.type === 'ChatBubble'"
+              [sender]="message.sender"
+              [message]="message.content"
+              [link]="message.isLink ? message.content : undefined"
+            />
+            <chat-carousel
+              *ngIf="message.type === 'Carousel'"
+              [content]="message.content"
+            />
+            <chat-video
+              *ngIf="message.type === 'ChatVideo'"
+              [url]="message.videoLink"
+            />
+            <chat-image
+              *ngIf="message.type === 'ChatImage'"
+              [url]="message.imgSrc"
+            />
+          </div>
+        </div>
+
+        <div *ngIf="messageService.isTyping$ | async" class="basis-[44px]">
+          <div class="chat chat-start">
+            <div class="chat-bubble chat-bubble-secondary">
+              <div class="flex items-center h-[28px]">
+                <div
+                  class="animate-[mercury_1.8s_ease-in-out_infinite] bg-[#6CAD96] rounded-full h-[7px] mr-[4px] align-middle w-[7px] inline-block [animation-delay:200ms]"
+                ></div>
+                <div
+                  class="animate-[mercury_1.8s_ease-in-out_infinite] bg-[#6CAD96] rounded-full h-[7px] mr-[4px] align-middle w-[7px] inline-block [animation-delay:300ms]"
+                ></div>
+                <div
+                  class="animate-[mercury_1.8s_ease-in-out_infinite] bg-[#6CAD96] rounded-full h-[7px] mr-0 align-middle w-[7px] inline-block [animation-delay:400ms] "
+                ></div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 

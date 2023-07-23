@@ -9,7 +9,7 @@ import DownloadIconComponent from './icons/download.component';
   imports: [CommonModule, DownloadIconComponent],
   template: `
     <div
-      class=" bg-primary p-[16px] py-[8px] flex items-center justify-between h-[76px]"
+      class=" bg-primary p-[16px] py-[8px] flex items-center justify-between h-[76px] shadow"
     >
       <div class=" flex gap-[12px] items-center">
         <div class="avatar">
@@ -17,26 +17,11 @@ import DownloadIconComponent from './icons/download.component';
             <img src="assets/sample-logo.jpeg" />
           </div>
         </div>
-        <div>
-          <span class="text-[24px] text-primary-content"> Chatbot App </span>
-          <div
-            class="flex items-center gap-[8px] "
-            *ngIf="messageService.isTyping$ | async"
-          >
-            <span class="text-base text-primary-content"> typing </span>
-
-            <div class="flex items-center h-[17px]">
-              <div
-                class="animate-[mercury_1.8s_ease-in-out_infinite] bg-[#6CAD96] rounded-full h-[7px] mr-[4px] align-middle w-[7px] inline-block [animation-delay:200ms]"
-              ></div>
-              <div
-                class="animate-[mercury_1.8s_ease-in-out_infinite] bg-[#6CAD96] rounded-full h-[7px] mr-[4px] align-middle w-[7px] inline-block [animation-delay:300ms]"
-              ></div>
-              <div
-                class="animate-[mercury_1.8s_ease-in-out_infinite] bg-[#6CAD96] rounded-full h-[7px] mr-0 align-middle w-[7px] inline-block [animation-delay:400ms] "
-              ></div>
-            </div>
-          </div>
+        <div class="flex flex-col justify-center">
+          <span class="text-[24px] text-primary-content h-[28px] leading-none"> ChatFrac </span>
+          
+            <span class="text-base text-primary-content h-[13px] leading-none"> ONLINE </span>
+          
         </div>
       </div>
 

@@ -54,7 +54,7 @@ import {
   modelsQuestionsIntro,
 } from '../modelsCategory';
 
-const DELAY = 100; // can make this random, for a better effect
+const DELAY = 2500; // can make this random, for a better effect
 
 @Component({
   selector: 'show-message',
