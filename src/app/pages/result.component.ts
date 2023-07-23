@@ -28,24 +28,26 @@ import { SupabaseService } from '../services/supabase.service';
 })
 export default class ResultComponent implements OnInit {
   downloadUrl = '';
+  finishedLoading = false;
 
   async handleDownloadClick(anchorElem: HTMLAnchorElement) {
-    await this.prepareDownloadLink();
-
-    if (this.downloadUrl === '')
-      throw new Error('download url not prepared yet');
+    if (!this.finishedLoading) throw new Error('download url not prepared yet');
 
     anchorElem.click();
   }
 
-  constructor(private supabaseService: SupabaseService) {}
+  constructor(private supabaseService: SupabaseService) {
+    this.prepareDownloadLink();
+  }
 
   async prepareDownloadLink() {
     const data = await this.getData();
     const csv = await json2csv(data);
     const blob = new Blob([csv], { type: 'text/csv' });
     const url = URL.createObjectURL(blob);
+
     this.downloadUrl = url;
+    this.finishedLoading = true;
   }
 
   ngOnInit(): void {

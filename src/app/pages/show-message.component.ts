@@ -1188,6 +1188,7 @@ export class ShowMessageComponent implements OnInit {
         case Phases.CATEGORIES_END_CAROUSEL:
           {
             const messages: Message[] = [
+              this.newBotMessage({ text: 'You can send your questions to us' }),
               {
                 content: [
                   {
