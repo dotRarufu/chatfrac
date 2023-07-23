@@ -11,6 +11,7 @@ import { ActionsService } from './actions.service';
 import { definitionQuestions } from '../definitionCategory';
 import { examplesQuestions } from '../examplesCategory';
 import { postTestQuestions } from '../postTestQuestions';
+import { modelsQuestions } from '../modelsCategory';
 
 @Injectable({
   providedIn: 'root',
@@ -18,7 +19,7 @@ import { postTestQuestions } from '../postTestQuestions';
 export class StepService {
   private readonly currentSubject = new BehaviorSubject(1);
   current$ = this.currentSubject.asObservable();
-  current = signal(Phases.GREET);
+  current = signal(Phases.PRETEST_RESULT);
 
   constructor(
     private messageService: MessageService,
@@ -76,6 +77,12 @@ export class StepService {
 
     return questions[currentIndex].answers;
   }
+  private getCurrentModelsAnswers() {
+    const currentIndex = this.stateService.currentModelsQuestion();
+    const questions = modelsQuestions;
+
+    return questions[currentIndex].answers;
+  }
 
   private checkAnswer(message: string, answers: string[]) {
     const isCorrect = answers.includes(message);
@@ -101,6 +108,9 @@ export class StepService {
       definitionQuestions.length
     );
   }
+  private checkModelsIsLastQuestion() {
+    return this.stateService.currentModelsQuestion() >= modelsQuestions.length;
+  }
   private checkExamplesIsLastQuestion() {
     return (
       this.stateService.currentExamplesQuestion() >= examplesQuestions.length
@@ -112,7 +122,8 @@ export class StepService {
       this.userService.getCurrentValue().categories[category];
     const newUserData = this.userService.getCurrentValue();
     newUserData.categories[category] = 0;
-
+    console.log('category:', category);
+    console.log('categoryScore:', categoryScore);
     if (categoryScore === null) {
       this.userService.set(newUserData);
     }
@@ -264,7 +275,6 @@ export class StepService {
         {
           const score =
             this.userService.getCurrentValue().categories['definition'];
-          console.log('category score:', score);
 
           if (score !== null) {
             this.moveToPhase(Phases.CATEGORY_ALREADY_SELECTED);
@@ -412,6 +422,70 @@ export class StepService {
         break;
 
       case Phases.EXAMPLES_RESULT:
+        {
+          this.moveToPhase(Phases.SELECT_CATEGORY_1);
+        }
+        break;
+      case Phases.MODELS_INTRO_1_BLOCK:
+        {
+          const score = this.userService.getCurrentValue().categories['models'];
+
+          if (score !== null) {
+            this.moveToPhase(Phases.CATEGORY_ALREADY_SELECTED);
+          } else {
+            this.moveToPhase(Phases.MODELS_INTRO_1_BLOCK);
+          }
+        }
+        break;
+      case Phases.MODELS_QUESTION:
+        {
+          const message = this.getUserMessage();
+          const answers = this.getCurrentModelsAnswers();
+          const isCorrect = this.checkAnswer(message, answers);
+
+          if (isCorrect) {
+            this.userService.increaseCategoryScore('models');
+            this.stateService.currentModelsQuestion.update((old) => old + 1);
+
+            this.moveToPhase(Phases.MODELS_CORRECT);
+
+            return;
+          }
+
+          this.moveToPhase(Phases.MODELS_WRONG);
+        }
+        break;
+      case Phases.MODELS_CORRECT:
+        {
+          const isLastQuestion = this.checkModelsIsLastQuestion();
+
+          if (isLastQuestion) {
+            this.moveToPhase(Phases.MODELS_RESULT);
+            this.updateCategoryScoreToNonNull('models');
+
+            return;
+          }
+
+          this.moveToPhase(Phases.MODELS_QUESTION);
+        }
+        break;
+      case Phases.MODELS_WRONG:
+        {
+          this.stateService.currentModelsQuestion.update((old) => old + 1);
+          const isLastQuestion = this.checkModelsIsLastQuestion();
+
+          if (isLastQuestion) {
+            this.moveToPhase(Phases.MODELS_RESULT);
+            this.updateCategoryScoreToNonNull('models');
+
+            return;
+          }
+
+          this.moveToPhase(Phases.MODELS_QUESTION);
+        }
+        break;
+
+      case Phases.MODELS_RESULT:
         {
           this.moveToPhase(Phases.SELECT_CATEGORY_1);
         }

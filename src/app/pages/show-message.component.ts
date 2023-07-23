@@ -41,6 +41,18 @@ import {
   examplesQuestions,
 } from '../examplesCategory';
 import { postTestQuestions } from '../postTestQuestions';
+import {
+  modelsIntro1Block,
+  modelsIntro2Block,
+  modelsIntro3Block,
+  modelsIntro4Block,
+  modelsIntro5Linear,
+  modelsIntro6Linear,
+  modelsIntro7Linear,
+  modelsIntro8Linear,
+  modelsQuestions,
+  modelsQuestionsIntro,
+} from '../modelsCategory';
 
 const DELAY = 100; // can make this random, for a better effect
 
@@ -149,6 +161,11 @@ export class ShowMessageComponent implements OnInit {
     const questions = examplesQuestions;
     return questions[currentIndex].content.text;
   }
+  private getCurrentModelsQuestion() {
+    const currentIndex = this.stateService.currentModelsQuestion();
+    const questions = modelsQuestions;
+    return questions[currentIndex].content.text;
+  }
 
   constructor(
     private messageService: MessageService,
@@ -191,6 +208,11 @@ export class ShowMessageComponent implements OnInit {
                   {
                     label: 'Examples',
                     callback: () => this.moveToPhase(Phases.EXAMPLES_INTRO_1),
+                  },
+                  {
+                    label: 'Models',
+                    callback: () =>
+                      this.moveToPhase(Phases.MODELS_INTRO_1_BLOCK),
                   },
                 ],
               });
@@ -822,7 +844,253 @@ export class ShowMessageComponent implements OnInit {
             this.showMessages(messages, undefined, () => this.runLogicUpdate());
           }
           break;
+        case Phases.MODELS_INTRO_1_BLOCK:
+          {
+            const introMessagesBubble = modelsIntro1Block.map((m) =>
+              this.newBotMessage(m.content),
+            );
 
+            const messages: Message[] = [...introMessagesBubble];
+
+            const showButton = () => {
+              this.actionsService.content.set({
+                type: 'Button',
+                label: 'Next',
+                callback: () => {
+                  this.moveToPhase(Phases.MODELS_INTRO_2_BLOCK);
+                  this.actionsService.content.set({ type: 'Input' });
+                },
+              });
+            };
+            this.showMessages(messages, undefined, showButton);
+          }
+          break;
+        case Phases.MODELS_INTRO_2_BLOCK:
+          {
+            const introMessagesBubble = modelsIntro2Block.map((m) =>
+              this.newBotMessage(m.content),
+            );
+
+            const messages: Message[] = [...introMessagesBubble];
+
+            const showButton = () => {
+              this.actionsService.content.set({
+                type: 'Button',
+                label: 'Yes',
+                callback: () => {
+                  this.moveToPhase(Phases.MODELS_INTRO_3_BLOCK);
+                  this.actionsService.content.set({ type: 'Input' });
+                },
+              });
+            };
+            this.showMessages(messages, undefined, showButton);
+          }
+          break;
+        case Phases.MODELS_INTRO_3_BLOCK:
+          {
+            const introMessagesBubble = modelsIntro3Block.map((m) =>
+              this.newBotMessage(m.content),
+            );
+
+            const messages: Message[] = [...introMessagesBubble];
+
+            const showButton = () => {
+              this.actionsService.content.set({
+                type: 'Button',
+                label: 'Next',
+                callback: () => {
+                  this.moveToPhase(Phases.MODELS_INTRO_4_BLOCK);
+                  this.actionsService.content.set({ type: 'Input' });
+                },
+              });
+            };
+            this.showMessages(messages, undefined, showButton);
+          }
+          break;
+        case Phases.MODELS_INTRO_4_BLOCK:
+          {
+            const introMessagesBubble = modelsIntro4Block.map((m) =>
+              this.newBotMessage(m.content),
+            );
+
+            const messages: Message[] = [...introMessagesBubble];
+
+            const showButton = () => {
+              this.actionsService.content.set({
+                type: 'Button',
+                label: 'Yes',
+                callback: () => {
+                  this.moveToPhase(Phases.MODELS_INTRO_5_LINEAR);
+                  this.actionsService.content.set({ type: 'Input' });
+                },
+              });
+            };
+            this.showMessages(messages, undefined, showButton);
+          }
+          break;
+        case Phases.MODELS_INTRO_5_LINEAR:
+          {
+            const introMessagesBubble = modelsIntro5Linear.map((m) =>
+              this.newBotMessage(m.content),
+            );
+
+            const messages: Message[] = [...introMessagesBubble];
+
+            const showButton = () => {
+              this.actionsService.content.set({
+                type: 'Button',
+                label: 'Next',
+                callback: () => {
+                  this.moveToPhase(Phases.MODELS_INTRO_6_LINEAR);
+                  this.actionsService.content.set({ type: 'Input' });
+                },
+              });
+            };
+            this.showMessages(messages, undefined, showButton);
+          }
+          break;
+        case Phases.MODELS_INTRO_6_LINEAR:
+          {
+            const introMessagesBubble = modelsIntro6Linear.map((m) =>
+              this.newBotMessage(m.content),
+            );
+
+            const messages: Message[] = [...introMessagesBubble];
+
+            const showButton = () => {
+              this.actionsService.content.set({
+                type: 'Button',
+                label: 'Yes',
+                callback: () => {
+                  this.moveToPhase(Phases.MODELS_INTRO_7_LINEAR);
+                  this.actionsService.content.set({ type: 'Input' });
+                },
+              });
+            };
+            this.showMessages(messages, undefined, showButton);
+          }
+          break;
+        case Phases.MODELS_INTRO_7_LINEAR:
+          {
+            const introMessagesBubble = modelsIntro7Linear.map((m) =>
+              this.newBotMessage(m.content),
+            );
+
+            const messages: Message[] = [...introMessagesBubble];
+
+            const showButton = () => {
+              this.actionsService.content.set({
+                type: 'Button',
+                label: 'Next',
+                callback: () => {
+                  this.moveToPhase(Phases.MODELS_INTRO_8_LINEAR);
+                  this.actionsService.content.set({ type: 'Input' });
+                },
+              });
+            };
+            this.showMessages(messages, undefined, showButton);
+          }
+          break;
+        case Phases.MODELS_INTRO_8_LINEAR:
+          {
+            const introMessagesBubble = modelsIntro8Linear.map((m) =>
+              this.newBotMessage(m.content),
+            );
+
+            const messages: Message[] = [...introMessagesBubble];
+
+            const showButton = () => {
+              this.actionsService.content.set({
+                type: 'Button',
+                label: 'Yes',
+                callback: () => {
+                  this.moveToPhase(Phases.MODELS_QUESTIONS_INTRO);
+                  this.actionsService.content.set({ type: 'Input' });
+                },
+              });
+            };
+            this.showMessages(messages, undefined, showButton);
+          }
+          break;
+        case Phases.MODELS_QUESTIONS_INTRO:
+          {
+            const introMessagesBubble = modelsQuestionsIntro.map((m) =>
+              this.newBotMessage(m.content),
+            );
+
+            const messages: Message[] = [...introMessagesBubble];
+
+            this.showMessages(messages, undefined, () =>
+              this.moveToPhase(Phases.MODELS_QUESTION),
+            );
+          }
+          break;
+        case Phases.MODELS_QUESTION:
+          {
+            const expectationMessage = expectationMessages[randomNumber(0, 29)];
+            const currentQuestion = this.getCurrentModelsQuestion();
+            const messages = [
+              this.newBotMessage({ text: expectationMessage }),
+              this.newBotMessage({ text: currentQuestion }),
+            ];
+
+            this.showMessages(messages);
+          }
+          break;
+        case Phases.MODELS_WRONG:
+          {
+            const currentIndex = this.stateService.currentModelsQuestion();
+            const correctAnswer = modelsQuestions[currentIndex].answers[0];
+            const incorrectMessage = incorrectMessages[randomNumber(0, 29)];
+            const solution = modelsQuestions[currentIndex].solutions;
+            const solutionMessages =
+              solution !== undefined
+                ? [
+                    this.newBotMessage({ text: 'Solution:' }),
+                    ...solution.map((s) => this.newBotMessage({ text: s })),
+                  ]
+                : [];
+
+            const messages = [
+              this.newBotMessage({ text: incorrectMessage }),
+              this.newBotMessage({
+                text: 'Correct answer is ' + correctAnswer,
+              }),
+              ...solutionMessages,
+            ];
+
+            this.showMessages(messages, undefined, () => this.runLogicUpdate());
+          }
+          break;
+        case Phases.MODELS_CORRECT:
+          {
+            const correctMessage = correctMessages[randomNumber(0, 29)];
+            const messages = [this.newBotMessage({ text: correctMessage })];
+
+            this.showMessages(messages, undefined, () => this.runLogicUpdate());
+          }
+          break;
+
+        case Phases.MODELS_RESULT:
+          {
+            const total = modelsQuestions.length;
+            const score =
+              this.userService.getCurrentValue().categories['models'];
+            const messages: Message[] = [
+              this.newBotMessage({
+                text: 'Congratulations, you have finished the Models category.',
+              }),
+              this.newBotMessage({
+                text: `Result: ${score === null ? 0 : score}/${total}`,
+              }),
+              this.newBotMessage({
+                text: 'You may now proceed to the next step.',
+              }),
+            ];
+
+            this.showMessages(messages, undefined, () => this.runLogicUpdate());
+          }
+          break;
         case Phases.CHAT_END:
           {
             const messages: Message[] = [

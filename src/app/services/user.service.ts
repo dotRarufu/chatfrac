@@ -12,6 +12,7 @@ export class UserService {
     categories: {
       definition: null,
       examples: null,
+      models: null,
     },
     preTestScore: null,
     postTestScore: null,

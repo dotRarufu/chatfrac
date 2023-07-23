@@ -21,6 +21,7 @@ export class StateService {
   currentDefinitionQuestion = signal(0);
   currentExamplesQuestion = signal(0);
   currentPostTestQuestion = signal(0);
+  currentModelsQuestion = signal(0);
   // .pipe(map((s) => (s === null ? false : s)));
 
   constructor() {}
