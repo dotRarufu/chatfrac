@@ -189,7 +189,7 @@ export class ShowMessageComponent implements OnInit {
             if (noMoreCategories) {
               setTimeout(() => {
                 this.moveToPhase(Phases.CATEGORIES_END_1);
-              }, 100);
+              });
 
               break;
             }
@@ -237,7 +237,10 @@ export class ShowMessageComponent implements OnInit {
           {
             const messages: Message[] = [
               this.newBotMessage({
-                text: 'Greetings, lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad m',
+                text: 'Welcome to ChatFrac',
+              }),
+              this.newBotMessage({
+                text: 'Start learning about fractions by tapping on "Get started"',
               }),
             ];
 
@@ -414,7 +417,7 @@ export class ShowMessageComponent implements OnInit {
               });
             };
 
-            this.showMessages(messages, undefined, showQuickReplies, 100);
+            this.showMessages(messages, undefined, showQuickReplies, 5000);
           }
           break;
         case Phases.DEFINITION_INTRO_TAGLISH:
@@ -439,7 +442,7 @@ export class ShowMessageComponent implements OnInit {
               () => {
                 showButton();
               },
-              100,
+              5000,
             );
           }
           break;
@@ -466,7 +469,7 @@ export class ShowMessageComponent implements OnInit {
               () => {
                 showButton();
               },
-              100,
+              5000,
             );
           }
           break;
@@ -495,7 +498,7 @@ export class ShowMessageComponent implements OnInit {
               });
             };
 
-            this.showMessages(messages, undefined, showQuickReplies, 100);
+            this.showMessages(messages, undefined, showQuickReplies, 5000);
           }
           break;
         case Phases.DEFINITION_INTRO_3:
@@ -522,7 +525,7 @@ export class ShowMessageComponent implements OnInit {
               () => {
                 showButton();
               },
-              100,
+              5000,
             );
           }
           break;
@@ -548,7 +551,7 @@ export class ShowMessageComponent implements OnInit {
               () => {
                 showButton();
               },
-              100,
+              5000,
             );
           }
           break;
@@ -641,7 +644,7 @@ export class ShowMessageComponent implements OnInit {
                 },
               });
             };
-            this.showMessages(messages, undefined, showButton, 100);
+            this.showMessages(messages, undefined, showButton);
           }
           break;
         case Phases.EXAMPLES_INTRO_2:
@@ -662,7 +665,7 @@ export class ShowMessageComponent implements OnInit {
                 },
               });
             };
-            this.showMessages(messages, undefined, showButton, 100);
+            this.showMessages(messages, undefined, showButton);
           }
           break;
         case Phases.EXAMPLES_INTRO_3:
@@ -683,7 +686,7 @@ export class ShowMessageComponent implements OnInit {
                 },
               });
             };
-            this.showMessages(messages, undefined, showButton, 100);
+            this.showMessages(messages, undefined, showButton);
           }
           break;
         case Phases.EXAMPLES_INTRO_4:
@@ -704,7 +707,7 @@ export class ShowMessageComponent implements OnInit {
                 },
               });
             };
-            this.showMessages(messages, undefined, showButton, 100);
+            this.showMessages(messages, undefined, showButton);
           }
           break;
         case Phases.EXAMPLES_INTRO_5:
@@ -725,7 +728,7 @@ export class ShowMessageComponent implements OnInit {
                 },
               });
             };
-            this.showMessages(messages, undefined, showButton, 100);
+            this.showMessages(messages, undefined, showButton);
           }
           break;
         case Phases.EXAMPLES_INTRO_6:
@@ -746,7 +749,7 @@ export class ShowMessageComponent implements OnInit {
                 },
               });
             };
-            this.showMessages(messages, undefined, showButton, 100);
+            this.showMessages(messages, undefined, showButton);
           }
           break;
         case Phases.EXAMPLES_INTRO_7:
@@ -768,7 +771,7 @@ export class ShowMessageComponent implements OnInit {
                 },
               });
             };
-            this.showMessages(messages, undefined, showButton, 100);
+            this.showMessages(messages, undefined, showButton);
           }
           break;
 
@@ -1209,22 +1212,22 @@ export class ShowMessageComponent implements OnInit {
               {
                 content: [
                   {
-                    message: 'ABC',
-                    image: '',
+                    message: 'Sir Rodel',
+                    image: 'assets/pips/sir-rodel.png',
                     clickCallback: () => console.log('ABC!'),
-                    link: 'https://www.fb.com/dotRarufu',
+                    link: 'https://www.facebook.com/rdlnvl',
                   },
                   {
-                    message: '123',
-                    image: '',
+                    message: "Ma'am Ana",
+                    image: 'assets/pips/maam-ana.png',
                     clickCallback: () => console.log('123!'),
-                    link: 'https://www.fb.com/dotRarufu',
+                    link: 'https://www.facebook.com/Aeguist.thrwe',
                   },
                   {
-                    message: '123',
-                    image: '',
+                    message: 'Sir CJ',
+                    image: 'assets/pips/sir-cj.png',
                     clickCallback: () => console.log('123!'),
-                    link: 'https://www.fb.com/dotRarufu',
+                    link: 'https://www.facebook.com/cjleonardooo',
                   },
                 ],
                 type: 'Carousel',

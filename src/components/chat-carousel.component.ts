@@ -14,7 +14,7 @@ import MessengerIconComponent from './icons/messenger.component';
         class="carousel-item rounded-[12px] bg-secondary  px-[12px] py-[8px]  normal-case  w-[143px] flex flex-col gap-[8px]"
       >
         <img
-          class="w-[167px] h-[80px] rounded-[8px] "
+          class="w-[167px] h-[167px] rounded-[8px] object-contain"
           [src]="
             item.image ||
             'https://cdn.matthewjamestaylor.com/img/matthew-james-taylor.jpg'
@@ -23,7 +23,7 @@ import MessengerIconComponent from './icons/messenger.component';
         <span class="font-normal text-base text-secondary-content">
           {{ item.message || 'Person Name' }}
         </span>
-        <div class="h-[1px] w-full bg-secondary-content "></div>
+        <div class="h-[1px] w-full bg-secondary-content/50 "></div>
         <a
           [href]="item.link"
           class="px-[4px] py-[8px] flex justify-center w-full btn btn-ghost gap-[8px]"

@@ -14,14 +14,17 @@ import DownloadIconComponent from './icons/download.component';
       <div class=" flex gap-[12px] items-center">
         <div class="avatar">
           <div class="w-[52px] h-[52px] rounded-full">
-            <img src="assets/sample-logo.jpeg" />
+            <img src="assets/chatfrac-logo.jpg" />
           </div>
         </div>
         <div class="flex flex-col justify-center">
-          <span class="text-[24px] text-primary-content h-[28px] leading-none"> ChatFrac </span>
-          
-            <span class="text-base text-primary-content h-[13px] leading-none"> ONLINE </span>
-          
+          <span class="text-[24px] text-primary-content h-[28px] leading-none">
+            ChatFrac
+          </span>
+
+          <span class="text-base text-primary-content h-[13px] leading-none">
+            ONLINE
+          </span>
         </div>
       </div>
 

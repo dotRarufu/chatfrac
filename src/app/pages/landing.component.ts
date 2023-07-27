@@ -14,7 +14,11 @@ import { Router } from '@angular/router';
         <div
           class="flex gap-[8px] justify-center items-center h-[120px] w-[140px] rounded-[8px] bg-gray-400 text-gray-500 "
         >
-          Logo
+          <img
+            class="rounded-[8px]"
+            src="assets/chatfrac-logo.jpg"
+            alt="chatfrac"
+          />
         </div>
         ChatFrac
         <div class="h-full"></div>
