@@ -96,6 +96,7 @@ export class ShowMessageComponent implements OnInit {
 
       return result;
     }
+    console.log('content:', content);
     throw new Error('impossible');
   }
 
@@ -321,7 +322,10 @@ export class ShowMessageComponent implements OnInit {
           break;
         case Phases.PRETEST_QUESTION:
           {
-            const expectationMessage = expectationMessages[randomNumber(0, 29)];
+            const expectationMessage =
+              expectationMessages[
+                randomNumber(0, expectationMessages.length - 1)
+              ];
             const currentQuestion = this.getCurrentPreTestQuestion();
             const messages = [
               this.newBotMessage({ text: expectationMessage }),
@@ -335,7 +339,8 @@ export class ShowMessageComponent implements OnInit {
           {
             const currentIndex = this.stateService.currentPreTestQuestion();
             const correctAnswer = preTestQuestions[currentIndex].answers[0];
-            const incorrectMessage = incorrectMessages[randomNumber(0, 29)];
+            const incorrectMessage =
+              incorrectMessages[randomNumber(0, incorrectMessages.length - 1)];
             const solution = preTestQuestions[currentIndex].solutions;
             const solutionMessages =
               solution !== undefined
@@ -358,8 +363,10 @@ export class ShowMessageComponent implements OnInit {
           break;
         case Phases.PRETEST_CORRECT:
           {
-            const correctMessage = correctMessages[randomNumber(0, 29)];
-            const gif = correctAnswerGifs[randomNumber(0, 4)];
+            const correctMessage =
+              correctMessages[randomNumber(0, correctMessages.length - 1)];
+            const gif =
+              correctAnswerGifs[randomNumber(0, correctAnswerGifs.length - 1)];
             const messages = [
               this.newBotMessage({ text: correctMessage }),
               this.newBotMessage({ text: { imgSrc: gif } }),
@@ -560,7 +567,10 @@ export class ShowMessageComponent implements OnInit {
           break;
         case Phases.DEFINITION_QUESTION:
           {
-            const expectationMessage = expectationMessages[randomNumber(0, 29)];
+            const expectationMessage =
+              expectationMessages[
+                randomNumber(0, expectationMessages.length - 1)
+              ];
             const currentQuestion = this.getCurrentDefinitionQuestion();
             const messages = [
               this.newBotMessage({ text: expectationMessage }),
@@ -574,7 +584,8 @@ export class ShowMessageComponent implements OnInit {
           {
             const currentIndex = this.stateService.currentDefinitionQuestion();
             const correctAnswer = definitionQuestions[currentIndex].answers[0];
-            const incorrectMessage = incorrectMessages[randomNumber(0, 29)];
+            const incorrectMessage =
+              incorrectMessages[randomNumber(0, incorrectMessages.length - 1)];
             const solution = definitionQuestions[currentIndex].solutions;
             const solutionMessages =
               solution !== undefined
@@ -597,8 +608,10 @@ export class ShowMessageComponent implements OnInit {
           break;
         case Phases.DEFINITION_CORRECT:
           {
-            const correctMessage = correctMessages[randomNumber(0, 29)];
-            const gif = correctAnswerGifs[randomNumber(0, 4)];
+            const correctMessage =
+              correctMessages[randomNumber(0, correctMessages.length - 1)];
+            const gif =
+              correctAnswerGifs[randomNumber(0, correctAnswerGifs.length - 1)];
             const messages = [
               this.newBotMessage({ text: correctMessage }),
               this.newBotMessage({ text: { imgSrc: gif } }),
@@ -795,7 +808,10 @@ export class ShowMessageComponent implements OnInit {
 
         case Phases.EXAMPLES_QUESTION:
           {
-            const expectationMessage = expectationMessages[randomNumber(0, 29)];
+            const expectationMessage =
+              expectationMessages[
+                randomNumber(0, expectationMessages.length - 1)
+              ];
             const currentQuestion = this.getCurrentExamplesQuestion();
             const messages = [
               this.newBotMessage({ text: expectationMessage }),
@@ -809,7 +825,8 @@ export class ShowMessageComponent implements OnInit {
           {
             const currentIndex = this.stateService.currentExamplesQuestion();
             const correctAnswer = examplesQuestions[currentIndex].answers[0];
-            const incorrectMessage = incorrectMessages[randomNumber(0, 29)];
+            const incorrectMessage =
+              incorrectMessages[randomNumber(0, incorrectMessages.length - 1)];
             const solution = examplesQuestions[currentIndex].solutions;
             const solutionMessages =
               solution !== undefined
@@ -832,8 +849,10 @@ export class ShowMessageComponent implements OnInit {
           break;
         case Phases.EXAMPLES_CORRECT:
           {
-            const correctMessage = correctMessages[randomNumber(0, 29)];
-            const gif = correctAnswerGifs[randomNumber(0, 4)];
+            const correctMessage =
+              correctMessages[randomNumber(0, correctMessages.length - 1)];
+            const gif =
+              correctAnswerGifs[randomNumber(0, correctAnswerGifs.length - 1)];
             const messages = [
               this.newBotMessage({ text: correctMessage }),
               this.newBotMessage({ text: { imgSrc: gif } }),
@@ -1046,7 +1065,10 @@ export class ShowMessageComponent implements OnInit {
           break;
         case Phases.MODELS_QUESTION:
           {
-            const expectationMessage = expectationMessages[randomNumber(0, 29)];
+            const expectationMessage =
+              expectationMessages[
+                randomNumber(0, expectationMessages.length - 1)
+              ];
             const currentQuestion = this.getCurrentModelsQuestion();
             const messages = [
               this.newBotMessage({ text: expectationMessage }),
@@ -1060,7 +1082,8 @@ export class ShowMessageComponent implements OnInit {
           {
             const currentIndex = this.stateService.currentModelsQuestion();
             const correctAnswer = modelsQuestions[currentIndex].answers[0];
-            const incorrectMessage = incorrectMessages[randomNumber(0, 29)];
+            const incorrectMessage =
+              incorrectMessages[randomNumber(0, incorrectMessages.length - 1)];
             const solution = modelsQuestions[currentIndex].solutions;
             const solutionMessages =
               solution !== undefined
@@ -1083,8 +1106,10 @@ export class ShowMessageComponent implements OnInit {
           break;
         case Phases.MODELS_CORRECT:
           {
-            const correctMessage = correctMessages[randomNumber(0, 29)];
-            const gif = correctAnswerGifs[randomNumber(0, 4)];
+            const correctMessage =
+              correctMessages[randomNumber(0, correctMessages.length - 1)];
+            const gif =
+              correctAnswerGifs[randomNumber(0, correctAnswerGifs.length - 1)];
             const messages = [
               this.newBotMessage({ text: correctMessage }),
               this.newBotMessage({ text: { imgSrc: gif } }),
@@ -1276,7 +1301,10 @@ export class ShowMessageComponent implements OnInit {
           break;
         case Phases.POSTTEST_QUESTION:
           {
-            const expectationMessage = expectationMessages[randomNumber(0, 29)];
+            const expectationMessage =
+              expectationMessages[
+                randomNumber(0, expectationMessages.length - 1)
+              ];
             const currentQuestion = this.getCurrentPostTestQuestion();
             const messages = [
               this.newBotMessage({ text: expectationMessage }),
@@ -1290,7 +1318,8 @@ export class ShowMessageComponent implements OnInit {
           {
             const currentIndex = this.stateService.currentPostTestQuestion();
             const correctAnswer = postTestQuestions[currentIndex].answers[0];
-            const incorrectMessage = incorrectMessages[randomNumber(0, 29)];
+            const incorrectMessage =
+              incorrectMessages[randomNumber(0, incorrectMessages.length - 1)];
             const solution = postTestQuestions[currentIndex].solutions;
             const solutionMessages =
               solution !== undefined
@@ -1313,8 +1342,10 @@ export class ShowMessageComponent implements OnInit {
           break;
         case Phases.POSTTEST_CORRECT:
           {
-            const correctMessage = correctMessages[randomNumber(0, 29)];
-            const gif = correctAnswerGifs[randomNumber(0, 4)];
+            const correctMessage =
+              correctMessages[randomNumber(0, correctMessages.length - 1)];
+            const gif =
+              correctAnswerGifs[randomNumber(0, correctAnswerGifs.length - 1)];
             const messages = [
               this.newBotMessage({ text: correctMessage }),
               this.newBotMessage({ text: { imgSrc: gif } }),

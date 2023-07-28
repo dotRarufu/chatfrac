@@ -7,7 +7,7 @@ export const correctMessages = [
   "You're absolutely right! Excellent work!",
   'Bravo! Your answer is spot on!',
   'You nailed it! Your answer is correct!',
-  'Correctamundo! You got the right answer!',
+  'Correct! You got the right answer!',
   "You're on fire! That's the correct answer!",
   'Perfect! Your answer is absolutely correct!',
   "You're absolutely on point! Your answer is correct!",
@@ -49,7 +49,6 @@ export const expectationMessages = [
   'This one requires some thinking. Will you answer it correctly?',
   "Let's test your knowledge. Can you get this question right?",
   'Get your thinking cap on. Will you answer this correctly?',
-  "Let's see if you're up for the challenge. Can you get this right?",
   "Think you know the answer? Let's see if you're right.",
   'This one might catch you off guard. Can you still answer it correctly?',
   "Let's see if you can crack this question. Can you get it right?",
@@ -177,7 +176,7 @@ export const preTestQuestions: Question[] = [
   },
   {
     content: { text: '23. 7/12 + 4/6 =' },
-    answers: ['15/12', '5/4'],
+    answers: ['5/4', '15/12'],
   },
   {
     content: { text: '24. 23/36 + 4/9 =' },

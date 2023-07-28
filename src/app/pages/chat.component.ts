@@ -50,7 +50,7 @@ import ChatImageComponent from 'src/components/chat-image.component';
       <app-header />
 
       <div
-        class="h-[calc(100vh-140px)] flex flex-col p-[16px] overflow-y-scroll overflow-x-clip  "
+        class="h-[calc(100vh-140px)] flex flex-col p-[16px] overflow-y-scroll overflow-x-clip scroll-smooth "
         #scrollMe
       >
         <div class="flex-1  ">
