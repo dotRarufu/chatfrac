@@ -469,7 +469,7 @@ export const definitionQuestions: Question[] = [
   },
   {
     content: {
-      text: '4. It refers to a part of a whole, in other words ang fraction ay parte ng isang buo.',
+      text: '4. It refers to a part of a whole.',
     },
     answers: ['Fraction'],
   },

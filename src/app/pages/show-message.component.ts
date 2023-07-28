@@ -347,10 +347,10 @@ export class ShowMessageComponent implements OnInit {
 
             const messages = [
               this.newBotMessage({ text: incorrectMessage }),
-              this.newBotMessage({
-                text: 'Correct answer is ' + correctAnswer,
-              }),
-              ...solutionMessages,
+              // this.newBotMessage({
+              //   text: 'Correct answer is ' + correctAnswer,
+              // }),
+              // ...solutionMessages,
             ];
 
             this.showMessages(messages, undefined, () => this.runLogicUpdate());
@@ -382,6 +382,9 @@ export class ShowMessageComponent implements OnInit {
               }),
               this.newBotMessage({
                 text: 'You may now proceed to the next step.',
+              }),
+              this.newBotMessage({
+                text: '"introduction or instructions about sa 3 categories"',
               }),
             ];
 
@@ -1232,6 +1235,15 @@ export class ShowMessageComponent implements OnInit {
                 ],
                 type: 'Carousel',
               },
+              this.newBotMessage({
+                text: 'You may also take a look on this gdrive to further improve your mastery level on addition and subtraction of dissimilar fractions',
+              }),
+              this.newBotMessage(
+                {
+                  text: 'https://drive.google.com/drive/folders/150Aq1vu-XJHfNWlHxRp4nR4HwnFKLpWh',
+                },
+                { isLink: true },
+              ),
             ];
 
             const showButton = () => {
@@ -1293,7 +1305,7 @@ export class ShowMessageComponent implements OnInit {
               this.newBotMessage({
                 text: 'Correct answer is ' + correctAnswer,
               }),
-              ...solutionMessages,
+              // ...solutionMessages,
             ];
 
             this.showMessages(messages, undefined, () => this.runLogicUpdate());
