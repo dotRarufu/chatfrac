@@ -405,6 +405,7 @@ export class ShowMessageComponent implements OnInit {
 
         case Phases.DEFINITION_INTRO:
           {
+            console.log('def intro 1');
             const introMessagesBubble = introMessages1.map((m) =>
               this.newBotMessage(m.content),
             );
@@ -489,6 +490,8 @@ export class ShowMessageComponent implements OnInit {
           break;
         case Phases.DEFINITION_INTRO_2:
           {
+            console.log('def intro 2');
+
             const introMessagesBubble = introMessages2.map((m) =>
               this.newBotMessage(m.content),
             );
@@ -517,6 +520,8 @@ export class ShowMessageComponent implements OnInit {
           break;
         case Phases.DEFINITION_INTRO_3:
           {
+            console.log('def intro 3');
+
             const introMessagesBubble = introMessages3.map((m) =>
               this.newBotMessage(m.content),
             );
@@ -528,8 +533,8 @@ export class ShowMessageComponent implements OnInit {
                 type: 'Button',
                 label: 'Next',
 
-                // callback: () => this.moveToPhase(Phases.DEFINITION_INTRO_4),
-                callback: () => this.runLogicUpdate(),
+                callback: () => this.moveToPhase(Phases.DEFINITION_INTRO_4),
+                // callback: () => this.runLogicUpdate(),
               });
             };
 
@@ -545,6 +550,8 @@ export class ShowMessageComponent implements OnInit {
           break;
         case Phases.DEFINITION_INTRO_4:
           {
+            console.log('def intro 4');
+
             const introMessagesBubble = introMessages4.map((m) =>
               this.newBotMessage(m.content),
             );

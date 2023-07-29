@@ -19,7 +19,7 @@ import { modelsQuestions } from '../modelsCategory';
 export class StepService {
   private readonly currentSubject = new BehaviorSubject(1);
   current$ = this.currentSubject.asObservable();
-  current = signal(Phases.EXAMPLES_INTRO_1);
+  current = signal(Phases.GREET);
 
   constructor(
     private messageService: MessageService,
@@ -291,7 +291,7 @@ export class StepService {
           this.actionsService.content.set({
             type: 'Input',
           });
-          this.moveToPhase(Phases.DEFINITION_INTRO_4);
+          this.moveToPhase(Phases.DEFINITION_INTRO_3);
         }
         break;
       case Phases.DEFINITION_INTRO_4:
