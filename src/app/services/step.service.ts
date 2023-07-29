@@ -19,7 +19,7 @@ import { modelsQuestions } from '../modelsCategory';
 export class StepService {
   private readonly currentSubject = new BehaviorSubject(1);
   current$ = this.currentSubject.asObservable();
-  current = signal(Phases.GREET);
+  current = signal(Phases.EXAMPLES_INTRO_1);
 
   constructor(
     private messageService: MessageService,

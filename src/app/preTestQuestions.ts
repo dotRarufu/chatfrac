@@ -144,7 +144,7 @@ export const preTestQuestions: Question[] = [
   },
   {
     content: { text: '15. 3/5 + 2/3 =' },
-    answers: ['7/8'],
+    answers: ['19/15'],
   },
   {
     content: { text: '16. 1/5-1/8=' },

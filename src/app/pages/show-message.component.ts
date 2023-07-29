@@ -38,6 +38,10 @@ import {
   examplesIntro1Messages,
   examplesIntro2Messages,
   examplesIntro3Messages,
+  examplesIntro4Messages,
+  examplesIntro5Messages,
+  examplesIntro6Messages,
+  examplesIntro7Messages,
   examplesQuestions,
 } from '../examplesCategory';
 import { postTestQuestions } from '../postTestQuestions';
@@ -55,7 +59,7 @@ import {
 } from '../modelsCategory';
 import { correctAnswerGifs } from '../correctAnswerGifs';
 
-const DELAY = 2500; // can make this random, for a better effect
+const DELAY = 100; // can make this random, for a better effect
 
 @Component({
   selector: 'show-message',
@@ -707,7 +711,7 @@ export class ShowMessageComponent implements OnInit {
           break;
         case Phases.EXAMPLES_INTRO_4:
           {
-            const introMessagesBubble = examplesIntro3Messages.map((m) =>
+            const introMessagesBubble = examplesIntro4Messages.map((m) =>
               this.newBotMessage(m.content),
             );
 
@@ -728,7 +732,7 @@ export class ShowMessageComponent implements OnInit {
           break;
         case Phases.EXAMPLES_INTRO_5:
           {
-            const introMessagesBubble = examplesIntro3Messages.map((m) =>
+            const introMessagesBubble = examplesIntro5Messages.map((m) =>
               this.newBotMessage(m.content),
             );
 
@@ -749,7 +753,7 @@ export class ShowMessageComponent implements OnInit {
           break;
         case Phases.EXAMPLES_INTRO_6:
           {
-            const introMessagesBubble = examplesIntro3Messages.map((m) =>
+            const introMessagesBubble = examplesIntro6Messages.map((m) =>
               this.newBotMessage(m.content),
             );
 
@@ -770,7 +774,7 @@ export class ShowMessageComponent implements OnInit {
           break;
         case Phases.EXAMPLES_INTRO_7:
           {
-            const introMessagesBubble = examplesIntro3Messages.map((m) =>
+            const introMessagesBubble = examplesIntro7Messages.map((m) =>
               this.newBotMessage(m.content),
             );
 
