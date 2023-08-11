@@ -299,6 +299,15 @@ export class StepService {
           this.actionsService.content.set({
             type: 'Input',
           });
+          this.moveToPhase(Phases.DEFINITION_INTRO_4);
+        }
+        break;
+      case Phases.DEFINITION_INTRO_4_END:
+        {
+          console.log('runs');
+          this.actionsService.content.set({
+            type: 'Input',
+          });
           this.moveToPhase(Phases.DEFINITION_QUESTION);
         }
         break;
@@ -403,7 +412,7 @@ export class StepService {
           this.moveToPhase(Phases.EXAMPLES_QUESTION);
         }
         break;
-      case Phases.EXAMPLES_WRONG:
+      case Phases.EXMAPLES_WRONG_CONFIRM:
         {
           this.stateService.currentExamplesQuestion.update((old) => old + 1);
           const isLastQuestion = this.checkExamplesIsLastQuestion();

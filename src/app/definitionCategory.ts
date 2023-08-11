@@ -320,6 +320,208 @@ export const introMessages3: MessageFormat[] = [
     },
   },
 ];
+export const introMessages3Taglish: MessageFormat[] = [
+  {
+    content: {
+      text: 'Well since you understand the types of fractions, let us proceed to the Kinds of Group Fractions.',
+    },
+  },
+  {
+    content: {
+      text: '1. Similar Fractions',
+    },
+  },
+  {
+    content: {
+      text: 'Ito yung mga grupo ng fraction na ang denominator ay magkaparehas.',
+    },
+  },
+  {
+    content: {
+      text: 'Halimbawa:',
+    },
+  },
+  {
+    content: {
+      text: { imgSrc: 'assets/definitionCategory/similar-fraction.png' },
+    },
+  },
+  {
+    content: {
+      text: '2. Dissimilar Fractions',
+    },
+  },
+  {
+    content: {
+      text: 'Ito ang mga fraction na ang denominator nila ay magkakaiba.',
+    },
+  },
+  {
+    content: {
+      text: 'Halimbawa:',
+    },
+  },
+  {
+    content: {
+      text: { imgSrc: 'assets/definitionCategory/dissimilar-fraction.png' },
+    },
+  },
+  {
+    content: {
+      text: '3. Equivalent Fractions',
+    },
+  },
+  {
+    content: {
+      text: 'Mga Fraction na may same value or kapag nilagay natin siya into simplest form or lowest term ay pare-parehas yung mga makukuha na value.',
+    },
+  },
+  {
+    content: {
+      text: 'Halimbawa:',
+    },
+  },
+  {
+    content: {
+      text: { imgSrc: 'assets/definitionCategory/equivalent-fraction-1.png' },
+    },
+  },
+  {
+    content: {
+      text: { imgSrc: 'assets/definitionCategory/equivalent-fraction-2.png' },
+    },
+  },
+  {
+    content: {
+      text: { imgSrc: 'assets/definitionCategory/equivalent-fraction-3.png' },
+    },
+  },
+];
+const introMessages4Subtract: MessageFormat[] = [
+  {
+    content: {
+      text: 'Subtracting Dissimilar Fractions',
+    },
+  },
+  {
+    content: {
+      text: 'The Steps are the same, but it will be different in last step because you will subtract.',
+    },
+  },
+
+  {
+    content: {
+      text: 'These are the steps on how to Subtract Dissimilar Fractions',
+    },
+  },
+  {
+    content: {
+      text: 'Step 1: Determine the LCD of the Dissimilar Fractions',
+    },
+  },
+  {
+    content: {
+      text: {
+        imgSrc: 'assets/definitionCategory/subtract/step-1.png',
+      },
+    },
+  },
+  {
+    content: {
+      text: '5 and 10 are different denominators, the most important rule in adding Dissimilar Fractions is to make the denominators the same.',
+    },
+  },
+
+  {
+    content: {
+      text: '5 and 10 are different denominators, the most important rule in adding Dissimilar Fractions is to make the denominators the same.',
+    },
+  },
+  {
+    content: {
+      text: 'You can do it by listing.',
+    },
+  },
+  {
+    content: {
+      text: '5= 5, 10, 15, 20, 25',
+    },
+  },
+  {
+    content: {
+      text: '10= 10, 20, 30, 40, 50',
+    },
+  },
+  {
+    content: {
+      text: 'In this example, the LCD is 10.',
+    },
+  },
+  {
+    content: {
+      text: 'Step 2: Make the fractions similar by finding the LCD.',
+    },
+  },
+  {
+    content: {
+      text: {
+        imgSrc: 'assets/definitionCategory/subtract/step-2.png',
+      },
+    },
+  },
+  {
+    content: {
+      text: 'So, we got the same denominator, Good Job. Proceed to the next step.',
+    },
+  },
+  {
+    content: {
+      text: 'Step 3: To get your new numerator, divide the LCD by the denominator of each fraction and multiply the quotient by its numerator.',
+    },
+  },
+
+  {
+    content: {
+      text: {
+        imgSrc: 'assets/definitionCategory/subtract/step-3.png',
+      },
+    },
+  },
+  {
+    content: {
+      text: 'Since 8/10 is the fraction that we change the denominator, we need to divide the denominator, which is 10 to the denominator of 8/5, which is 5, and 10 divided by 5 equals 2. The quotient will be multiplied to its numerator so 2 x 8= 16, so your new numerator becomes 16.',
+    },
+  },
+  {
+    content: {
+      text: {
+        imgSrc: 'assets/definitionCategory/subtract/step-3-1.png',
+      },
+    },
+  },
+  {
+    content: {
+      text: 'Step 4: Perform the operation.',
+    },
+  },
+  {
+    content: {
+      text: {
+        imgSrc: 'assets/definitionCategory/subtract/step-4.png',
+      },
+    },
+  },
+  {
+    content: {
+      text: 'Take note that you don’t need to change the value of denominator if they are the same.',
+    },
+  },
+  {
+    content: {
+      text: 'I hope you get the steps on Subtracting Dissimilar Fractions.',
+    },
+  },
+];
 export const introMessages4: MessageFormat[] = [
   {
     content: {
@@ -447,7 +649,133 @@ export const introMessages4: MessageFormat[] = [
       text: 'I hope you get the steps on Adding Dissimilar Fractions.',
     },
   },
+  ...introMessages4Subtract,
 ];
+export const introMessages4Taglish: MessageFormat[] = [
+  {
+    content: {
+      text: 'Adding Dissimilar Fractions',
+    },
+  },
+  {
+    content: {
+      text: 'Ito ang mga hakbang kung paano mag-add ng dissimilar fractions.',
+    },
+  },
+  {
+    content: {
+      text: 'Step 1: Determine the LCD of the Dissimilar Fractions',
+    },
+  },
+  {
+    content: {
+      text: 'The LCD or Least Common Denominator is the smallest number that can be used for all denominators of 2 or more fractions. It is commonly used in Addition and Subtraction of Dissimilar Fractions. Example',
+    },
+  },
+  {
+    content: {
+      text: {
+        imgSrc: 'assets/definitionCategory/dissimilar-fraction-step-1.png',
+      },
+    },
+  },
+  {
+    content: {
+      text: '5 and 10 are different denominators, the most important rule in adding Dissimilar Fractions is to make the denominators the same.',
+    },
+  },
+  {
+    content: {
+      text: 'You can do it by listing.',
+    },
+  },
+  {
+    content: {
+      text: '5 = 5, 10, 15, 20, 25',
+    },
+  },
+  {
+    content: {
+      text: '10 = 10, 20, 30, 40, 50',
+    },
+  },
+  {
+    content: {
+      text: 'Since 10 is their first similar multiple or their least common multiple, therefore, 10 is the LCD in this example.',
+    },
+  },
+  // {
+  //   content: {
+  //     text: 'In this example, the LCD is 10.',
+  //   },
+  // },
+  {
+    content: {
+      text: 'Step 2: Make the fractions similar by finding the LCD.',
+    },
+  },
+  {
+    content: {
+      text: {
+        imgSrc: 'assets/definitionCategory/dissimilar-fraction-step-2.png',
+      },
+    },
+  },
+  {
+    content: {
+      text: 'So, we got the same denominator, Good Job. Proceed to the next step.',
+    },
+  },
+  {
+    content: {
+      text: 'Step 3: To get your new numerator, divide the LCD by the denominator of each fraction and multiply the quotient by its numerator.',
+    },
+  },
+
+  {
+    content: {
+      text: {
+        imgSrc: 'assets/definitionCategory/dissimilar-fraction-step-3.png',
+      },
+    },
+  },
+  {
+    content: {
+      text: 'Since 8/10 is the fraction that we change the denominator, we need to divide the denominator, which is 10 to the denominator of 8/5, which is 5, and 10 divided by 5 equals 2. The quotient will be multiplied to its numerator so 2 x 8= 16, so your new numerator becomes 16.',
+    },
+  },
+  {
+    content: {
+      text: {
+        imgSrc: 'assets/definitionCategory/dissimilar-fraction-step-3-1.png',
+      },
+    },
+  },
+  {
+    content: {
+      text: 'Step 4: Perform the operation.',
+    },
+  },
+  {
+    content: {
+      text: {
+        imgSrc: 'assets/definitionCategory/dissimilar-fraction-step-4.png',
+      },
+    },
+  },
+  {
+    content: {
+      text: 'Take note that you don’t need to change the value of denominator if they are the same.',
+    },
+  },
+  {
+    content: {
+      text: 'I hope you get the steps on Adding Dissimilar Fractions.',
+    },
+  },
+  ...introMessages4Subtract,
+];
+
 export const definitionQuestions: Question[] = [
   {
     content: {
@@ -465,18 +793,18 @@ export const definitionQuestions: Question[] = [
     content: {
       text: '3. Ano ang tawag sa linya na nasa pagitan ng Fraction?',
     },
-    answers: ['Vinculum', 'Fraction Bar'],
+    answers: ['Vinculum', 'Fraction Bar', 'vinculum', 'fraction bar'],
   },
   {
     content: {
       text: '4. It refers to a part of a whole.',
     },
-    answers: ['Fraction'],
+    answers: ['Fraction', 'fraction'],
   },
   {
     content: {
       text: '5. It is the smallest number that can be used for all denominators of 2 or more fractions.',
     },
-    answers: ['Least Common Denominator', 'LCD'],
+    answers: ['Least Common Denominator', 'least common denominator'],
   },
 ];

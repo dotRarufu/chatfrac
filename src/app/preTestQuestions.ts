@@ -38,16 +38,16 @@ export const expectationMessages = [
   "Let's see if you will get this one right.",
   "Here's a challenge for you. Can you get this right?",
   'Time to test your knowledge. Will you get this one right?',
-  'Think carefully. Can you answer this correctly?',
+  'Think carefully and I hope you answer this correctly?',
   "Get ready! Let's see if you can answer this right.",
   'This one might be a bit tricky. Can you get it right?',
   "Let's put your skills to the test. Will you answer this correctly?",
   "Challenge accepted? Let's see if you can get this one right.",
-  'Time for a brain teaser. Can you answer this correctly?',
+  'Time for a brain teaser and answer this pre-test.',
   "Ready for a challenge? Let's see if you can get this right.",
-  "Here's a question for you. Can you answer it correctly?",
+  'You can do better, try to answer the next question correctly',
   'This one requires some thinking. Will you answer it correctly?',
-  "Let's test your knowledge. Can you get this question right?",
+  'Now try this and try to answer it right.',
   'Get your thinking cap on. Will you answer this correctly?',
   "Think you know the answer? Let's see if you're right.",
   'This one might catch you off guard. Can you still answer it correctly?',
@@ -110,7 +110,7 @@ export const preTestQuestions: Question[] = [
   },
   {
     content: { text: '8. 3/8 + 3/4 =' },
-    answers: ['42/48', '7/8'],
+    answers: ['9/8'],
   },
   {
     content: {
@@ -160,7 +160,7 @@ export const preTestQuestions: Question[] = [
   },
   {
     content: { text: '19. 1/3 + 2/10 =' },
-    answers: ['8/10', '16/30'],
+    answers: ['8/15'],
   },
   {
     content: { text: '20. 15/4- 2/3 =' },
@@ -187,7 +187,7 @@ export const preTestQuestions: Question[] = [
       text: '25. Analene caught fish weighing 5 and 2/3 kg. She gave 3 and 1/6 kg of fish to Cj, how many kilograms does Analene have left?',
     },
     solutions: ['5 2/3 - 3 1/6 =', '= 2 3/6 or 2 1/2 kg of fish'],
-    answers: ['2 1/2 kg of fish', '2 3/6', '2 and 1/2', '2 1/2'],
+    answers: ['5/2', '2 1/2 kg of fish', '2 3/6', '2 and 1/2', '2 1/2'],
   },
   {
     content: {

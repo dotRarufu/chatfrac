@@ -32,7 +32,9 @@ import {
   introMessages2,
   introMessages2Taglish,
   introMessages3,
+  introMessages3Taglish,
   introMessages4,
+  introMessages4Taglish,
 } from '../definitionCategory';
 import {
   examplesIntro1Messages,
@@ -42,6 +44,7 @@ import {
   examplesIntro5Messages,
   examplesIntro6Messages,
   examplesIntro7Messages,
+  examplesIntro8Messages,
   examplesQuestions,
 } from '../examplesCategory';
 import { postTestQuestions } from '../postTestQuestions';
@@ -59,7 +62,7 @@ import {
 } from '../modelsCategory';
 import { correctAnswerGifs } from '../correctAnswerGifs';
 
-const DELAY = 100; // can make this random, for a better effect
+const DELAY = 2500; // can make this random, for a better effect
 
 @Component({
   selector: 'show-message',
@@ -474,7 +477,7 @@ export class ShowMessageComponent implements OnInit {
               this.actionsService.content.set({
                 type: 'Button',
                 label: 'Next',
-                callback: () => this.moveToPhase(Phases.DEFINITION_INTRO_2),
+                callback: () => this.moveToPhase(Phases.DEFINITION_INTRO_3),
               });
             };
 
@@ -526,15 +529,53 @@ export class ShowMessageComponent implements OnInit {
               this.newBotMessage(m.content),
             );
 
+            const messages: Message[] = [
+              ...introMessagesBubble,
+              this.newBotMessage({
+                text: 'Do you need a Tagalog-English Translation?',
+              }),
+            ];
+
+            const showQuickReplies = () => {
+              this.actionsService.content.set({
+                type: 'QuickReply',
+                items: [
+                  {
+                    label: 'Yes',
+                    callback: () =>
+                      this.moveToPhase(Phases.DEFINITION_INTRO_3_TAGLISH),
+                  },
+                  {
+                    label: 'No',
+                    callback: () => this.moveToPhase(Phases.DEFINITION_INTRO_4),
+                  },
+                ],
+              });
+            };
+
+            this.showMessages(
+              messages,
+              undefined,
+              () => {
+                showQuickReplies();
+              },
+              5000,
+            );
+          }
+          break;
+        case Phases.DEFINITION_INTRO_3_TAGLISH:
+          {
+            const introMessagesBubble = introMessages3Taglish.map((m) =>
+              this.newBotMessage(m.content),
+            );
+
             const messages: Message[] = [...introMessagesBubble];
 
             const showButton = () => {
               this.actionsService.content.set({
                 type: 'Button',
                 label: 'Next',
-
                 callback: () => this.moveToPhase(Phases.DEFINITION_INTRO_4),
-                // callback: () => this.runLogicUpdate(),
               });
             };
 
@@ -556,13 +597,56 @@ export class ShowMessageComponent implements OnInit {
               this.newBotMessage(m.content),
             );
 
+            const messages: Message[] = [
+              ...introMessagesBubble,
+              this.newBotMessage({
+                text: 'Do you need a Tagalog-English Translation?',
+              }),
+            ];
+
+            const showQuickReplies = () => {
+              this.actionsService.content.set({
+                type: 'QuickReply',
+                items: [
+                  {
+                    label: 'Yes',
+                    callback: () =>
+                      this.moveToPhase(Phases.DEFINITION_INTRO_4_TAGLISH),
+                  },
+                  {
+                    label: 'No',
+                    callback: () =>
+                      this.moveToPhase(Phases.DEFINITION_INTRO_4_END),
+                  },
+                ],
+              });
+            };
+
+            this.showMessages(
+              messages,
+              undefined,
+              () => {
+                showQuickReplies();
+              },
+              5000,
+            );
+          }
+          break;
+        case Phases.DEFINITION_INTRO_4_TAGLISH:
+          {
+            console.log('def intro 4 taglish');
+
+            const introMessagesBubble = introMessages4Taglish.map((m) =>
+              this.newBotMessage(m.content),
+            );
+
             const messages: Message[] = [...introMessagesBubble];
 
             const showButton = () => {
               this.actionsService.content.set({
                 type: 'Button',
                 label: 'Next',
-                callback: () => this.runLogicUpdate(),
+                callback: () => this.moveToPhase(Phases.DEFINITION_INTRO_4_END),
               });
             };
 
@@ -574,6 +658,12 @@ export class ShowMessageComponent implements OnInit {
               },
               5000,
             );
+          }
+          break;
+        case Phases.DEFINITION_INTRO_4_END:
+          {
+            const messages: Message[] = [];
+            this.showMessages(messages, undefined, () => this.runLogicUpdate());
           }
           break;
         case Phases.DEFINITION_QUESTION:
@@ -781,7 +871,7 @@ export class ShowMessageComponent implements OnInit {
           break;
         case Phases.EXAMPLES_INTRO_7:
           {
-            const introMessagesBubble = examplesIntro7Messages.map((m) =>
+            const introMessagesBubble = examplesIntro8Messages.map((m) =>
               this.newBotMessage(m.content),
             );
 
@@ -792,8 +882,7 @@ export class ShowMessageComponent implements OnInit {
                 type: 'Button',
                 label: 'Yes',
                 callback: () => {
-                  // todo: move to question or ilalagay pa ba yung replay
-                  this.moveToPhase(Phases.EXAMPLES_QUESTION_INTRO);
+                  this.moveToPhase(Phases.EXAMPLES_INTRO_7_1);
                   this.actionsService.content.set({ type: 'Input' });
                 },
               });
@@ -801,14 +890,99 @@ export class ShowMessageComponent implements OnInit {
             this.showMessages(messages, undefined, showButton);
           }
           break;
+        case Phases.EXAMPLES_INTRO_7_1:
+          {
+            const introMessagesBubble = examplesIntro7Messages.map((m) =>
+              this.newBotMessage(m.content),
+            );
 
+            const messages: Message[] = [...introMessagesBubble];
+
+            const showQuickReplies = () => {
+              this.actionsService.content.set({
+                type: 'QuickReply',
+                items: [
+                  {
+                    label: 'Alright!',
+                    callback: () =>
+                      this.moveToPhase(Phases.EXAMPLES_INTRO_7_WAIT),
+                  },
+                  {
+                    label: 'No, thank you',
+                    callback: () =>
+                      this.moveToPhase(Phases.EXAMPLES_QUESTION_INTRO),
+                  },
+                ],
+              });
+            };
+
+            this.showMessages(messages, undefined, () => showQuickReplies());
+          }
+          break;
+        case Phases.EXAMPLES_INTRO_7_WAIT:
+          {
+            const messages: Message[] = [
+              this.newBotMessage({
+                text: 'Are you ready?',
+              }),
+            ];
+
+            const showQuickReplies = () => {
+              this.actionsService.content.set({
+                type: 'QuickReply',
+                items: [
+                  {
+                    label: 'Yes',
+                    callback: () =>
+                      this.moveToPhase(Phases.EXAMPLES_QUESTION_INTRO),
+                  },
+                  {
+                    label: 'No',
+                    callback: () =>
+                      this.moveToPhase(Phases.EXAMPLES_INTRO_7_WAIT_2),
+                  },
+                ],
+              });
+            };
+
+            this.showMessages(messages, undefined, () => showQuickReplies());
+          }
+          break;
+        case Phases.EXAMPLES_INTRO_7_WAIT_2:
+          {
+            const messages: Message[] = [
+              this.newBotMessage({
+                text: 'Are you ready now?',
+              }),
+            ];
+
+            const showQuickReplies = () => {
+              this.actionsService.content.set({
+                type: 'QuickReply',
+                items: [
+                  {
+                    label: 'Yes',
+                    callback: () =>
+                      this.moveToPhase(Phases.EXAMPLES_QUESTION_INTRO),
+                  },
+                  {
+                    label: 'No',
+                    callback: () =>
+                      this.moveToPhase(Phases.EXAMPLES_INTRO_7_WAIT),
+                  },
+                ],
+              });
+            };
+
+            this.showMessages(messages, undefined, () => showQuickReplies());
+          }
+          break;
         case Phases.EXAMPLES_QUESTION_INTRO:
           {
             const messages: Message[] = [
               this.newBotMessage({
                 text: "Now, let's look if you increase your level of comprehension with regards Addition and Subtraction of Dissimilar Fractions",
               }),
-              this.newBotMessage({ text: 'Are you ready?' }),
             ];
 
             this.showMessages(messages, undefined, () =>
@@ -847,15 +1021,108 @@ export class ShowMessageComponent implements OnInit {
                   ]
                 : [];
 
+            const confirmationMessage =
+              randomNumber(0, 1) === 0 ? 'Understand?' : 'Get it?';
             const messages = [
               this.newBotMessage({ text: incorrectMessage }),
               this.newBotMessage({
                 text: 'Correct answer is ' + correctAnswer,
               }),
               ...solutionMessages,
+              this.newBotMessage({ text: confirmationMessage }),
+            ];
+
+            const showQuickReplies = () => {
+              this.actionsService.content.set({
+                type: 'QuickReply',
+                items: [
+                  {
+                    label: 'Yes',
+                    callback: () =>
+                      this.moveToPhase(Phases.EXMAPLES_WRONG_CONFIRM),
+                  },
+                  {
+                    label: 'No',
+                    callback: () =>
+                      this.moveToPhase(Phases.EXMAPLES_WRONG_CONFIRM_1),
+                  },
+                ],
+              });
+            };
+            this.showMessages(messages, undefined, () => showQuickReplies());
+          }
+          break;
+        case Phases.EXMAPLES_WRONG_CONFIRM:
+          {
+            const messages: Message[] = [
+              this.newBotMessage({
+                text: "Then let's proceed",
+              }),
             ];
 
             this.showMessages(messages, undefined, () => this.runLogicUpdate());
+          }
+          break;
+        case Phases.EXMAPLES_WRONG_CONFIRM_1:
+          {
+            const messages: Message[] = [
+              this.newBotMessage({
+                text: 'Take your time to understand it.',
+              }),
+              this.newBotMessage({
+                text: 'Do you understand it now?',
+              }),
+            ];
+
+            const showQuickReplies = () => {
+              this.actionsService.content.set({
+                type: 'QuickReply',
+                items: [
+                  {
+                    label: 'Yes',
+                    callback: () =>
+                      this.moveToPhase(Phases.EXMAPLES_WRONG_CONFIRM),
+                  },
+                  {
+                    label: 'No',
+                    callback: () =>
+                      this.moveToPhase(Phases.EXMAPLES_WRONG_CONFIRM_2),
+                  },
+                ],
+              });
+            };
+            this.showMessages(messages, undefined, () => showQuickReplies());
+          }
+          break;
+        case Phases.EXMAPLES_WRONG_CONFIRM_2:
+          {
+            const messages: Message[] = [
+              this.newBotMessage({
+                text: 'Okay, I will keep waiting until you understand it.',
+              }),
+              this.newBotMessage({
+                text: 'Do you understand it now?',
+              }),
+            ];
+
+            const showQuickReplies = () => {
+              this.actionsService.content.set({
+                type: 'QuickReply',
+                items: [
+                  {
+                    label: 'Yes',
+                    callback: () =>
+                      this.moveToPhase(Phases.EXMAPLES_WRONG_CONFIRM),
+                  },
+                  {
+                    label: 'No',
+                    callback: () =>
+                      this.moveToPhase(Phases.EXMAPLES_WRONG_CONFIRM_1),
+                  },
+                ],
+              });
+            };
+            this.showMessages(messages, undefined, () => showQuickReplies());
           }
           break;
         case Phases.EXAMPLES_CORRECT:
