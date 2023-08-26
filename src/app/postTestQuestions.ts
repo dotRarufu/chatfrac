@@ -18,7 +18,7 @@ export const postTestQuestions: Question[] = [
       text: '3. You bought three boxes of 12-inch pizza as your birthday present for your mother for her 62nd birthday. If the sum of the slice of pizzas is 24/8 and your family already ate 5/2 of its portion, how many pizza slices were left?',
     },
     solutions: ['24/8 - 5/2=', '= 24/8 - 20/8', '= 4/8 or 1/2'],
-    answers: ['1/2 slices of pizza', '1/2', '4/8'],
+    answers: [ '1/2', '1/2 slices of pizza', '4/8'],
   },
   {
     content: {
@@ -65,7 +65,7 @@ export const postTestQuestions: Question[] = [
       text: '10. 1/3 + 7/10=',
     },
 
-    answers: ['3 1/10', '31/30', '3 and 1/10'],
+    answers: ['31/10', '3 1/10', '31/30', '3 and 1/10'],
   },
   {
     content: {
@@ -78,7 +78,7 @@ export const postTestQuestions: Question[] = [
       text: '12. In the afternoon, your father cooks 3/4 kg of rice before he fetches your younger brother in the school, however, he remembered that your relatives would pay a visit later in the evening. He decided to call and tell you to cook an additional 3/2 kg for dinner. How many kg of rice is prepared for dinner later?',
     },
     solutions: ['3/4 + 3/2 =', '= 9/4 or 2 and 1/4 kg of rice'],
-    answers: ['9/4 kg of rice', '9/4', '2 and 1/4', '2 1/4'],
+    answers: [ '9/4', '9/4 kg of rice', '2 and 1/4', '2 1/4'],
   },
 
   {
@@ -117,7 +117,7 @@ export const postTestQuestions: Question[] = [
       text: "18. Yesterday, Vincent's family ate 11/3 kilos of Mangoes and 38/6 kilos of Avocados. What were the total kilos of fruits they ate?",
     },
     solutions: ['11/3 + 38/6 =', '=60/6 or 10 kilos of fruits'],
-    answers: ['10 kilos of fruits', '60/6', '10'],
+    answers: ['10', '10 kilos of fruits', '60/6' ],
   },
   {
     content: {
@@ -202,6 +202,6 @@ export const postTestQuestions: Question[] = [
       '/9 + 2/3= 21/27 +18 /27',
       '= 39/27 or 13/9',
     ],
-    answers: ['13/9 cakes', '13/9', '39/27'],
+    answers: ['13/9', '13/9 cakes', '39/27'],
   },
 ];

@@ -304,9 +304,24 @@ export const modelsIntro8Linear: MessageFormat[] = [
   },
 ];
 export const modelsQuestionsIntro: MessageFormat[] = [
+  // {
+  //   content: {
+  //     text: 'Before we proceed, you must answer the 5-item assessment.',
+  //   },
+  // },
   {
     content: {
-      text: 'Before we proceed, you must answer the 5-item assessment.',
+      text: 'Now let\'s see what you have learned from this category.',
+    },
+  },
+  {
+    content: {
+      text: 'Answers must be in the form of IMPROPER FRACTIONS or in a LOWEST TERM.',
+    },
+  },
+  {
+    content: {
+      text: 'Goodluck, give your best shot!!!.',
     },
   },
 ];

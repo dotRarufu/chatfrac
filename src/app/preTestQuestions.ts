@@ -37,7 +37,6 @@ export const correctMessages = [
 export const expectationMessages = [
   "Let's see if you will get this one right.",
   "Here's a challenge for you. Can you get this right?",
-  'Time to test your knowledge. Will you get this one right?',
   'Think carefully and I hope you answer this correctly?',
   "Get ready! Let's see if you can answer this right.",
   'This one might be a bit tricky. Can you get it right?',
@@ -65,7 +64,7 @@ export const incorrectMessages = [
   'Wrong answer.',
   "Sorry, that's not correct.",
   'Close, but not quite right.',
-  'Not the correct answer.',
+  'Sorry, it is not the correct answer.',
   "Nope, that's not it.",
   'Sorry, incorrect answer.',
   'Almost there, but not quite right.',

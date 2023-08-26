@@ -37,7 +37,7 @@ export const introMessages1: MessageFormat[] = [
   },
   {
     content: {
-      text: 'The line in the middle of the numbersis called the Vinculum or the Fraction Bar.',
+      text: 'The line in the middle of the numbers is called the Vinculum or the Fraction Bar.',
     },
   },
   {
@@ -301,7 +301,7 @@ export const introMessages3: MessageFormat[] = [
   },
   {
     content: {
-      text: 'Example:s',
+      text: 'Examples:',
     },
   },
   {
@@ -781,30 +781,30 @@ export const definitionQuestions: Question[] = [
     content: {
       text: '1. Ano ang tawag ng nasa ilalim ng fraction bar o Vinculum?',
     },
-    answers: ['Denominator'],
+    answers: ['DENOMINATOR'],
   },
   {
     content: {
       text: '2. Ano ang tawag sa mga fractions na magkaiba ang kanilang denominator?',
     },
-    answers: ['Dissimilar Fraction'],
+    answers: ['DISSIMILAR FRACTIONS'],
   },
   {
     content: {
       text: '3. Ano ang tawag sa linya na nasa pagitan ng Fraction?',
     },
-    answers: ['Vinculum', 'Fraction Bar', 'vinculum', 'fraction bar'],
+    answers: ['FRACTION BAR', 'VINCULUM'],
   },
   {
     content: {
       text: '4. It refers to a part of a whole.',
     },
-    answers: ['Fraction', 'fraction'],
+    answers: ['FRACTION'],
   },
   {
     content: {
       text: '5. It is the smallest number that can be used for all denominators of 2 or more fractions.',
     },
-    answers: ['Least Common Denominator', 'least common denominator'],
+    answers: ['LEAST COMMON DENOMINATOR'],
   },
 ];

@@ -319,8 +319,17 @@ export class ShowMessageComponent implements OnInit {
           {
             const messages: Message[] = [
               this.newBotMessage({ text: 'Thank you.' }),
+              // this.newBotMessage({
+              //   text: 'In order to help you further, please proceed answering the pre-test.',
+              // }),
               this.newBotMessage({
-                text: 'In order to help you further, please proceed answering the pre-test.',
+                text: "Before you continue your journey on improving your mastery level of Addition and Substraction of Dissimilar Fractions, let's see first how good you are in this matter.",
+              }),
+              this.newBotMessage({
+                text: 'Read and analyze each question carefully',
+              }),
+              this.newBotMessage({
+                text: 'Type your answer on the provided chatbox below and ensure that your answer must be in the LOWEST TERM in the form of IMPROPER FRACTIONS',
               }),
             ];
 
@@ -398,7 +407,13 @@ export class ShowMessageComponent implements OnInit {
                 text: 'You may now proceed to the next step.',
               }),
               this.newBotMessage({
-                text: '"introduction or instructions about sa 3 categories"',
+                text: 'Hello there! Now let us explore more about Fractions, particularly Addition and Subtracion of Dissimilar Fractions with the help of the following categories; Definition, Examples, and Models',
+              }),
+              this.newBotMessage({
+                text: 'These categories aim to help you throughout your journey learning Addition and Subtraction of Dissimilar Fractions.',
+              }),
+              this.newBotMessage({
+                text: "Don't worry, you can choose which category you want to come first. Have Fun and Enjoy exploring the categories.",
               }),
             ];
 
@@ -662,7 +677,20 @@ export class ShowMessageComponent implements OnInit {
           break;
         case Phases.DEFINITION_INTRO_4_END:
           {
-            const messages: Message[] = [];
+            const messages: Message[] = [
+              this.newBotMessage({
+                text: "Now let's see what you have learned from this category.",
+              }),
+              this.newBotMessage({
+                text: 'Type the correct answer and answers using CAPITAL LETTERS.',
+              }),
+              this.newBotMessage({
+                text: 'For example; UNIT FRACTION, NUMERATOR, etc...',
+              }),
+              this.newBotMessage({
+                text: 'Do your best and good luck on your short exercise students',
+              }),
+            ];
             this.showMessages(messages, undefined, () => this.runLogicUpdate());
           }
           break;
@@ -1491,7 +1519,7 @@ export class ShowMessageComponent implements OnInit {
               }),
               this.newBotMessage(
                 {
-                  text: 'https://drive.google.com/drive/folders/150Aq1vu-XJHfNWlHxRp4nR4HwnFKLpWh',
+                  text: 'https://drive.google.com/drive/folders/5000Aq1vu-XJHfNWlHxRp4nR4HwnFKLpWh',
                 },
                 { isLink: true },
               ),
@@ -1543,7 +1571,7 @@ export class ShowMessageComponent implements OnInit {
               }),
               this.newBotMessage(
                 {
-                  text: 'https://drive.google.com/drive/folders/150Aq1vu-XJHfNWlHxRp4nR4HwnFKLpWh',
+                  text: 'https://drive.google.com/drive/folders/5000Aq1vu-XJHfNWlHxRp4nR4HwnFKLpWh',
                 },
                 { isLink: true },
               ),
@@ -1567,8 +1595,39 @@ export class ShowMessageComponent implements OnInit {
         case Phases.POSTTEST_INTRO:
           {
             const messages: Message[] = [
+              // this.newBotMessage({
+              //   text: 'In order assess your understanding of the topic, please proceed answering the post-test.',
+              // }),
               this.newBotMessage({
-                text: 'In order assess your understanding of the topic, please proceed answering the post-test.',
+                text: 'You made it! You reach this far and I am sure that you are now ready to prove that you have learned Fractions better especially Addition and Subtraction of Dissimilar Fractions. Am I right?',
+              }),
+            ];
+
+            const showButton = () => {
+              this.actionsService.content.set({
+                type: 'Button',
+                label: 'Yes',
+                callback: () => {
+                  this.actionsService.content.set({ type: 'Input' });
+                  this.moveToPhase(Phases.POSTTEST_INTRO_1);
+                },
+              });
+            };
+
+            this.showMessages(messages, undefined, showButton);
+          }
+          break;
+        case Phases.POSTTEST_INTRO_1:
+          {
+            const messages: Message[] = [
+              // this.newBotMessage({
+              //   text: 'In order assess your understanding of the topic, please proceed answering the post-test.',
+              // }),
+              this.newBotMessage({
+                text: 'Great! Now, it is showtime!',
+              }),
+              this.newBotMessage({
+                text: 'Answer the following question with all your might. I know you can ace this exam, good luck and do your best',
               }),
             ];
 

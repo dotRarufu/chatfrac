@@ -1,10 +1,13 @@
 import { CommonModule } from '@angular/common';
 import {
   AfterViewChecked,
+  AfterViewInit,
   Component,
   ElementRef,
   OnInit,
+  QueryList,
   ViewChild,
+  ViewChildren,
 } from '@angular/core';
 import { MessageService } from 'src/app/services/message.service';
 import { FormsModule } from '@angular/forms';
@@ -51,9 +54,9 @@ import ChatImageComponent from 'src/components/chat-image.component';
 
       <div
         class="h-[calc(100vh-140px)] flex flex-col p-[16px] overflow-y-scroll overflow-x-clip scroll-smooth "
-        #scrollMe
+        #scrollMe (scroll)="onScroll()"
       >
-        <div class="flex-1  ">
+        <div class="flex-1">
           <div *ngFor="let message of messageService.messages()">
             <chat-bubble
               *ngIf="message.type === 'ChatBubble'"
@@ -134,7 +137,7 @@ import ChatImageComponent from 'src/components/chat-image.component';
     <show-message />
   `,
 })
-export default class ChatComponent implements OnInit, AfterViewChecked {
+export default class ChatComponent implements AfterViewChecked {
   value = '';
 
   getQuickReplyContent(): QuickReplyContent {
@@ -164,25 +167,32 @@ export default class ChatComponent implements OnInit, AfterViewChecked {
     public stateService: StateService,
     public supabaseService: SupabaseService,
   ) {
-    console.log('chat comp runs');
+    
   }
 
+  disableScrollDown = false
+  @ViewChild('scrollMe') private myScrollContainer!: ElementRef;
   ngAfterViewChecked() {
     this.scrollToBottom();
-  }
+}
 
-  @ViewChild('scrollMe') private myScrollContainer?: ElementRef;
-
-  ngOnInit() {
-    this.scrollToBottom();
+onScroll() {
+  let element = this.myScrollContainer.nativeElement
+  let atBottom = element.scrollHeight - element.scrollTop === element.clientHeight
+  if (this.disableScrollDown && atBottom) {
+      this.disableScrollDown = false
+  } else {
+      this.disableScrollDown = true
   }
+}
 
-  scrollToBottom(): void {
-    if (this.myScrollContainer !== undefined) {
-      try {
-        this.myScrollContainer.nativeElement.scrollTop =
-          this.myScrollContainer.nativeElement.scrollHeight;
-      } catch (err) {}
-    }
+
+private scrollToBottom(): void {
+  if (this.disableScrollDown) {
+      return
   }
+  try {
+      this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
+  } catch(err) { }
+}
 }
