@@ -17,6 +17,10 @@ const routes: Routes = [
     path: 'download-result',
     loadComponent: () => import('./app/pages/result.component'),
   },
+  {
+    path: 'refactor',
+    loadComponent: () => import('./app/pages/refactor.component'),
+  },
 ];
 
 bootstrapApplication(AppComponent, {
