@@ -2,8 +2,8 @@ import { BehaviorSubject } from 'rxjs';
 import { Phase } from '../pages/refactor.component';
 import { preTestQuestions } from '../preTestQuestions';
 
-const nameSubject = new BehaviorSubject('');
-const name$ = nameSubject.asObservable;
+// const nameSubject = new BehaviorSubject('');
+// const name$ = nameSubject.asObservable;
 
 const programmedPhases: Phase[] = [
   {
@@ -32,8 +32,8 @@ const programmedPhases: Phase[] = [
       localStorage.setItem('chatFrac_name', userInput);
       const valuepersisted = localStorage.getItem('chatFrac_name');
 
-      console.log('1 side effect set name:', userInput);
-      console.log('persisted name:', valuepersisted);
+      // console.log('1 side effect set name:', userInput);
+      // console.log('persisted name:', valuepersisted);
       return;
     },
   },
@@ -94,7 +94,7 @@ const programmedPhases: Phase[] = [
   {
     id: 'demographics-2-confirm',
     next: (_, userInput) => {
-      if (userInput === 'Yes') return 'pretest-intro';
+      if (userInput === 'Yes') return 'pretest-inform';
 
       return 'demographics-2-attempt';
     },
@@ -128,7 +128,7 @@ const programmedPhases: Phase[] = [
     },
   },
   {
-    id: 'pretest-intro',
+    id: 'pretest-inform',
     next: () => 'pretest-question',
     getMessages: () => [
       { data: 'Thank you.', sender: 'bot' },
@@ -163,7 +163,17 @@ const programmedPhases: Phase[] = [
       const currentNumber = Number(
         localStorage.getItem('chatFrac_pretestNumber') || 1,
       );
-      const currentQuestion = preTestQuestions[currentNumber];
+      const isLastNumber = currentNumber >= 5;
+
+      if (isLastNumber)
+        return [
+          {
+            sender: 'bot',
+            data: 'You already answered all questions in this category',
+          },
+        ];
+
+      const currentQuestion = preTestQuestions[currentNumber - 1];
 
       return [
         // update type for data property

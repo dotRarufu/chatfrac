@@ -38,6 +38,8 @@ export default class RefactoredChatInputComponent {
   @Output() send = new EventEmitter<string>();
 
   handleSend() {
+    if (!this.value.value) return;
+
     this.send.emit(this.value.value);
     this.value.reset();
   }

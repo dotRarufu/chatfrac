@@ -72,6 +72,23 @@ export type Message = {
   data: string;
 };
 
+const DELAY = 100;
+
+const getPhase = (phaseId: string) => {
+  const match = programmedPhases.find(({ id }) => id === phaseId);
+
+  if (match) return match;
+
+  const endPhase: Phase = {
+    isQuestion: { answer: '_', inputType: 'INPUT' },
+    id: 'end-of-everything',
+    getMessages: () => [{ data: 'You have reached the end', sender: 'bot' }],
+    next: () => '_',
+  };
+
+  return endPhase;
+};
+
 @Component({
   selector: 'chat',
   standalone: true,
@@ -97,7 +114,7 @@ export type Message = {
       class="w-full max-w-[480px] rounded-[5px] mx-auto h-screen flex flex-col "
       *ngIf="{
         isTyping: isTyping$ | async,
-        activePhase: activePhase$ | async
+        activePhase: activePhaseA$ | async
       } as observables"
     >
       <app-header />
@@ -153,13 +170,11 @@ export type Message = {
         </div>
       </div>
 
-      <div class=" p-[8px]">
-        <ng-container
-          *ngIf="
-            !observables.isTyping &&
-            observables.activePhase?.isQuestion?.inputType === 'QUICK_REPLY'
-          "
-        >
+      <div
+        class=" p-[8px]"
+        [ngSwitch]="observables.activePhase?.isQuestion?.inputType"
+      >
+        <ng-container *ngSwitchCase="'QUICK_REPLY'">
           <refactored-quick-replies
             [content]="observables.activePhase?.isQuestion?.quickReplies || []"
             (send)="sendMessage($event)"
@@ -169,18 +184,7 @@ export type Message = {
           </div>
         </ng-container>
 
-        <refactored-chat-input
-          [inputIsDisabled]="!!observables.isTyping"
-          (send)="sendMessage($event)"
-          *ngIf="observables.isTyping ||observables.activePhase?.isQuestion?.inputType === 'INPUT'"
-        />
-
-        <ng-container
-          *ngIf="
-            !observables.isTyping &&
-            observables.activePhase?.isQuestion?.inputType === 'BUTTON'
-          "
-        >
+        <ng-container *ngSwitchCase="'BUTTON'">
           <button
             (click)="
               sendMessage(observables.activePhase?.isQuestion?.buttonName || '')
@@ -190,6 +194,12 @@ export type Message = {
             {{ observables.activePhase?.isQuestion?.buttonName }}
           </button>
         </ng-container>
+        <refactored-chat-input
+          [inputIsDisabled]="!!observables.isTyping"
+          (send)="sendMessage($event)"
+          *ngSwitchDefault
+        />
+        {{ observables.activePhase | json }}
       </div>
     </div>
   `,
@@ -210,7 +220,7 @@ export default class RefactorComponent implements AfterViewChecked {
         delayWhen((m) => {
           const isBotMessage = m[m.length - 1].sender === 'bot';
 
-          return timer(isBotMessage ? 3000 : 0);
+          return timer(isBotMessage ? DELAY : 0);
         }),
         tap((_) => this.isTypingSubject.next(false)),
       ),
@@ -224,39 +234,34 @@ export default class RefactorComponent implements AfterViewChecked {
       { data: 'Boots up | this should not be visible', sender: 'bot' },
     ],
   });
-  activePhase$ = this.activePhaseSubject
-    .asObservable()
-    .pipe(tap((v) => v.isQuestion?.inputType));
+  // bug in activePhaseA$ and activePhase$, not synced with each other
+  activePhaseA$ = this.activePhaseSubject.asObservable();
+  activePhase$ = this.activePhaseSubject.asObservable();
 
   activePhaseEffect = combineLatest({
     activePhase: this.activePhase$,
     userInput: this.userInput$,
-  })
-    .pipe(
-      map(({ activePhase, userInput }) => {
-        const { isQuestion, sideEffect } = activePhase;
+  }).subscribe(({ activePhase, userInput }) => {
+    const { isQuestion, sideEffect } = activePhase;
 
-        if (isQuestion) {
-          if (userInput === '') return;
+    if (isQuestion) {
+      if (userInput === '') return;
 
-          // userInputField.reset() does not run immediately, use this instead
-          this.userInputSubject.next('');
+      // userInputField.reset() does not run immediately, use this instead
+      this.userInputSubject.next('');
 
-          const isCorrectAnswer = isQuestion.answer === userInput;
+      const isCorrectAnswer = isQuestion.answer === userInput;
 
-          sideEffect && sideEffect(isCorrectAnswer, userInput);
+      sideEffect && sideEffect(isCorrectAnswer, userInput);
+      this.moveToNextPhase(isCorrectAnswer, userInput);
 
-          this.moveToNextPhase(activePhase, isCorrectAnswer, userInput);
+      return;
+    }
 
-          return;
-        }
+    sideEffect && sideEffect(null, userInput);
 
-        sideEffect && sideEffect(null, userInput);
-
-        this.moveToNextPhase(activePhase, null, userInput);
-      }),
-    )
-    .subscribe();
+    this.moveToNextPhase(null, userInput);
+  });
 
   sendMessage(d: string) {
     const oldValues = this.messagesSubject.getValue();
@@ -267,35 +272,15 @@ export default class RefactorComponent implements AfterViewChecked {
     this.userInputSubject.next(d);
   }
 
-  moveToNextPhase(
-    currentPhase: Phase,
-    isAnswerCorrect: boolean | null,
-    userInput: string,
-  ) {
-    const nextPhase = this.getPhase(
-      currentPhase.next(isAnswerCorrect, userInput),
-    );
+  moveToNextPhase(isAnswerCorrect: boolean | null, userInput: string) {
+    const currentPhase = this.activePhaseSubject.getValue();
+    const nextPhase = getPhase(currentPhase.next(isAnswerCorrect, userInput));
 
     // Order matters, show message before moving to next phase
 
     nextPhase.getMessages().forEach((m) => this.pushNewMessage(m));
 
     this.activePhaseSubject.next(nextPhase);
-  }
-
-  getPhase(phaseId: string) {
-    const match = programmedPhases.find(({ id }) => id === phaseId);
-
-    if (match) return match;
-
-    const endPhase: Phase = {
-      isQuestion: { answer: '_', inputType: 'BUTTON' },
-      id: 'end-of-everything',
-      getMessages: () => [{ data: 'app terminates', sender: 'bot' }],
-      next: () => '_',
-    };
-
-    return endPhase;
   }
 
   pushNewMessage(m: Message) {
