@@ -86,7 +86,7 @@ export const preTestQuestions: Question[] = [
       text: '3. Kevin received 3/4 blocks of chocolate from his mother and another 1/3 block of chocolate from his father. How many block of chocolate does he have now?',
     },
     solutions: ['3/4 + 1/3 =', '= 13/12 or 1 and 1/12 blocks of chocolate'],
-    answers: ['1 and 1/12 blocks of chocolate', '1 1/12', '13/12'],
+    answers: ['1 1/12', '1 and 1/12 blocks of chocolate', '13/12'],
   },
   {
     content: { text: '4. 7/4 - 3/2=' },

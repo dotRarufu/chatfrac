@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MessageService } from 'src/app/services/message.service';
 import { StepService } from 'src/app/services/step.service';
@@ -6,14 +6,39 @@ import { Message } from 'src/app/types/Message';
 import SendIconComponent from './icons/send.component';
 import { ActionsService } from 'src/app/services/actions.service';
 import { StateService } from 'src/app/services/state.service';
+import { CommonModule } from '@angular/common';
+import FractionFormInputComponent from './fraction-form.component';
+import FractionIconComponent from './icons/fraction.component';
 
 @Component({
   selector: 'chat-input',
   standalone: true,
-  imports: [FormsModule, SendIconComponent],
+  imports: [
+    FormsModule,
+    SendIconComponent,
+    CommonModule,
+    FractionFormInputComponent,
+    FractionIconComponent
+  ],
 
   template: `
-    <div class="join selection:text-[16px]  rounded-[5px]  w-full">
+    <fraction-form-input
+      *ngIf="inFractionForm()"
+      (close)="inFractionForm.set(false)"
+      (send)="sendFraction($event)"
+    />
+
+    <div
+      *ngIf="!inFractionForm()"
+      class="join selection:text-[16px]  rounded-[5px]  w-full"
+    >
+      <button
+        (click)="inFractionForm.set(true)"
+        class="btn join-item btn-primary"
+        [class.btn-disabled]="inputIsDisabled || false"
+      >
+        <fraction-icon />
+      </button>
       <input
         [(ngModel)]="value"
         type="text"
@@ -35,6 +60,7 @@ export default class ChatInputComponent {
   value = '';
   @Input() inputIsDisabled? = false;
   isDisabled: boolean | null = null;
+  inFractionForm = signal(false);
 
   checkIsDisabled() {
     const currentAction = this.actionsService.content();
@@ -62,6 +88,20 @@ export default class ChatInputComponent {
         this.isDisabled = s;
       },
     });
+  }
+
+  sendFraction(message: string) {
+    if (this.checkIsDisabled()) return;
+
+    const data: Message = {
+      content: message,
+      sender: 'user',
+      type: 'ChatBubble',
+    };
+    this.messageService.add(data);
+
+    // can move this inside messageService.add
+    this.stepService.update();
   }
 
   handleSend() {

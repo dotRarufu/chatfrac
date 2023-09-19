@@ -85,7 +85,10 @@ export class StepService {
   }
 
   private checkAnswer(message: string, answers: string[]) {
+    console.log("message:", `"${message}"`)
+    console.log("answers:", answers)
     const isCorrect = answers.includes(message);
+    console.log("isCorrect:", answers)
 
     return isCorrect;
   }
