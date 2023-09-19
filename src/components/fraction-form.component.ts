@@ -18,18 +18,21 @@ import { StateService } from 'src/app/services/state.service';
         class="w-full justify-center border border-base-content/50 bg-secondary p-4 flex items-center gap-2 rounded-md"
       >
         <input
+          (keypress)="numberOnly($event)"
           [formControl]="wholeNumber"
           type="text"
           class="input rounded-md border border-base-content/50 text-center aspect-square outline-none join-item bg-secondary-200 p-1 text-[20px] font-bold text-secondary-content focus:outline-0 "
         />
         <div class="flex flex-col gap-2">
           <input
+            (keypress)="numberOnly($event)"
             [formControl]="numerator"
             type="text"
             class="input border border-base-content/50 rounded-md text-center p-1 text-[20px] font-bold aspect-square outline-none join-item bg-secondary-200 text-secondary-content focus:outline-0 "
           />
           <div class="h-[1px] bg-base-content/70 w-full"></div>
           <input
+            (keypress)="numberOnly($event)"
             type="text"
             [formControl]="denominator"
             class="input border border-base-content/50 rounded-md text-center p-1 text-[20px] font-bold aspect-square outline-none join-item bg-secondary-200 text-secondary-content focus:outline-0 "
@@ -66,5 +69,13 @@ export default class FractionFormInputComponent {
     this.numerator.reset();
     this.denominator.reset();
     this.wholeNumber.reset();
+  }
+
+  numberOnly(event: any): boolean {
+    const charCode = event.which ? event.which : event.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+      return false;
+    }
+    return true;
   }
 }
