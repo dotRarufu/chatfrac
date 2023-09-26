@@ -1,5 +1,11 @@
-import { Component, Input, signal } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import {
+  Component,
+  Input,
+  OnChanges,
+  SimpleChanges,
+  signal,
+} from '@angular/core';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MessageService } from 'src/app/services/message.service';
 import { StepService } from 'src/app/services/step.service';
 import { Message } from 'src/app/types/Message';
@@ -14,11 +20,11 @@ import FractionIconComponent from './icons/fraction.component';
   selector: 'chat-input',
   standalone: true,
   imports: [
-    FormsModule,
     SendIconComponent,
     CommonModule,
     FractionFormInputComponent,
-    FractionIconComponent
+    FractionIconComponent,
+    ReactiveFormsModule,
   ],
 
   template: `
@@ -40,7 +46,7 @@ import FractionIconComponent from './icons/fraction.component';
         <fraction-icon />
       </button>
       <input
-        [(ngModel)]="value"
+        [formControl]="value"
         type="text"
         placeholder="Type something"
         class="input w-full outline-none join-item bg-secondary text-secondary-content focus:outline-0 relative"
@@ -56,8 +62,8 @@ import FractionIconComponent from './icons/fraction.component';
     </div>
   `,
 })
-export default class ChatInputComponent {
-  value = '';
+export default class ChatInputComponent implements OnChanges {
+  value = new FormControl('', { nonNullable: true });
   @Input() inputIsDisabled? = false;
   isDisabled: boolean | null = null;
   inFractionForm = signal(false);
@@ -110,7 +116,7 @@ export default class ChatInputComponent {
     if (!this.value) return;
 
     const data: Message = {
-      content: this.value,
+      content: this.value.value,
       sender: 'user',
       type: 'ChatBubble',
     };
@@ -119,6 +125,16 @@ export default class ChatInputComponent {
     // can move this inside messageService.add
     this.stepService.update();
 
-    this.value = '';
+    this.value.reset();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    const newInputIsDisabled = changes['inputIsDisabled']
+      .currentValue as boolean;
+
+    this.inputIsDisabled = newInputIsDisabled;
+
+    if (newInputIsDisabled) this.value.disable();
+    else this.value.enable();
   }
 }

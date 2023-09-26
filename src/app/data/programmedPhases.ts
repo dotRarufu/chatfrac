@@ -5,7 +5,14 @@ import { preTestQuestions } from '../preTestQuestions';
 // const nameSubject = new BehaviorSubject('');
 // const name$ = nameSubject.asObservable;
 
-const programmedPhases: Phase[] = [
+const LocalStorageKeys = {
+  PRETEST_SCORE: 'chatFrac_pretestScore',
+  PRETEST_NUMBER: 'chatFrac_pretestNumber',
+  NAME: 'chatFrac_name',
+  SCHOOL: 'chatFrac_school',
+};
+
+const startingPhases: Phase[] = [
   {
     id: 'introduction',
     next: () => 'demographics-1',
@@ -17,7 +24,7 @@ const programmedPhases: Phase[] = [
       },
     ],
     isQuestion: {
-      answer: '_',
+      answer: () => ['_'],
       inputType: 'BUTTON',
       buttonName: 'Get started',
     },
@@ -26,14 +33,10 @@ const programmedPhases: Phase[] = [
     id: 'demographics-1',
     next: () => 'demographics-1-confirm',
     getMessages: () => [{ data: "What's your name", sender: 'bot' }],
-    isQuestion: { answer: '_', inputType: 'INPUT' },
+    isQuestion: { answer: () => ['_'], inputType: 'INPUT' },
     sideEffect: async (isCorrectAnswer, userInput) => {
-      // nameSubject.next(userInput);
-      localStorage.setItem('chatFrac_name', userInput);
-      const valuepersisted = localStorage.getItem('chatFrac_name');
+      localStorage.setItem(LocalStorageKeys.NAME, userInput);
 
-      // console.log('1 side effect set name:', userInput);
-      // console.log('persisted name:', valuepersisted);
       return;
     },
   },
@@ -47,13 +50,13 @@ const programmedPhases: Phase[] = [
     getMessages: () => [
       {
         data: `Your name is ${localStorage.getItem(
-          'chatFrac_name',
+          LocalStorageKeys.NAME,
         )}, is that right?`,
         sender: 'bot',
       },
     ],
     isQuestion: {
-      answer: '_',
+      answer: () => ['_'],
       inputType: 'QUICK_REPLY',
       quickReplies: ['Yes', "No, that's wrong"],
     },
@@ -62,11 +65,9 @@ const programmedPhases: Phase[] = [
     id: 'demographics-1-attempt',
     next: (_, userInput) => 'demographics-1-confirm',
     getMessages: () => [{ data: "What's your name then", sender: 'bot' }],
-    isQuestion: { answer: '_', inputType: 'INPUT' },
+    isQuestion: { answer: () => ['_'], inputType: 'INPUT' },
     sideEffect: async (isCorrectAnswer, userInput) => {
-      // nameSubject.next(userInput);
-      localStorage.setItem('chatFrac_name', userInput);
-      console.log('2 side effect set name:', userInput);
+      localStorage.setItem(LocalStorageKeys.NAME, userInput);
 
       return;
     },
@@ -74,11 +75,9 @@ const programmedPhases: Phase[] = [
   {
     id: 'demographics-2',
     next: () => 'demographics-2-confirm',
-    isQuestion: { answer: '_', inputType: 'INPUT' },
+    isQuestion: { answer: () => ['_'], inputType: 'INPUT' },
     sideEffect: async (_, userInput) => {
-      // nameSubject.next(userInput);
-      localStorage.setItem('chatFrac_school', userInput);
-      console.log('1 side effect set school:', userInput);
+      localStorage.setItem(LocalStorageKeys.SCHOOL, userInput);
 
       return;
     },
@@ -86,7 +85,7 @@ const programmedPhases: Phase[] = [
       {
         sender: 'bot',
         data: `Alright ${localStorage.getItem(
-          'chatFrac_name',
+          LocalStorageKeys.NAME,
         )}, which school are you from?`,
       },
     ],
@@ -101,13 +100,13 @@ const programmedPhases: Phase[] = [
     getMessages: () => [
       {
         data: `You are from ${localStorage.getItem(
-          'chatFrac_school',
+          LocalStorageKeys.SCHOOL,
         )}, is that right?`,
         sender: 'bot',
       },
     ],
     isQuestion: {
-      answer: '_',
+      answer: () => ['_'],
       inputType: 'QUICK_REPLY',
       quickReplies: ['Yes', "No, that's wrong"],
     },
@@ -118,15 +117,16 @@ const programmedPhases: Phase[] = [
     getMessages: () => [
       { data: 'Which school are you from then?', sender: 'bot' },
     ],
-    isQuestion: { answer: '_', inputType: 'INPUT' },
+    isQuestion: { answer: () => ['_'], inputType: 'INPUT' },
     sideEffect: async (isCorrectAnswer, userInput) => {
-      // nameSubject.next(userInput);
-      localStorage.setItem('chatFrac_school', userInput);
-      console.log('2 side effect set school:', userInput);
+      localStorage.setItem(LocalStorageKeys.SCHOOL, userInput);
 
       return;
     },
   },
+];
+
+const preTestPhases: Phase[] = [
   {
     id: 'pretest-inform',
     next: () => 'pretest-question',
@@ -149,9 +149,9 @@ const programmedPhases: Phase[] = [
       // if current question is last, then 'pretest-result'
       // else next question or pretest-wrong-answer
       const currentNumber = Number(
-        localStorage.getItem('chatFrac_pretestNumber') || 1,
+        localStorage.getItem(LocalStorageKeys.PRETEST_NUMBER) || 1,
       );
-      const isLastNumber = currentNumber >= 5;
+      const isLastNumber = currentNumber > 5;
 
       if (isLastNumber) return 'pretest-result';
 
@@ -161,9 +161,9 @@ const programmedPhases: Phase[] = [
     },
     getMessages: () => {
       const currentNumber = Number(
-        localStorage.getItem('chatFrac_pretestNumber') || 1,
+        localStorage.getItem(LocalStorageKeys.PRETEST_NUMBER) || 1,
       );
-      const isLastNumber = currentNumber >= 5;
+      const isLastNumber = currentNumber > 5;
 
       if (isLastNumber)
         return [
@@ -180,14 +180,48 @@ const programmedPhases: Phase[] = [
         { data: currentQuestion.content.text as string, sender: 'bot' },
       ];
     },
-    sideEffect: async () => {
-      // if answer is correct increment record in db
-      // increment localstorage current question number
-      const oldValue = Number(localStorage.getItem('chatFrac_pretestNumber'));
-      const newValue = oldValue + 1;
-      localStorage.setItem('chatFrac_pretestNumber', newValue.toString());
+    sideEffect: async (isCorrectAnswer, userInput) => {
+      if (isCorrectAnswer) {
+        const oldScore = Number(
+          localStorage.getItem(LocalStorageKeys.PRETEST_SCORE) || 1,
+        );
+        const newScore = oldScore + 1;
+
+        localStorage.setItem(
+          LocalStorageKeys.PRETEST_SCORE,
+          newScore.toString(),
+        );
+      }
+
+      // add go back to state after a session
+      // add loading state while side effect is running, try db calls in side effect
+
+      const currentNumber = Number(
+        localStorage.getItem(LocalStorageKeys.PRETEST_NUMBER) || 1,
+      );
+      const reachedLastNumber = currentNumber > 5;
+
+      if (reachedLastNumber) return;
+
+      const oldNumber = Number(
+        localStorage.getItem(LocalStorageKeys.PRETEST_NUMBER) || 1,
+      );
+      const newNumber = oldNumber + 1;
+      localStorage.setItem(
+        LocalStorageKeys.PRETEST_NUMBER,
+        newNumber.toString(),
+      );
     },
-    isQuestion: { answer: 'Yes', inputType: 'INPUT' },
+    isQuestion: {
+      answer: () => {
+        const currentNumber = Number(
+          localStorage.getItem(LocalStorageKeys.PRETEST_NUMBER) || 1,
+        );
+
+        return preTestQuestions[currentNumber - 1].answers;
+      },
+      inputType: 'INPUT',
+    },
   },
   {
     id: 'pretest-question-wrong',
@@ -199,6 +233,72 @@ const programmedPhases: Phase[] = [
     next: () => 'pretest-question',
     getMessages: () => [{ data: '==========Correct=====', sender: 'bot' }],
   },
+  {
+    id: 'pretest-result',
+    getMessages: () => {
+      const score = localStorage.getItem(LocalStorageKeys.PRETEST_SCORE) || 0;
+      const totalItems =
+        Number(localStorage.getItem(LocalStorageKeys.PRETEST_NUMBER) || 1) - 1;
+      console.log(
+        'asda:',
+        Number(localStorage.getItem(LocalStorageKeys.PRETEST_NUMBER) || 1),
+      );
+      const message = `You've answered ${score} items correctly out of ${totalItems}`;
+
+      return [{ data: message, sender: 'bot' }];
+    },
+    next: () => 'category-select',
+  },
+];
+
+const selectCategoryPhases: Phase[] = [
+  {
+    id: 'category-select',
+    getMessages: () => [{ data: 'Select a category.', sender: 'bot' }],
+    isQuestion: {
+      answer: () => ['_'],
+      inputType: 'QUICK_REPLY',
+      quickReplies: ['Definition', 'Examples', 'Models'],
+    },
+    next: (_, userInput) => userInput,
+  },
+];
+const examplesCategoryPhases: Phase[] = [
+  {
+    id: 'Examples',
+    getMessages: () => [
+      { data: 'Welcome to examples category.', sender: 'bot' },
+    ],
+
+    next: (_, userInput) => userInput,
+  },
+];
+const modelsCategoryPhases: Phase[] = [
+  {
+    id: 'Models',
+    getMessages: () => [{ data: 'Welcome to Models category.', sender: 'bot' }],
+
+    next: (_, userInput) => userInput,
+  },
+];
+const definitionCategoryPhases: Phase[] = [
+  {
+    id: 'Definition',
+    getMessages: () => [
+      { data: 'Welcome to Definition category.', sender: 'bot' },
+    ],
+
+    next: (_, userInput) => userInput,
+  },
+];
+
+const programmedPhases: Phase[] = [
+  ...startingPhases,
+  ...preTestPhases,
+  ...selectCategoryPhases,
+  ...examplesCategoryPhases,
+  ...modelsCategoryPhases,
+  ...definitionCategoryPhases,
 ];
 
 export default programmedPhases;

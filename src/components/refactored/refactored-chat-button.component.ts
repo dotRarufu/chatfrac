@@ -22,37 +22,29 @@ export type QuickReplyContent = {
 };
 
 @Component({
-  selector: 'refactored-quick-replies',
+  selector: 'refactored-chat-button',
   standalone: true,
   imports: [CommonModule],
   template: `
-    <div class=" flex gap-[16px] carousel px-[16px] ">
-      <div *ngFor="let item of content" class="carousel-item ">
-        <div
-          class="rounded-[24px] font-normal btn-sm  text-[20px] px-[28px] py-[4px]   btn btn-primary w-full normal-case min-h-[28px] h-[28px] "
-          [class.btn-disabled]="notAllowed()"
-          (click)="handleCallback(item)"
-        >
-          {{ item }}
-        </div>
-      </div>
-    </div>
+    <button (click)="handleCallback()" class="btn w-full btn-primary" [class.btn-disabled]="notAllowed()">
+      {{ content }}
+    </button>
   `,
 })
-export default class RefactoredQuickRepliesComponent implements OnChanges {
-  @Input() content: string[] = [];
+export default class RefactoredChatButtonComponent implements OnChanges {
+  @Input() content: string = '';
   @Output() send = new EventEmitter<string>();
   notAllowed = signal(false);
 
-  handleCallback(content: string) {
+  handleCallback() {
     if (this.notAllowed()) return;
 
-    this.send.emit(content);
+    this.send.emit(this.content);
     this.notAllowed.set(true);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const newContent = changes['content'].currentValue as string[];
+    const newContent = changes['content'].currentValue as string;
 
     this.content = newContent;
     this.notAllowed.set(false);

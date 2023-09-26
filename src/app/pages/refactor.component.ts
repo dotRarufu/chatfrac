@@ -47,20 +47,23 @@ import {
 import RefactoredChatInputComponent from 'src/components/refactored/refactored-chat-input.component';
 import RefactoredQuickRepliesComponent from 'src/components/refactored/refactored-quick-replies.component';
 import programmedPhases from '../data/programmedPhases';
+import RefactoredChatButtonComponent from 'src/components/refactored/refactored-chat-button.component';
 
 type InputType = 'QUICK_REPLY' | 'INPUT' | 'BUTTON';
+
+export type PhaseQuestion = {
+  answer: () => string[];
+  inputType: InputType;
+  buttonName?: string;
+  quickReplies?: string[];
+};
 
 export interface Phase {
   id: string;
   next: (isCorrectAnswer: boolean | null, userInput: string) => string;
   getMessages: () => Message[];
 
-  isQuestion?: {
-    answer: string;
-    inputType: InputType;
-    buttonName?: string;
-    quickReplies?: string[];
-  };
+  isQuestion?: PhaseQuestion;
   sideEffect?: (
     isCorrectAnswer: boolean | null,
     userInput: string,
@@ -72,7 +75,7 @@ export type Message = {
   data: string;
 };
 
-const DELAY = 100;
+const DELAY = 3000 || 100;
 
 const getPhase = (phaseId: string) => {
   const match = programmedPhases.find(({ id }) => id === phaseId);
@@ -80,7 +83,7 @@ const getPhase = (phaseId: string) => {
   if (match) return match;
 
   const endPhase: Phase = {
-    isQuestion: { answer: '_', inputType: 'INPUT' },
+    isQuestion: { answer: () => ['_'], inputType: 'INPUT' },
     id: 'end-of-everything',
     getMessages: () => [{ data: 'You have reached the end', sender: 'bot' }],
     next: () => '_',
@@ -108,13 +111,14 @@ const getPhase = (phaseId: string) => {
     ReactiveFormsModule,
     RefactoredChatInputComponent,
     RefactoredQuickRepliesComponent,
+    RefactoredChatButtonComponent,
   ],
   template: `
     <div
       class="w-full max-w-[480px] rounded-[5px] mx-auto h-screen flex flex-col "
       *ngIf="{
         isTyping: isTyping$ | async,
-        activePhase: activePhaseA$ | async
+        activePhaseQuestion: activePhaseQuestion$ | async
       } as observables"
     >
       <app-header />
@@ -172,11 +176,11 @@ const getPhase = (phaseId: string) => {
 
       <div
         class=" p-[8px]"
-        [ngSwitch]="observables.activePhase?.isQuestion?.inputType"
+        [ngSwitch]="observables.activePhaseQuestion?.inputType"
       >
         <ng-container *ngSwitchCase="'QUICK_REPLY'">
           <refactored-quick-replies
-            [content]="observables.activePhase?.isQuestion?.quickReplies || []"
+            [content]="observables.activePhaseQuestion?.quickReplies || []"
             (send)="sendMessage($event)"
           />
           <div class="pt-[16px]">
@@ -185,21 +189,18 @@ const getPhase = (phaseId: string) => {
         </ng-container>
 
         <ng-container *ngSwitchCase="'BUTTON'">
-          <button
-            (click)="
-              sendMessage(observables.activePhase?.isQuestion?.buttonName || '')
+          <refactored-chat-button
+            (send)="
+              sendMessage(observables.activePhaseQuestion?.buttonName || '')
             "
-            class="btn w-full btn-primary"
-          >
-            {{ observables.activePhase?.isQuestion?.buttonName }}
-          </button>
+            [content]="observables.activePhaseQuestion?.buttonName || ''"
+          />
         </ng-container>
         <refactored-chat-input
           [inputIsDisabled]="!!observables.isTyping"
           (send)="sendMessage($event)"
           *ngSwitchDefault
         />
-        {{ observables.activePhase | json }}
       </div>
     </div>
   `,
@@ -238,6 +239,14 @@ export default class RefactorComponent implements AfterViewChecked {
   activePhaseA$ = this.activePhaseSubject.asObservable();
   activePhase$ = this.activePhaseSubject.asObservable();
 
+  activePhaseQuestion = new BehaviorSubject<PhaseQuestion | undefined>(
+    undefined,
+  );
+  activePhaseQuestion$ = this.activePhaseQuestion.asObservable().pipe(
+    // To not immediately show after emit
+    delay(3000),
+  );
+
   activePhaseEffect = combineLatest({
     activePhase: this.activePhase$,
     userInput: this.userInput$,
@@ -245,12 +254,14 @@ export default class RefactorComponent implements AfterViewChecked {
     const { isQuestion, sideEffect } = activePhase;
 
     if (isQuestion) {
+      this.activePhaseQuestion.next(isQuestion);
+
       if (userInput === '') return;
 
       // userInputField.reset() does not run immediately, use this instead
       this.userInputSubject.next('');
 
-      const isCorrectAnswer = isQuestion.answer === userInput;
+      const isCorrectAnswer = isQuestion.answer().includes(userInput);
 
       sideEffect && sideEffect(isCorrectAnswer, userInput);
       this.moveToNextPhase(isCorrectAnswer, userInput);
