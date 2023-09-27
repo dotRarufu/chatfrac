@@ -1,4 +1,13 @@
-import { BehaviorSubject } from 'rxjs';
+import {
+  BehaviorSubject,
+  delay,
+  forkJoin,
+  from,
+  map,
+  retry,
+  switchMap,
+  tap,
+} from 'rxjs';
 import { Phase } from '../pages/refactor.component';
 import { preTestQuestions } from '../preTestQuestions';
 import { examplesQuestions } from '../examplesCategory';
@@ -12,6 +21,7 @@ import { postTestQuestions } from '../postTestQuestions';
 import generatePrePostQuestionsPhases, {
   PREPOSTCATEGORIES,
 } from '../utils/generatePrePostQuestionsPhases';
+import { client } from '../lib/supabase';
 
 export type Categories = 'models' | 'examples' | 'definition';
 
@@ -41,6 +51,89 @@ export const CATEGORIES: {
   MODELS: 'models',
   EXAMPLES: 'examples',
   DEFINITION: 'definition',
+};
+
+const insertCategory = (
+  id: number,
+  categories: { name: string; score: number }[],
+) => {
+  const categoryData = categories.map((c) => ({
+    name: c.name,
+    score: c.score,
+    result_id: id,
+  }));
+
+  const requests$ = categoryData.map((c) => {
+    const res = from(client.from('category').insert(c));
+
+    const res$ = res.pipe(
+      map((r) => {
+        if (r.error !== null)
+          throw new Error('error inserrting category score');
+
+        return r.statusText;
+      }),
+    );
+
+    return res$;
+  });
+
+  const forked$ = forkJoin([...requests$]);
+
+  return forked$;
+};
+
+const insertRecord = (
+  name: string,
+  school: string,
+  preTestScore: number,
+  postTestScore: number,
+) => {
+  const data = {
+    name,
+    school,
+    post_test: postTestScore || 0,
+    pre_test: preTestScore || 0,
+  };
+
+  const request$ = from(client.from('result').insert(data).select('id'));
+
+  const res = request$.pipe(
+    map((r) => {
+      if (r.error !== null) throw new Error('error saving data');
+
+      return r.data[0].id;
+    }),
+    retry(999),
+  );
+
+  return res;
+};
+
+const saveWithLocalStorage = () => {
+  const nameKeyPair = Object.entries({
+    definition: LocalStorageKeys.DEFINITION_SCORE,
+    models: LocalStorageKeys.MODELS_SCORE,
+    examples: LocalStorageKeys.EXAMPLES_SCORE,
+  });
+
+  const categoryScores = nameKeyPair.map(([key, value], index) => {
+    const score = Number(localStorage.getItem(value)) || 0;
+
+    return { name: key, score };
+  });
+
+  const name = localStorage.getItem(LocalStorageKeys.NAME) || '';
+  const school = localStorage.getItem(LocalStorageKeys.SCHOOL) || '';
+  const preTestScore =
+    Number(localStorage.getItem(LocalStorageKeys.PRETEST_SCORE)) || 0;
+  const postTestScore =
+    Number(localStorage.getItem(LocalStorageKeys.POSTTEST_SCORE)) || 0;
+
+  const id$ = insertRecord(name, school, preTestScore, postTestScore);
+  const res$ = id$.pipe(switchMap((id) => insertCategory(id, categoryScores)));
+
+  return res$;
 };
 
 const startingPhases: Phase[] = [
@@ -188,6 +281,30 @@ const endingPhases: Phase[] = [
           sender: BOT,
         },
       ];
+    },
+    sideEffect: (a, b, shouldSaveData) => {
+      console.log('runs', { a, b, shouldSaveData });
+      shouldSaveData(true);
+      console.log('saving data: true');
+
+      saveWithLocalStorage()
+        .pipe(delay(5000))
+        .subscribe({
+          next: () => {
+            shouldSaveData(false);
+            console.log('saving data: false | next');
+          },
+          error: () => {
+            shouldSaveData(false);
+            console.log('saving data: false | errored');
+          },
+          complete: () => {
+            shouldSaveData(false);
+            console.log('saving data: false | complete');
+          },
+        });
+
+      return fetch('').then();
     },
     next: () => '_',
   },

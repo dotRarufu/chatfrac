@@ -16,15 +16,14 @@ import {
   tap,
 } from 'rxjs';
 import { StateService } from './state.service';
+import { CATEGORIES, LocalStorageKeys } from '../data/programmedPhases';
+import { client } from '../lib/supabase';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SupabaseService {
-  readonly client: SupabaseClient<Database> = createClient(
-    'https://sysebcpqnqjthlfowqtl.supabase.co',
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN5c2ViY3BxbnFqdGhsZm93cXRsIiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODg5OTY2NTMsImV4cCI6MjAwNDU3MjY1M30.VwBNb31UtzlWXnuRf5cYbCYd67Rrqz4X28toUH-MeAs',
-  );
+  readonly client = client;
   isSavingData = signal(false);
 
   constructor(private userService: UserService) {}
@@ -35,7 +34,14 @@ export class SupabaseService {
     const categoryScores = categoryNames.map((c) => {
       return { name: c, score: categories[c] || 0 };
     });
-    const id$ = this.insertRecord(this.userService.getCurrentValue());
+    const { name, school, preTestScore, postTestScore } =
+      this.userService.getCurrentValue();
+    const id$ = this.insertRecord(
+      name,
+      school,
+      preTestScore || 0,
+      postTestScore || 0,
+    );
     const res$ = id$.pipe(
       tap((_) => {
         this.isSavingData.set(true);
@@ -82,12 +88,12 @@ export class SupabaseService {
     return forked$;
   }
 
-  private insertRecord({
-    name,
-    school,
-    postTestScore,
-    preTestScore,
-  }: UserData) {
+  private insertRecord(
+    name: string,
+    school: string,
+    preTestScore: number,
+    postTestScore: number,
+  ) {
     const data = {
       name,
       school,

@@ -8,6 +8,7 @@ import {
   QueryList,
   ViewChild,
   ViewChildren,
+  signal,
 } from '@angular/core';
 import { MessageService } from 'src/app/services/message.service';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -51,6 +52,7 @@ import RefactoredChatButtonComponent from 'src/components/refactored/refactored-
 import { CarouselItem } from '../types/Message';
 import { v4 as uuidv4 } from 'uuid';
 import RefactoredHeaderComponent from 'src/components/refactored/refactored-app-header.component';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 type InputType = 'QUICK_REPLY' | 'INPUT' | 'BUTTON';
 
@@ -71,6 +73,7 @@ export interface Phase {
   sideEffect?: (
     isCorrectAnswer: boolean | null,
     userInput: string,
+    shouldSaveData: (decision: boolean) => void,
   ) => Promise<void>;
 }
 
@@ -133,7 +136,7 @@ const getPhase = (phaseId: string) => {
         activePhaseQuestion: activePhaseQuestion$ | async
       } as observables"
     >
-      <refactored-app-header />
+      <refactored-app-header [isSaving]="isSaving()" />
 
       <div
         class="h-[calc(100vh-140px)] flex flex-col p-[16px] overflow-y-scroll overflow-x-clip scroll-smooth "
@@ -222,6 +225,8 @@ export default class RefactorComponent implements AfterViewChecked {
   isTypingSubject = new BehaviorSubject(false);
   isTyping$ = this.isTypingSubject.asObservable();
 
+  isSaving = signal(false);
+
   messagesSubject = new BehaviorSubject<Message[]>([]);
   messages$ = this.messagesSubject.asObservable().pipe(
     concatMap((item) =>
@@ -264,7 +269,11 @@ export default class RefactorComponent implements AfterViewChecked {
     userInput: this.userInput$,
   }).subscribe(({ activePhase, userInput }) => {
     const { isQuestion, sideEffect } = activePhase;
-    console.log('activePhase:', activePhase);
+
+    const shouldSaveData = (decision: boolean) => {
+      this.isSaving.set(decision);
+    };
+
     if (isQuestion) {
       this.activePhaseQuestion.next(isQuestion);
 
@@ -275,13 +284,13 @@ export default class RefactorComponent implements AfterViewChecked {
 
       const isCorrectAnswer = isQuestion.answer().includes(userInput);
 
-      sideEffect && sideEffect(isCorrectAnswer, userInput);
+      sideEffect && sideEffect(isCorrectAnswer, userInput, shouldSaveData);
       this.moveToNextPhase(isCorrectAnswer, userInput);
 
       return;
     }
 
-    sideEffect && sideEffect(null, userInput);
+    sideEffect && sideEffect(null, userInput, shouldSaveData);
 
     this.moveToNextPhase(null, userInput);
   });

@@ -1,9 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, signal } from '@angular/core';
+import { Component, Input, signal } from '@angular/core';
 import { MessageService } from 'src/app/services/message.service';
 import DownloadIconComponent from '../icons/download.component';
 import { IconsModule } from 'src/app/icons/icons.module';
 import { LocalStorageKeys } from 'src/app/data/programmedPhases';
+import { of } from 'rxjs';
+import createOnline$ from 'src/app/utils/createOnline';
 
 @Component({
   selector: 'refactored-app-header',
@@ -12,6 +14,10 @@ import { LocalStorageKeys } from 'src/app/data/programmedPhases';
   template: `
     <div
       class=" bg-primary p-[16px] py-[8px] flex items-center justify-between h-[76px] shadow"
+      *ngIf="{
+        isSaving: isSaving,
+        hasInternet: hasInternet$ | async
+      } as observables"
     >
       <div class=" flex gap-[12px] items-center">
         <div class="avatar">
@@ -30,11 +36,24 @@ import { LocalStorageKeys } from 'src/app/data/programmedPhases';
         </div>
       </div>
 
-      <div
-        class="w-[52px] h-[52px] text-primary-content btn btn-ghost btn-square"
-        (click)="isModalOpen.set(true)"
-      >
-        <i-feather name="rotate-ccw" class="text-primary-content w-full" />
+      <div class="flex items-center gap-4">
+        <i-feather
+          *ngIf="!observables.hasInternet"
+          name="cloud-off"
+          class="text-primary-content w-full"
+        />
+        <i-feather
+          *ngIf="observables.isSaving"
+          name="upload-cloud"
+          class="text-primary-content w-full animate-ping"
+        />
+
+        <div
+          class=" text-primary-content btn btn-ghost btn-square"
+          (click)="isModalOpen.set(true)"
+        >
+          <i-feather name="rotate-ccw" class="text-primary-content w-full" />
+        </div>
       </div>
     </div>
 
@@ -74,6 +93,8 @@ export default class RefactoredHeaderComponent {
   constructor(public messageService: MessageService) {}
   isModalOpen = signal(false);
   deferredPrompt?: any;
+  @Input() isSaving = false;
+  hasInternet$ = createOnline$();
 
   resetLocalStorage() {
     const keys = Object.values(LocalStorageKeys);
