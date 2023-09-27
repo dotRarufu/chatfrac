@@ -26,13 +26,18 @@ export type QuickReplyContent = {
   standalone: true,
   imports: [CommonModule],
   template: `
-    <button (click)="handleCallback()" class="btn w-full btn-primary" [class.btn-disabled]="notAllowed()">
+    <button
+      (click)="handleCallback()"
+      class="btn w-full btn-primary"
+      [class.btn-disabled]="notAllowed()"
+    >
       {{ content }}
     </button>
   `,
 })
 export default class RefactoredChatButtonComponent implements OnChanges {
   @Input() content: string = '';
+  @Input() contentId: string = '';
   @Output() send = new EventEmitter<string>();
   notAllowed = signal(false);
 
@@ -44,6 +49,11 @@ export default class RefactoredChatButtonComponent implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    const previousContentId = changes['contentId'].previousValue as string;
+    const newContentId = changes['contentId'].currentValue as string;
+
+    if (newContentId !== previousContentId) this.notAllowed.set(false);
+
     const newContent = changes['content'].currentValue as string;
 
     this.content = newContent;

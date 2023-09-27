@@ -42,7 +42,9 @@ export type QuickReplyContent = {
 export default class RefactoredQuickRepliesComponent implements OnChanges {
   @Input() content: string[] = [];
   @Output() send = new EventEmitter<string>();
+  @Input() contentId: string = '';
   notAllowed = signal(false);
+  // can add id input to update notAllowed signal whenever this changes
 
   handleCallback(content: string) {
     if (this.notAllowed()) return;
@@ -52,6 +54,11 @@ export default class RefactoredQuickRepliesComponent implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    const previousContentId = changes['contentId'].previousValue as string;
+    const newContentId = changes['contentId'].currentValue as string;
+
+    if (newContentId !== previousContentId) this.notAllowed.set(false);
+
     const newContent = changes['content'].currentValue as string[];
 
     this.content = newContent;

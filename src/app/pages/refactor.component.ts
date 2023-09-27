@@ -49,6 +49,7 @@ import RefactoredQuickRepliesComponent from 'src/components/refactored/refactore
 import programmedPhases from '../data/programmedPhases';
 import RefactoredChatButtonComponent from 'src/components/refactored/refactored-chat-button.component';
 import { CarouselItem } from '../types/Message';
+import { v4 as uuidv4 } from 'uuid';
 
 type InputType = 'QUICK_REPLY' | 'INPUT' | 'BUTTON';
 
@@ -57,6 +58,7 @@ export type PhaseQuestion = {
   inputType: InputType;
   buttonName?: string;
   quickReplies?: string[];
+  id: string;
 };
 
 export interface Phase {
@@ -89,7 +91,7 @@ const getPhase = (phaseId: string) => {
   if (match) return match;
 
   const endPhase: Phase = {
-    isQuestion: { answer: () => ['_'], inputType: 'INPUT' },
+    isQuestion: { answer: () => ['_'], inputType: 'INPUT', id: uuidv4() },
     id: 'end-of-everything',
     getMessages: () => [
       { data: { bubble: 'You have reached the end' }, sender: 'bot' },
@@ -184,6 +186,7 @@ const getPhase = (phaseId: string) => {
         <ng-container *ngSwitchCase="'QUICK_REPLY'">
           <refactored-quick-replies
             [content]="observables.activePhaseQuestion?.quickReplies || []"
+            [contentId]="observables.activePhaseQuestion?.id || ''"
             (send)="sendMessage($event)"
           />
           <div class="pt-[16px]">
@@ -197,6 +200,7 @@ const getPhase = (phaseId: string) => {
               sendMessage(observables.activePhaseQuestion?.buttonName || '')
             "
             [content]="observables.activePhaseQuestion?.buttonName || ''"
+            [contentId]="observables.activePhaseQuestion?.id || ''"
           />
         </ng-container>
         <refactored-chat-input
@@ -258,7 +262,7 @@ export default class RefactorComponent implements AfterViewChecked {
     userInput: this.userInput$,
   }).subscribe(({ activePhase, userInput }) => {
     const { isQuestion, sideEffect } = activePhase;
-
+    console.log('activePhase:', activePhase);
     if (isQuestion) {
       this.activePhaseQuestion.next(isQuestion);
 
