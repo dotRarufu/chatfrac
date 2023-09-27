@@ -48,6 +48,7 @@ import RefactoredChatInputComponent from 'src/components/refactored/refactored-c
 import RefactoredQuickRepliesComponent from 'src/components/refactored/refactored-quick-replies.component';
 import programmedPhases from '../data/programmedPhases';
 import RefactoredChatButtonComponent from 'src/components/refactored/refactored-chat-button.component';
+import { CarouselItem } from '../types/Message';
 
 type InputType = 'QUICK_REPLY' | 'INPUT' | 'BUTTON';
 
@@ -72,10 +73,15 @@ export interface Phase {
 
 export type Message = {
   sender: 'user' | 'bot';
-  data: string;
+  data: {
+    bubble?: string;
+    carousel?: CarouselItem[];
+    image?: string;
+    video?: string;
+  };
 };
 
-const DELAY = 3000 || 100;
+const DELAY = 100;
 
 const getPhase = (phaseId: string) => {
   const match = programmedPhases.find(({ id }) => id === phaseId);
@@ -85,7 +91,9 @@ const getPhase = (phaseId: string) => {
   const endPhase: Phase = {
     isQuestion: { answer: () => ['_'], inputType: 'INPUT' },
     id: 'end-of-everything',
-    getMessages: () => [{ data: 'You have reached the end', sender: 'bot' }],
+    getMessages: () => [
+      { data: { bubble: 'You have reached the end' }, sender: 'bot' },
+    ],
     next: () => '_',
   };
 
@@ -129,29 +137,24 @@ const getPhase = (phaseId: string) => {
         (scroll)="onScroll()"
       >
         <div class="flex-1">
-          <!-- <div *ngFor="let message of messageService.messages()">
+          <div *ngFor="let message of messages$ | async">
             <chat-bubble
-              *ngIf="message.type === 'ChatBubble'"
+              *ngIf="message.data.bubble !== undefined"
               [sender]="message.sender"
-              [message]="message.content"
-              [link]="message.isLink ? message.content : undefined"
+              [message]="message.data.bubble"
             />
             <chat-carousel
-              *ngIf="message.type === 'Carousel'"
-              [content]="message.content"
+              *ngIf="message.data.carousel !== undefined"
+              [content]="message.data.carousel"
             />
             <chat-video
-              *ngIf="message.type === 'ChatVideo'"
-              [url]="message.videoLink"
+              *ngIf="message.data.video !== undefined"
+              [url]="message.data.video"
             />
             <chat-image
-              *ngIf="message.type === 'ChatImage'"
-              [url]="message.imgSrc"
+              *ngIf="message.data.image !== undefined"
+              [url]="message.data.image"
             />
-          </div> -->
-
-          <div *ngFor="let message of messages$ | async">
-            <chat-bubble [sender]="message.sender" [message]="message.data" />
           </div>
         </div>
 
@@ -232,7 +235,10 @@ export default class RefactorComponent implements AfterViewChecked {
     id: 'bootloader',
     next: () => 'introduction',
     getMessages: () => [
-      { data: 'Boots up | this should not be visible', sender: 'bot' },
+      {
+        data: { bubble: 'Boots up | this should not be visible' },
+        sender: 'bot',
+      },
     ],
   });
   // bug in activePhaseA$ and activePhase$, not synced with each other
@@ -244,7 +250,7 @@ export default class RefactorComponent implements AfterViewChecked {
   );
   activePhaseQuestion$ = this.activePhaseQuestion.asObservable().pipe(
     // To not immediately show after emit
-    delay(3000),
+    delay(DELAY),
   );
 
   activePhaseEffect = combineLatest({
@@ -276,7 +282,10 @@ export default class RefactorComponent implements AfterViewChecked {
 
   sendMessage(d: string) {
     const oldValues = this.messagesSubject.getValue();
-    const newValues: Message[] = [...oldValues, { data: d, sender: 'user' }];
+    const newValues: Message[] = [
+      ...oldValues,
+      { data: { bubble: d }, sender: 'user' },
+    ];
 
     this.messagesSubject.next(newValues);
 
