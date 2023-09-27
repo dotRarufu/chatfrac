@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, Input, signal } from '@angular/core';
 import { CarouselItem } from 'src/app/types/Message';
 import MessengerIconComponent from './icons/messenger.component';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'chat-carousel',
@@ -15,11 +16,17 @@ import MessengerIconComponent from './icons/messenger.component';
       >
         <img
           class="w-[167px] h-[167px] rounded-[8px] object-contain"
+          [class.hidden]="isLoaded() < 3"
           [src]="
             item.image ||
             'https://cdn.matthewjamestaylor.com/img/matthew-james-taylor.jpg'
           "
+          (load)="handleLoaded()"
         />
+        <div
+          class=" h-[167px] bg-base-200 w-full rounded-[8px] animate-pulse"
+          [class.hidden]="isLoaded() >= 3"
+        ></div>
         <span class="font-normal text-base text-secondary-content">
           {{ item.message || 'Person Name' }}
         </span>
@@ -41,6 +48,11 @@ import MessengerIconComponent from './icons/messenger.component';
 export default class ChatCarouselComponent {
   @Input() content: CarouselItem[] = [];
   shouldDisableButtons = false;
+  isLoaded = signal(0);
+
+  handleLoaded() {
+    this.isLoaded.update((old) => old + 1);
+  }
 
   handleClick(callback: () => void) {
     this.shouldDisableButtons = true;

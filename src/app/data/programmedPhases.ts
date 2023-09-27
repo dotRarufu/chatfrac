@@ -40,7 +40,15 @@ export const CATEGORIES: {
 const startingPhases: Phase[] = [
   {
     id: 'introduction',
-    next: () => 'demographics-1',
+    next: () => {
+      const name = localStorage.getItem(LocalStorageKeys.NAME);
+      const school = localStorage.getItem(LocalStorageKeys.SCHOOL);
+      const noUserRecord = name === null && school === null;
+
+      if (noUserRecord) return 'demographics-1';
+
+      return 'pretest-inform';
+    },
     getMessages: () => [
       { data: { bubble: 'Welcome to ChatFrac' }, sender: BOT },
       {
@@ -169,7 +177,7 @@ const preTestPhases: Phase[] = [
     id: 'pretest-inform',
     next: () => 'pretest-question',
     getMessages: () => [
-      { data: { bubble: 'Thank you.' }, sender: BOT },
+      // { data: { bubble: 'Thank you.' }, sender: BOT },
       {
         data: {
           bubble:

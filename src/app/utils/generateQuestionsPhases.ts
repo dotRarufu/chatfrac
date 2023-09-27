@@ -1,3 +1,4 @@
+import { correctAnswerGifs } from '../correctAnswerGifs';
 import {
   BOT,
   CATEGORIES,
@@ -11,6 +12,8 @@ import { Message, Phase } from '../pages/refactor.component';
 import Question from '../types/Question';
 import isAllCategoryAnswered from './isAllCategoryAnswered';
 import { v4 as uuidv4 } from 'uuid';
+import randomNumber from './randomNumber';
+import { incorrectMessages } from '../preTestQuestions';
 
 const generateQuestionsPhases = (category: Categories) => {
   let selectedLocalStorageKeys = { number: '', score: '' };
@@ -88,7 +91,7 @@ const generateQuestionsPhases = (category: Categories) => {
               sender: BOT,
             };
 
-            data.push(newData);
+            data.unshift(newData);
 
             return data;
           }
@@ -98,7 +101,7 @@ const generateQuestionsPhases = (category: Categories) => {
               sender: BOT,
             };
 
-            data.push(newData);
+            data.unshift(newData);
 
             return data;
           }
@@ -142,6 +145,8 @@ const generateQuestionsPhases = (category: Categories) => {
       },
       isQuestion: {
         answer: () => {
+          // create util func for tese
+
           const currentNumber = Number(
             localStorage.getItem(selectedLocalStorageKeys.number) || 1,
           );
@@ -153,18 +158,36 @@ const generateQuestionsPhases = (category: Categories) => {
       },
     },
     {
-      id: `${category}-question-wrong`,
-      next: () => `${category}-question`,
-      getMessages: () => [
-        { data: { bubble: '==========Wrong=====' }, sender: BOT },
-      ],
-    },
-    {
       id: `${category}-question-correct`,
       next: () => `${category}-question`,
-      getMessages: () => [
-        { data: { bubble: '==========Correct=====' }, sender: BOT },
-      ],
+      getMessages: () => {
+        const gif =
+          correctAnswerGifs[randomNumber(0, correctAnswerGifs.length - 1)];
+
+        return [{ data: { image: gif }, sender: BOT }];
+      },
+    },
+    {
+      id: `${category}-question-wrong`,
+      next: () => `${category}-question`,
+      getMessages: () => {
+        const currentNumber = Number(
+          localStorage.getItem(selectedLocalStorageKeys.number) || 1,
+        );
+        const currentQuestion = selectedCategoryQuestions[currentNumber - 1];
+        const solutions: Message[] = (currentQuestion.solutions || []).map(
+          (s) => ({ sender: BOT, data: { bubble: s } }),
+        );
+        const incorrectMessage =
+          incorrectMessages[randomNumber(0, incorrectMessages.length - 1)];
+        const data: Message[] = [
+          { data: { bubble: incorrectMessage }, sender: BOT },
+          { data: { bubble: 'Solution:' }, sender: BOT },
+          ...solutions,
+        ];
+
+        return data;
+      },
     },
     {
       id: `${category}-result`,

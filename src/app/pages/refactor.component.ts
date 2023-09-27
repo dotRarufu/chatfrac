@@ -50,6 +50,7 @@ import programmedPhases from '../data/programmedPhases';
 import RefactoredChatButtonComponent from 'src/components/refactored/refactored-chat-button.component';
 import { CarouselItem } from '../types/Message';
 import { v4 as uuidv4 } from 'uuid';
+import RefactoredHeaderComponent from 'src/components/refactored/refactored-app-header.component';
 
 type InputType = 'QUICK_REPLY' | 'INPUT' | 'BUTTON';
 
@@ -122,6 +123,7 @@ const getPhase = (phaseId: string) => {
     RefactoredChatInputComponent,
     RefactoredQuickRepliesComponent,
     RefactoredChatButtonComponent,
+    RefactoredHeaderComponent
   ],
   template: `
     <div
@@ -131,7 +133,7 @@ const getPhase = (phaseId: string) => {
         activePhaseQuestion: activePhaseQuestion$ | async
       } as observables"
     >
-      <app-header />
+      <refactored-app-header />
 
       <div
         class="h-[calc(100vh-140px)] flex flex-col p-[16px] overflow-y-scroll overflow-x-clip scroll-smooth "
