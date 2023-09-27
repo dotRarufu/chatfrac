@@ -4,13 +4,16 @@ import { preTestQuestions } from '../preTestQuestions';
 
 // const nameSubject = new BehaviorSubject('');
 // const name$ = nameSubject.asObservable;
-
+const NO_ANSWER = () => ['_'];
 const BOT = 'bot';
 const LocalStorageKeys = {
   PRETEST_SCORE: 'chatFrac_pretestScore',
   PRETEST_NUMBER: 'chatFrac_pretestNumber',
   NAME: 'chatFrac_name',
   SCHOOL: 'chatFrac_school',
+  MODELS_SCORE: 'chatFrac_modelsScore',
+  EXAMPLES_SCORE: 'chatFrac_examplesScore',
+  DEFINITION_SCORE: 'chatFrac_definitionScore',
 };
 
 const startingPhases: Phase[] = [
@@ -27,7 +30,7 @@ const startingPhases: Phase[] = [
       },
     ],
     isQuestion: {
-      answer: () => ['_'],
+      answer: NO_ANSWER,
       inputType: 'BUTTON',
       buttonName: 'Get started',
     },
@@ -36,7 +39,7 @@ const startingPhases: Phase[] = [
     id: 'demographics-1',
     next: () => 'demographics-1-confirm',
     getMessages: () => [{ data: { bubble: "What's your name" }, sender: BOT }],
-    isQuestion: { answer: () => ['_'], inputType: 'INPUT' },
+    isQuestion: { answer: NO_ANSWER, inputType: 'INPUT' },
     sideEffect: async (isCorrectAnswer, userInput) => {
       localStorage.setItem(LocalStorageKeys.NAME, userInput);
 
@@ -61,7 +64,7 @@ const startingPhases: Phase[] = [
       },
     ],
     isQuestion: {
-      answer: () => ['_'],
+      answer: NO_ANSWER,
       inputType: 'QUICK_REPLY',
       quickReplies: ['Yes', "No, that's wrong"],
     },
@@ -72,7 +75,7 @@ const startingPhases: Phase[] = [
     getMessages: () => [
       { data: { bubble: "What's your name then" }, sender: BOT },
     ],
-    isQuestion: { answer: () => ['_'], inputType: 'INPUT' },
+    isQuestion: { answer: NO_ANSWER, inputType: 'INPUT' },
     sideEffect: async (isCorrectAnswer, userInput) => {
       localStorage.setItem(LocalStorageKeys.NAME, userInput);
 
@@ -82,7 +85,7 @@ const startingPhases: Phase[] = [
   {
     id: 'demographics-2',
     next: () => 'demographics-2-confirm',
-    isQuestion: { answer: () => ['_'], inputType: 'INPUT' },
+    isQuestion: { answer: NO_ANSWER, inputType: 'INPUT' },
     sideEffect: async (_, userInput) => {
       localStorage.setItem(LocalStorageKeys.SCHOOL, userInput);
 
@@ -117,7 +120,7 @@ const startingPhases: Phase[] = [
       },
     ],
     isQuestion: {
-      answer: () => ['_'],
+      answer: NO_ANSWER,
       inputType: 'QUICK_REPLY',
       quickReplies: ['Yes', "No, that's wrong"],
     },
@@ -128,7 +131,7 @@ const startingPhases: Phase[] = [
     getMessages: () => [
       { data: { bubble: 'Which school are you from then?' }, sender: BOT },
     ],
-    isQuestion: { answer: () => ['_'], inputType: 'INPUT' },
+    isQuestion: { answer: NO_ANSWER, inputType: 'INPUT' },
     sideEffect: async (isCorrectAnswer, userInput) => {
       localStorage.setItem(LocalStorageKeys.SCHOOL, userInput);
 
@@ -190,7 +193,7 @@ const preTestPhases: Phase[] = [
           {
             sender: BOT,
             data: {
-              bubble: 'You already answered all questions in this category',
+              bubble: 'You already answered all questions in pretest',
             },
           },
           {
@@ -279,27 +282,92 @@ const preTestPhases: Phase[] = [
 
       return [{ data: { bubble: message }, sender: BOT }];
     },
-    next: () => 'category-select',
+    next: () => {
+      const definitionScore = localStorage.getItem(
+        LocalStorageKeys.DEFINITION_SCORE,
+      );
+      const examplesScore = localStorage.getItem(
+        LocalStorageKeys.EXAMPLES_SCORE,
+      );
+      const modelsScore = localStorage.getItem(LocalStorageKeys.MODELS_SCORE);
+      const modelsExist = typeof modelsScore === 'string';
+      const examplesExist = typeof examplesScore === 'string';
+      const definitionExist = typeof definitionScore === 'string';
+
+      if (modelsExist && examplesExist && definitionExist)
+        return 'carousel-from-all-already-answered';
+
+      return 'category-select';
+    },
   },
 ];
 
 const selectCategoryPhases: Phase[] = [
+  {
+    id: 'already-selected',
+    getMessages: () => [
+      { data: { bubble: 'This category was already selected.' }, sender: BOT },
+    ],
+    next: () => 'category-select',
+  },
   {
     id: 'category-select',
     getMessages: () => [
       { data: { bubble: 'Select a category.' }, sender: BOT },
     ],
     isQuestion: {
-      answer: () => ['_'],
+      answer: NO_ANSWER,
       inputType: 'QUICK_REPLY',
       quickReplies: ['Definition', 'Examples', 'Models'],
     },
-    next: (_, userInput) => userInput,
+    next: (_, userInput) => {
+      const definitionScore = localStorage.getItem(
+        LocalStorageKeys.DEFINITION_SCORE,
+      );
+      const examplesScore = localStorage.getItem(
+        LocalStorageKeys.EXAMPLES_SCORE,
+      );
+      const modelsScore = localStorage.getItem(LocalStorageKeys.MODELS_SCORE);
+      const modelsExist = typeof modelsScore === 'string';
+      const examplesExist = typeof examplesScore === 'string';
+      const definitionExist = typeof definitionScore === 'string';
+
+      if (modelsExist && examplesExist && definitionExist)
+        return 'carousel-intro';
+
+      let selected: string | null = '';
+
+      switch (userInput) {
+        case 'Definition':
+          selected = definitionScore;
+          break;
+        case 'Examples':
+          selected = examplesScore;
+          break;
+        case 'Models':
+          selected = modelsScore;
+          break;
+
+        default:
+          break;
+      }
+
+      const selectedAlreadyHasScore = selected !== null && !!selected;
+
+      if (selectedAlreadyHasScore) return 'already-selected';
+
+      return userInput;
+    },
   },
 ];
 const examplesCategoryPhases: Phase[] = [
   {
     id: 'Examples',
+    isQuestion: {
+      answer: NO_ANSWER,
+      inputType: 'BUTTON',
+      buttonName: 'Yes',
+    },
     getMessages: () => [
       { data: { bubble: 'Welcome to examples category.' }, sender: BOT },
 
@@ -307,9 +375,32 @@ const examplesCategoryPhases: Phase[] = [
         data: { video: 'https://www.youtube.com/embed/Kzh04tWNDkQ' },
         sender: BOT,
       },
+      {
+        data: {
+          bubble:
+            'You can pause the video or adjust the speed of the video if you need to.',
+        },
+        sender: BOT,
+      },
+      { data: { bubble: 'Are you finished?' }, sender: BOT },
     ],
 
-    next: (_, userInput) => userInput,
+    next: (_, userInput) => 'examples-end',
+  },
+  {
+    id: 'examples-end',
+    getMessages: () => [
+      { data: { bubble: 'wip examples questions' }, sender: BOT },
+    ],
+    isQuestion: { answer: NO_ANSWER, inputType: 'BUTTON', buttonName: 'NEXT' },
+    next: (_, userInput) => {
+      return 'category-select';
+    },
+    sideEffect: (_, a) => {
+      localStorage.setItem(LocalStorageKeys.EXAMPLES_SCORE, '-1');
+
+      return fetch('').then();
+    },
   },
 ];
 const modelsCategoryPhases: Phase[] = [
@@ -319,7 +410,23 @@ const modelsCategoryPhases: Phase[] = [
       { data: { bubble: 'Welcome to Models category.' }, sender: BOT },
     ],
 
-    next: (_, userInput) => userInput,
+    next: (_, userInput) => 'models-end',
+  },
+  {
+    id: 'models-end',
+    getMessages: () => [
+      { data: { bubble: 'wip models questions' }, sender: BOT },
+    ],
+    isQuestion: { answer: NO_ANSWER, inputType: 'BUTTON', buttonName: 'NEXT' },
+
+    next: (_, userInput) => {
+      return 'category-select';
+    },
+    sideEffect: (_, a) => {
+      localStorage.setItem(LocalStorageKeys.MODELS_SCORE, '-1');
+
+      return fetch('').then();
+    },
   },
 ];
 const definitionCategoryPhases: Phase[] = [
@@ -327,13 +434,58 @@ const definitionCategoryPhases: Phase[] = [
     id: 'Definition',
     getMessages: () => [
       { data: { bubble: 'Welcome to Definition category.' }, sender: BOT },
-      { data: { image: 'assets/definitionCategory/dissimilar-fraction-step-1.png' }, sender: BOT },
+      {
+        data: {
+          image: 'assets/definitionCategory/dissimilar-fraction-step-1.png',
+        },
+        sender: BOT,
+      },
     ],
 
-    next: (_, userInput) => userInput,
+    next: (_, userInput) => 'definition-end',
+  },
+  {
+    id: 'definition-end',
+    getMessages: () => [
+      { data: { bubble: 'wip definition questions' }, sender: BOT },
+    ],
+    next: (_, userInput) => {
+      return 'category-select';
+    },
+    isQuestion: { answer: NO_ANSWER, inputType: 'BUTTON', buttonName: 'NEXT' },
+
+    sideEffect: (_, a) => {
+      localStorage.setItem(LocalStorageKeys.DEFINITION_SCORE, '-1');
+
+      return fetch('').then();
+    },
   },
 ];
 const carouselPhases: Phase[] = [
+  {
+    id: 'carousel-from-all-already-answered',
+    getMessages: () => [
+      {
+        data: {
+          bubble: "You've already answered all the categories",
+        },
+        sender: BOT,
+      },
+    ],
+    next: () => 'carousel-1',
+  },
+  {
+    id: 'carousel-intro',
+    getMessages: () => [
+      {
+        data: {
+          bubble: 'Congratulations, you have finished all the categories',
+        },
+        sender: BOT,
+      },
+    ],
+    next: () => 'carousel-1',
+  },
   {
     id: 'carousel-1',
     getMessages: () => {
@@ -356,7 +508,7 @@ const carouselPhases: Phase[] = [
               {
                 message: 'Sir CJ',
                 image: 'assets/pips/sir-cj.png',
-                clickCallback: () => console.log('123!'),
+                clickCallback: () => console.log('456!'),
                 link: 'https://www.facebook.com/cjleonardooo',
               },
             ],
