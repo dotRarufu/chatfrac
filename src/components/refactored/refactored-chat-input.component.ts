@@ -5,6 +5,7 @@ import {
   OnChanges,
   Output,
   SimpleChanges,
+  signal,
 } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MessageService } from 'src/app/services/message.service';
@@ -13,14 +14,39 @@ import { Message } from 'src/app/types/Message';
 import SendIconComponent from '../icons/send.component';
 import { ActionsService } from 'src/app/services/actions.service';
 import { StateService } from 'src/app/services/state.service';
+import FractionFormInputComponent from '../fraction-form.component';
+import { CommonModule } from '@angular/common';
+import FractionIconComponent from '../icons/fraction.component';
 
 @Component({
   selector: 'refactored-chat-input',
   standalone: true,
-  imports: [FormsModule, SendIconComponent, ReactiveFormsModule],
+  imports: [
+    FractionFormInputComponent,
+    CommonModule,
+    SendIconComponent,
+    ReactiveFormsModule,
+    FractionIconComponent,
+  ],
 
   template: `
-    <div class="join selection:text-[16px]  rounded-[5px]  w-full">
+    <fraction-form-input
+      *ngIf="inFractionForm()"
+      (close)="inFractionForm.set(false)"
+      (send)="sendFraction($event)"
+    />
+
+    <div
+      *ngIf="!inFractionForm()"
+      class="join selection:text-[16px]  rounded-[5px]  w-full"
+    >
+      <button
+        (click)="inFractionForm.set(true)"
+        class="btn join-item btn-primary"
+        [class.btn-disabled]="inputIsDisabled || false"
+      >
+        <fraction-icon />
+      </button>
       <input
         [formControl]="value"
         type="text"
@@ -31,7 +57,7 @@ import { StateService } from 'src/app/services/state.service';
       <button
         (click)="handleSend()"
         class="btn join-item btn-primary"
-        [class.btn-disabled]="inputIsDisabled"
+        [class.btn-disabled]="inputIsDisabled || false"
       >
         <send-icon />
       </button>
@@ -42,6 +68,13 @@ export default class RefactoredChatInputComponent implements OnChanges {
   value = new FormControl('', { nonNullable: true });
   @Input() inputIsDisabled: boolean = false;
   @Output() send = new EventEmitter<string>();
+  inFractionForm = signal(false);
+
+  sendFraction(message: string) {
+    if (this.inputIsDisabled) return;
+
+    this.send.emit(message);
+  }
 
   handleSend() {
     if (!this.value.value) return;
