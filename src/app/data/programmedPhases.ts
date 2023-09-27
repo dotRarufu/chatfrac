@@ -8,6 +8,10 @@ import { modelsQuestions } from '../modelsCategory';
 import { definitionQuestions } from '../definitionCategory';
 import isAllCategoryAnswered from '../utils/isAllCategoryAnswered';
 import generateQuestionsPhases from '../utils/generateQuestionsPhases';
+import { postTestQuestions } from '../postTestQuestions';
+import generatePrePostQuestionsPhases, {
+  PREPOSTCATEGORIES,
+} from '../utils/generatePrePostQuestionsPhases';
 
 export type Categories = 'models' | 'examples' | 'definition';
 
@@ -18,6 +22,8 @@ export const BOT = 'bot';
 export const LocalStorageKeys = {
   PRETEST_SCORE: 'chatFrac_pretestScore',
   PRETEST_NUMBER: 'chatFrac_pretestNumber',
+  POSTTEST_SCORE: 'chatFrac_posttestScore',
+  POSTTEST_NUMBER: 'chatFrac_postestNumber',
   NAME: 'chatFrac_name',
   SCHOOL: 'chatFrac_school',
   MODELS_SCORE: 'chatFrac_modelsScore',
@@ -172,6 +178,46 @@ const startingPhases: Phase[] = [
   },
 ];
 
+const endingPhases: Phase[] = [
+  {
+    id: 'chat-end',
+    getMessages: () => {
+      return [
+        {
+          data: { bubble: 'You have answered all of the questions I have.' },
+          sender: BOT,
+        },
+      ];
+    },
+    next: () => '_',
+  },
+];
+
+const postTestPhases: Phase[] = [
+  {
+    id: 'posttest-intro',
+    next: () => 'posttest-question',
+    getMessages: () => [
+      // { data: { bubble: 'Thank you.' }, sender: BOT },
+      {
+        data: {
+          bubble: 'Great! Now, it is showtime!',
+        },
+        sender: BOT,
+      },
+      {
+        data: {
+          bubble:
+            'Answer the following question with all your might. I know you can ace this exam, good luck and do your best',
+        },
+        sender: BOT,
+      },
+    ],
+  },
+
+  ...generatePrePostQuestionsPhases(PREPOSTCATEGORIES.POST_TEST),
+];
+
 const preTestPhases: Phase[] = [
   {
     id: 'pretest-inform',
@@ -198,136 +244,7 @@ const preTestPhases: Phase[] = [
       },
     ],
   },
-  {
-    id: 'pretest-question',
-    next: (isCorrectAnswer) => {
-      const currentNumber = Number(
-        localStorage.getItem(LocalStorageKeys.PRETEST_NUMBER) || 1,
-      );
-      const isLastNumber = currentNumber > 5;
-
-      if (isLastNumber) return 'pretest-result';
-
-      return isCorrectAnswer
-        ? 'pretest-question-correct'
-        : 'pretest-question-wrong';
-    },
-    getMessages: () => {
-      const currentNumber = Number(
-        localStorage.getItem(LocalStorageKeys.PRETEST_NUMBER) || 1,
-      );
-      const isLastNumber = currentNumber > 5;
-
-      if (isLastNumber)
-        return [
-          {
-            sender: BOT,
-            data: {
-              bubble: 'You already answered all questions in pretest',
-            },
-          },
-          {
-            sender: BOT,
-            data: {
-              bubble: 'Type anything to proceed.',
-            },
-          },
-        ];
-
-      const currentQuestion = preTestQuestions[currentNumber - 1];
-
-      return [
-        // update type for data property
-        {
-          data: { bubble: currentQuestion.content.text as string },
-          sender: BOT,
-        },
-      ];
-    },
-    sideEffect: async (isCorrectAnswer, userInput) => {
-      if (isCorrectAnswer) {
-        const oldScore = Number(
-          localStorage.getItem(LocalStorageKeys.PRETEST_SCORE) || 1,
-        );
-        const newScore = oldScore + 1;
-
-        localStorage.setItem(
-          LocalStorageKeys.PRETEST_SCORE,
-          newScore.toString(),
-        );
-      }
-
-      // add go back to state after a session
-      // add loading state while side effect is running, try db calls in side effect
-
-      const currentNumber = Number(
-        localStorage.getItem(LocalStorageKeys.PRETEST_NUMBER) || 1,
-      );
-      const reachedLastNumber = currentNumber > 5;
-
-      if (reachedLastNumber) return;
-
-      const oldNumber = Number(
-        localStorage.getItem(LocalStorageKeys.PRETEST_NUMBER) || 1,
-      );
-      const newNumber = oldNumber + 1;
-      localStorage.setItem(
-        LocalStorageKeys.PRETEST_NUMBER,
-        newNumber.toString(),
-      );
-    },
-    isQuestion: {
-      answer: () => {
-        const currentNumber = Number(
-          localStorage.getItem(LocalStorageKeys.PRETEST_NUMBER) || 1,
-        );
-
-        return preTestQuestions[currentNumber - 1].answers;
-      },
-      inputType: 'INPUT',
-      id: uuidv4(),
-    },
-  },
-  {
-    id: 'pretest-question-wrong',
-    next: () => 'pretest-question',
-    getMessages: () => [
-      { data: { bubble: '==========Wrong=====' }, sender: BOT },
-    ],
-  },
-  {
-    id: 'pretest-question-correct',
-    next: () => 'pretest-question',
-    getMessages: () => [
-      { data: { bubble: '==========Correct=====' }, sender: BOT },
-    ],
-  },
-  {
-    id: 'pretest-result',
-    getMessages: () => {
-      const score = localStorage.getItem(LocalStorageKeys.PRETEST_SCORE) || 0;
-      const totalItems =
-        Number(localStorage.getItem(LocalStorageKeys.PRETEST_NUMBER) || 1) - 1;
-
-      const message = `You've answered ${score} items correctly out of ${totalItems}`;
-
-      return [{ data: { bubble: message }, sender: BOT }];
-    },
-    next: () => {
-      if (isAllCategoryAnswered()) return 'carousel-from-all-already-answered';
-
-      return 'category-select';
-    },
-    sideEffect: () => {
-      const score = localStorage.getItem(LocalStorageKeys.EXAMPLES_SCORE);
-
-      // When user failed to answer anything correct
-      if (score === null)
-        localStorage.setItem(LocalStorageKeys.PRETEST_SCORE, '0');
-
-      return fetch('').then();
-    },
-  },
+  ...generatePrePostQuestionsPhases(PREPOSTCATEGORIES.PRE_TEST),
 ];
 
 const selectCategoryPhases: Phase[] = [
@@ -433,7 +350,7 @@ const selectCategoryPhases: Phase[] = [
       const selectedAlreadyHasScore = selected !== null && !!selected;
 
       if (selectedAlreadyHasScore) return 'already-selected-anti-not-allowed';
-
+      console.log('userinput retrurns');
       return userInput;
     },
   },
@@ -884,7 +801,7 @@ const carouselPhases: Phase[] = [
         },
       ];
     },
-    next: () => 'carouse-2',
+    next: () => 'posttest-intro',
   },
 ];
 
@@ -896,6 +813,8 @@ const programmedPhases: Phase[] = [
   ...modelsCategoryPhases,
   ...definitionCategoryPhases,
   ...carouselPhases,
+  ...postTestPhases,
+  ...endingPhases,
 ];
 
 export default programmedPhases;

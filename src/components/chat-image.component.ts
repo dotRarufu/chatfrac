@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, signal } from '@angular/core';
 import { SafePipeModule } from 'safe-pipe';
 
 @Component({
@@ -12,11 +12,21 @@ import { SafePipeModule } from 'safe-pipe';
           class="w-full aspect-square object-contain max-w-[80vw]"
           [src]="url"
           alt="chat image"
+          (load)="handleLoaded()"
+          [class.hidden]="!isLoaded()"
         />
+        <div
+          class=" bg-base-200 w-full aspect-square max-w-[80vw] rounded-[8px] animate-pulse"
+          [class.hidden]="isLoaded()"
+        ></div>
       </div>
     </div>
   `,
 })
 export default class ChatImageComponent {
   @Input() url = '';
+  isLoaded = signal(false);
+  handleLoaded() {
+    this.isLoaded.set(true);
+  }
 }

@@ -95,7 +95,7 @@ const getPhase = (phaseId: string) => {
     isQuestion: { answer: () => ['_'], inputType: 'INPUT', id: uuidv4() },
     id: 'end-of-everything',
     getMessages: () => [
-      { data: { bubble: 'You have reached the end' }, sender: 'bot' },
+      { data: { bubble: 'You have reached the end.' }, sender: 'bot' },
     ],
     next: () => '_',
   };
@@ -123,7 +123,7 @@ const getPhase = (phaseId: string) => {
     RefactoredChatInputComponent,
     RefactoredQuickRepliesComponent,
     RefactoredChatButtonComponent,
-    RefactoredHeaderComponent
+    RefactoredHeaderComponent,
   ],
   template: `
     <div
