@@ -950,8 +950,11 @@ const carouselPhases: Phase[] = [
         },
         {
           data: {
-            bubble:
-              'https://drive.google.com/drive/folders/5000Aq1vu-XJHfNWlHxRp4nR4HwnFKLpWh',
+            bubble: {
+              content:
+                'https://drive.google.com/drive/folders/5000Aq1vu-XJHfNWlHxRp4nR4HwnFKLpWh',
+              isLink: true,
+            },
           },
           sender: BOT,
         },

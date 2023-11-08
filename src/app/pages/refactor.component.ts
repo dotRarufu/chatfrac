@@ -80,14 +80,19 @@ export interface Phase {
 export type Message = {
   sender: 'user' | 'bot';
   data: {
-    bubble?: string;
+    bubble?:
+      | string
+      | {
+          content: string;
+          isLink?: true;
+        };
     carousel?: CarouselItem[];
     image?: string;
     video?: string;
   };
 };
 
-const DELAY = 2500;
+const DELAY = 100;
 
 const getPhase = (phaseId: string) => {
   const match = programmedPhases.find(({ id }) => id === phaseId);
@@ -98,7 +103,10 @@ const getPhase = (phaseId: string) => {
     isQuestion: { answer: () => ['_'], inputType: 'INPUT', id: uuidv4() },
     id: 'end-of-everything',
     getMessages: () => [
-      { data: { bubble: 'You have reached the end.' }, sender: 'bot' },
+      {
+        data: { bubble: { content: 'You have reached the end.' } },
+        sender: 'bot',
+      },
     ],
     next: () => '_',
   };
@@ -148,7 +156,8 @@ const getPhase = (phaseId: string) => {
             <chat-bubble
               *ngIf="message.data.bubble !== undefined"
               [sender]="message.sender"
-              [message]="message.data.bubble"
+              [message]="getMessageContent(message)"
+              [link]="getIsLink(message)"
             />
             <chat-carousel
               *ngIf="message.data.carousel !== undefined"
@@ -323,6 +332,26 @@ export default class RefactorComponent implements AfterViewChecked {
     const newValues = [...oldValues, m];
 
     this.messagesSubject.next(newValues);
+  }
+
+  getIsLink(m: Message) {
+    const bubble = m.data.bubble;
+
+    if (!bubble) return;
+
+    if (typeof bubble === 'string') return undefined;
+
+    return bubble.content;
+  }
+
+  getMessageContent(m: Message) {
+    const bubble = m.data.bubble;
+
+    if (!bubble) return '';
+
+    if (typeof bubble === 'string') return bubble;
+
+    return bubble.content;
   }
 
   // =====================================
