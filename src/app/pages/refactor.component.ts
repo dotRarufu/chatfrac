@@ -87,7 +87,7 @@ export type Message = {
   };
 };
 
-const DELAY = 100;
+const DELAY = 2500;
 
 const getPhase = (phaseId: string) => {
   const match = programmedPhases.find(({ id }) => id === phaseId);

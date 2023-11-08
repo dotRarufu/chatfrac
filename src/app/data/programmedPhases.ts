@@ -9,24 +9,16 @@ import {
   tap,
 } from 'rxjs';
 import { Phase } from '../pages/refactor.component';
-import { preTestQuestions } from '../preTestQuestions';
-import { examplesQuestions } from '../examplesCategory';
 import { v4 as uuidv4 } from 'uuid';
-import Question from '../types/Question';
-import { modelsQuestions } from '../modelsCategory';
-import { definitionQuestions } from '../definitionCategory';
 import isAllCategoryAnswered from '../utils/isAllCategoryAnswered';
 import generateQuestionsPhases from '../utils/generateQuestionsPhases';
-import { postTestQuestions } from '../postTestQuestions';
 import generatePrePostQuestionsPhases, {
   PREPOSTCATEGORIES,
 } from '../utils/generatePrePostQuestionsPhases';
 import { client } from '../lib/supabase';
 
-export type Categories = 'models' | 'examples' | 'definition';
+export type Categories = 'models' | 'examples' | 'definition' | 'pretest';
 
-// const nameSubject = new BehaviorSubject('');
-// const name$ = nameSubject.asObservable;
 const NO_ANSWER = () => ['_'];
 export const BOT = 'bot';
 export const LocalStorageKeys = {
@@ -47,7 +39,9 @@ export const CATEGORIES: {
   MODELS: Categories;
   EXAMPLES: Categories;
   DEFINITION: Categories;
+  PRETEST: Categories;
 } = {
+  PRETEST: 'pretest',
   MODELS: 'models',
   EXAMPLES: 'examples',
   DEFINITION: 'definition',
@@ -146,7 +140,7 @@ const startingPhases: Phase[] = [
 
       if (noUserRecord) return 'demographics-1';
 
-      return 'pretest-inform';
+      return 'category-select';
     },
     getMessages: () => [
       { data: { bubble: 'Welcome to ChatFrac' }, sender: BOT },
@@ -235,7 +229,7 @@ const startingPhases: Phase[] = [
   {
     id: 'demographics-2-confirm',
     next: (_, userInput) => {
-      if (userInput === 'Yes') return 'pretest-inform';
+      if (userInput === 'Yes') return 'category-select';
 
       return 'demographics-2-attempt';
     },
@@ -312,7 +306,7 @@ const endingPhases: Phase[] = [
 
 const postTestPhases: Phase[] = [
   {
-    id: 'posttest-intro',
+    id: 'Posttest',
     next: () => 'posttest-question',
     getMessages: () => [
       // { data: { bubble: 'Thank you.' }, sender: BOT },
@@ -337,7 +331,7 @@ const postTestPhases: Phase[] = [
 
 const preTestPhases: Phase[] = [
   {
-    id: 'pretest-inform',
+    id: 'Pretest',
     next: () => 'pretest-question',
     getMessages: () => [
       // { data: { bubble: 'Thank you.' }, sender: BOT },
@@ -387,10 +381,11 @@ const selectCategoryPhases: Phase[] = [
     isQuestion: {
       answer: NO_ANSWER,
       inputType: 'QUICK_REPLY',
-      quickReplies: ['Definition', 'Examples', 'Models'],
+      quickReplies: ['Pretest', 'Definition', 'Examples', 'Models'],
       id: uuidv4(),
     },
     next: (_, userInput) => {
+      const pretestScore = localStorage.getItem(LocalStorageKeys.PRETEST_SCORE);
       const definitionScore = localStorage.getItem(
         LocalStorageKeys.DEFINITION_SCORE,
       );
@@ -399,11 +394,15 @@ const selectCategoryPhases: Phase[] = [
       );
       const modelsScore = localStorage.getItem(LocalStorageKeys.MODELS_SCORE);
 
+      // Pretest is excluded
       if (isAllCategoryAnswered()) return 'carousel-intro';
 
       let selected: string | null = '';
 
       switch (userInput) {
+        case 'Pretest':
+          selected = pretestScore;
+          break;
         case 'Definition':
           selected = definitionScore;
           break;
@@ -433,10 +432,11 @@ const selectCategoryPhases: Phase[] = [
     isQuestion: {
       answer: NO_ANSWER,
       inputType: 'QUICK_REPLY',
-      quickReplies: ['Definition', 'Examples', 'Models'],
+      quickReplies: ['Pretest', 'Definition', 'Examples', 'Models'],
       id: uuidv4(),
     },
     next: (_, userInput) => {
+      const pretestScore = localStorage.getItem(LocalStorageKeys.PRETEST_SCORE);
       const definitionScore = localStorage.getItem(
         LocalStorageKeys.DEFINITION_SCORE,
       );
@@ -450,6 +450,9 @@ const selectCategoryPhases: Phase[] = [
       let selected: string | null = '';
 
       switch (userInput) {
+        case 'Pretest':
+          selected = pretestScore;
+          break;
         case 'Definition':
           selected = definitionScore;
           break;
@@ -889,6 +892,28 @@ const carouselPhases: Phase[] = [
   },
   {
     id: 'carousel-1',
+    getMessages: () => [
+      {
+        data: {
+          bubble: 'Do you want to take the post-test?',
+        },
+        sender: BOT,
+      },
+    ],
+    next: (_, userInput) => {
+      const next = userInput === 'No' ? 'carousel-2' : 'Posttest';
+
+      return next;
+    },
+    isQuestion: {
+      answer: NO_ANSWER,
+      inputType: 'QUICK_REPLY',
+      quickReplies: ['Yes', 'No'],
+      id: uuidv4(),
+    },
+  },
+  {
+    id: 'carousel-2',
     getMessages: () => {
       return [
         {
@@ -916,9 +941,29 @@ const carouselPhases: Phase[] = [
           },
           sender: BOT,
         },
+        {
+          data: {
+            bubble:
+              'You may also take a look on this gdrive to further improve your mastery level on addition and subtraction of dissimilar fractions',
+          },
+          sender: BOT,
+        },
+        {
+          data: {
+            bubble:
+              'https://drive.google.com/drive/folders/5000Aq1vu-XJHfNWlHxRp4nR4HwnFKLpWh',
+          },
+          sender: BOT,
+        },
       ];
     },
-    next: () => 'posttest-intro',
+    next: () => 'chat-end',
+    isQuestion: {
+      answer: NO_ANSWER,
+      inputType: 'BUTTON',
+      buttonName: 'Okay',
+      id: uuidv4(),
+    },
   },
 ];
 

@@ -13,10 +13,10 @@ const routes: Routes = [
     path: 'chat',
     loadComponent: () => import('./app/pages/chat.component'),
   },
-  {
-    path: 'download-result',
-    loadComponent: () => import('./app/pages/result.component'),
-  },
+  // {
+  //   path: 'download-result',
+  //   loadComponent: () => import('./app/pages/result.component'),
+  // },
   {
     path: 'refactor',
     loadComponent: () => import('./app/pages/refactor.component'),
@@ -24,8 +24,11 @@ const routes: Routes = [
 ];
 
 bootstrapApplication(AppComponent, {
-  providers: [provideRouter(routes), provideServiceWorker('ngsw-worker.js', {
-        enabled: !isDevMode(),
-        registrationStrategy: 'registerWhenStable:30000'
-    })],
+  providers: [
+    provideRouter(routes),
+    provideServiceWorker('ngsw-worker.js', {
+      enabled: !isDevMode(),
+      registrationStrategy: 'registerWhenStable:30000',
+    }),
+  ],
 }).catch((err) => console.error(err));
