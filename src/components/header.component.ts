@@ -18,18 +18,18 @@ import DownloadIconComponent from './icons/download.component';
           </div>
         </div>
         <div class="flex flex-col justify-center">
-          <span class="text-[24px] text-primary-content h-[28px] leading-none">
+          <span class="text-[24px] text-secondary h-[28px] leading-none">
             ChatFrac
           </span>
 
-          <span class="text-base text-primary-content h-[13px] leading-none">
+          <span class="text-base text-secondary h-[13px] leading-none">
             ONLINE
           </span>
         </div>
       </div>
 
       <!-- <div
-        class="w-[52px] h-[52px] text-primary-content btn btn-ghost flex justify-center items-center"
+        class="w-[52px] h-[52px] text-secondary btn btn-ghost flex justify-center items-center"
         (click)="installPwa()"
       >
         <download-icon />

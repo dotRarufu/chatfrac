@@ -5,7 +5,7 @@ export const modelsIntro1Block: MessageFormat[] = [
   {
     content: {
       text: {
-        videoLink: 'https://www.youtube.com/embed/5WCsDIDehTc',
+        videoLink: 'https://www.youtube.com/embed/J1sE72x9oYA',
       },
     },
   },
@@ -34,7 +34,7 @@ export const modelsIntro2Block: MessageFormat[] = [
   {
     content: {
       text: {
-        videoLink: 'https://www.youtube.com/embed/UxUPhbuEGEA',
+        videoLink: 'https://www.youtube.com/embed/oa7oDwjpGmY',
       },
     },
   },
@@ -68,7 +68,7 @@ export const modelsIntro3Block: MessageFormat[] = [
   {
     content: {
       text: {
-        videoLink: 'https://www.youtube.com/embed/92WEt62O3k0',
+        videoLink: 'https://www.youtube.com/embed/_lpgWwtm37A',
       },
     },
   },
@@ -88,79 +88,79 @@ export const modelsIntro3Block: MessageFormat[] = [
     },
   },
 ];
-export const modelsIntro4Block: MessageFormat[] = [
-  {
-    content: {
-      text: "Let's have another example.",
-    },
-  },
-  {
-    content: {
-      text: {
-        videoLink: 'https://www.youtube.com/embed/yrwb1ujALLs',
-      },
-    },
-  },
-  {
-    content: {
-      text: 'Draw the given fractions into model forms.',
-    },
-  },
-  {
-    content: {
-      text: 'Combine, redraw and rename the fractions base on the new figure.',
-    },
-  },
-  {
-    content: {
-      text: 'Subtract or take away the 2nd figure from 1st figure to get the final answer.',
-    },
-  },
-  {
-    content: {
-      text: 'Did you get it?',
-    },
-  },
-];
-export const modelsIntro5Linear: MessageFormat[] = [
-  {
-    content: {
-      text: "Now, let's proceed to another method of addition and subtraction of dissimilar fractions.",
-    },
-  },
-  {
-    content: {
-      text: {
-        videoLink: 'https://www.youtube.com/embed/wQendenzfDM',
-      },
-    },
-  },
-  {
-    content: {
-      text: 'Draw the given fractions into a number line.',
-    },
-  },
-  {
-    content: {
-      text: 'Find the LCD by multiplying the denominators.',
-    },
-  },
-  {
-    content: {
-      text: 'Draw again the previous number line but change the interval to its LCD.      ',
-    },
-  },
-  {
-    content: {
-      text: 'Rename the fractions based on the new number line.',
-    },
-  },
-  {
-    content: {
-      text: 'Combine and add the new figures to get the final answer.',
-    },
-  },
-];
+// export const modelsIntro4Block: MessageFormat[] = [
+//   {
+//     content: {
+//       text: "Let's have another example.",
+//     },
+//   },
+//   {
+//     content: {
+//       text: {
+//         videoLink: 'https://www.youtube.com/embed/yrwb1ujALLs',
+//       },
+//     },
+//   },
+//   {
+//     content: {
+//       text: 'Draw the given fractions into model forms.',
+//     },
+//   },
+//   {
+//     content: {
+//       text: 'Combine, redraw and rename the fractions base on the new figure.',
+//     },
+//   },
+//   {
+//     content: {
+//       text: 'Subtract or take away the 2nd figure from 1st figure to get the final answer.',
+//     },
+//   },
+//   {
+//     content: {
+//       text: 'Did you get it?',
+//     },
+//   },
+// ];
+// export const modelsIntro5Linear: MessageFormat[] = [
+//   {
+//     content: {
+//       text: "Now, let's proceed to another method of addition and subtraction of dissimilar fractions.",
+//     },
+//   },
+//   {
+//     content: {
+//       text: {
+//         videoLink: 'https://www.youtube.com/embed/wQendenzfDM',
+//       },
+//     },
+//   },
+//   {
+//     content: {
+//       text: 'Draw the given fractions into a number line.',
+//     },
+//   },
+//   {
+//     content: {
+//       text: 'Find the LCD by multiplying the denominators.',
+//     },
+//   },
+//   {
+//     content: {
+//       text: 'Draw again the previous number line but change the interval to its LCD.      ',
+//     },
+//   },
+//   {
+//     content: {
+//       text: 'Rename the fractions based on the new number line.',
+//     },
+//   },
+//   {
+//     content: {
+//       text: 'Combine and add the new figures to get the final answer.',
+//     },
+//   },
+// ];
 export const modelsIntro6Linear: MessageFormat[] = [
   {
     content: {
@@ -311,7 +311,7 @@ export const modelsQuestionsIntro: MessageFormat[] = [
   // },
   {
     content: {
-      text: 'Now let\'s see what you have learned from this category.',
+      text: "Now let's see what you have learned from this category.",
     },
   },
   {

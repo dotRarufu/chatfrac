@@ -113,7 +113,7 @@ import ChatImageComponent from 'src/components/chat-image.component';
           <ng-container *ngSwitchCase="'Button'">
             <button
               *ngIf="supabaseService.isSavingData()"
-              class="btn w-full btn-primary"
+              class="btn w-full btn-primary text-secondary"
               [disabled]="true"
             >
               <span class="loading loading-spinner loading-md"></span>
@@ -123,7 +123,7 @@ import ChatImageComponent from 'src/components/chat-image.component';
             <button
               *ngIf="!supabaseService.isSavingData()"
               (click)="getButtonContent().callback()"
-              class="btn w-full btn-primary"
+              class="btn w-full btn-primary text-secondary"
             >
               {{ getButtonContent().label }}
             </button>
@@ -167,7 +167,7 @@ export default class ChatComponent implements AfterViewChecked {
     public stateService: StateService,
     public supabaseService: SupabaseService,
   ) {
-    
+
   }
 
   disableScrollDown = false

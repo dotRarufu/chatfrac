@@ -28,7 +28,7 @@ export type QuickReplyContent = {
   template: `
     <button
       (click)="handleCallback()"
-      class="btn w-full btn-primary"
+      class="btn w-full btn-primary text-secondary"
       [class.btn-disabled]="notAllowed()"
     >
       {{ content }}

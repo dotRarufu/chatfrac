@@ -29,7 +29,7 @@ export type QuickReplyContent = {
     <div class=" flex gap-[16px] carousel px-[16px] ">
       <div *ngFor="let item of content" class="carousel-item ">
         <div
-          class="rounded-[24px] font-normal btn-sm  text-[20px] px-[28px] py-[4px]   btn btn-primary w-full normal-case min-h-[28px] h-[28px] "
+          class="rounded-[24px] font-normal btn-sm  text-[20px] px-[28px] py-[4px]   btn btn-primary text-secondary w-full normal-case min-h-[28px] h-[28px] "
           [class.btn-disabled]="notAllowed()"
           (click)="handleCallback(item)"
         >

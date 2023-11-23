@@ -8,7 +8,7 @@ import isFraction, { Fraction } from 'src/app/utils/isFraction';
   imports: [CommonModule],
   template: `
     <div
-      class="chat "
+      class="chat"
       [class.chat-end]="sender === 'user'"
       [class.chat-start]="sender === 'bot'"
     >
@@ -16,7 +16,7 @@ import isFraction, { Fraction } from 'src/app/utils/isFraction';
         class="chat-bubble  text-secondary-content"
         [class.bg-primary]="sender === 'user'"
         [class.bg-secondary]="sender === 'bot'"
-        [class.text-primary-content]="sender === 'user'"
+        [class.text-secondary]="sender === 'user'"
         [class.text-secondary-content]="sender === 'bot'"
       >
         <ng-container *ngIf="!isFraction; else fractionForm">

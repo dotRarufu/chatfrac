@@ -12,6 +12,26 @@ module.exports = {
           "44%": { transform: "translateY(0px)", backgroundColor: "#B5D9CB" },
         },
       },
+      fontFamily: {
+        gagalin: ["'Mukta'", "sans-serif"],
+        sans: [
+          "'Source Serif 4'",
+          '"Inter"',
+          "system-ui",
+          "-apple-system",
+          "BlinkMacSystemFont",
+          '"Segoe UI"',
+          "Roboto",
+          '"Helvetica Neue"',
+          "Arial",
+          '"Noto Sans"',
+          "sans-serif",
+          '"Apple Color Emoji"',
+          '"Segoe UI Emoji"',
+          '"Segoe UI Symbol"',
+          '"Noto Color Emoji"',
+        ],
+      },
     },
   },
   daisyui: {
@@ -20,8 +40,8 @@ module.exports = {
       // "dark",
       {
         mytheme: {
-          primary: "#3C7FEB",
-          secondary: "#FAFAFA",
+          primary: "#BE7EE4",
+          secondary: "#FFFBF0",
           accent: "#1d54ba",
           neutral: "#201c22",
           "base-100": "#C0C0C0",

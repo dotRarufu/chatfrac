@@ -41,7 +41,10 @@ import { StateService } from 'src/app/services/state.service';
       </div>
 
       <div class="gap-2 w-[48px] flex flex-col justify-between">
-        <button (click)="handleSend()" class="btn flex-1 btn-primary">
+        <button
+          (click)="handleSend()"
+          class="btn flex-1 btn-primary text-secondary"
+        >
           <send-icon />
         </button>
         <button (click)="close.emit()" class="btn btn-error">X</button>

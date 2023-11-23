@@ -19,18 +19,18 @@ import createOnline$ from 'src/app/utils/createOnline';
         hasInternet: hasInternet$ | async
       } as observables"
     >
-      <div class=" flex gap-[12px] items-center">
+      <div class="font-gagalin flex gap-[12px] items-center">
         <div class="avatar">
           <div class="w-[52px] h-[52px] rounded-full">
             <img src="assets/chatfrac-logo.jpg" />
           </div>
         </div>
         <div class="flex flex-col justify-center">
-          <span class="text-[24px] text-primary-content h-[28px] leading-none">
+          <span class="text-[24px] text-secondary h-[28px] leading-none">
             ChatFrac
           </span>
 
-          <span class="text-base text-primary-content h-[13px] leading-none">
+          <span class="text-base text-secondary h-[13px] leading-none">
             ONLINE
           </span>
         </div>
@@ -40,19 +40,19 @@ import createOnline$ from 'src/app/utils/createOnline';
         <i-feather
           *ngIf="!observables.hasInternet"
           name="cloud-off"
-          class="text-primary-content w-full"
+          class="text-secondary w-full"
         />
         <i-feather
           *ngIf="observables.isSaving"
           name="upload-cloud"
-          class="text-primary-content w-full animate-ping"
+          class="text-secondary w-full animate-ping"
         />
 
         <div
-          class=" text-primary-content btn btn-ghost btn-square"
+          class=" text-secondary btn btn-ghost btn-square"
           (click)="isModalOpen.set(true)"
         >
-          <i-feather name="rotate-ccw" class="text-primary-content w-full" />
+          <i-feather name="rotate-ccw" class="text-secondary w-full" />
         </div>
       </div>
     </div>

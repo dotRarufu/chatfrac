@@ -40,7 +40,7 @@ import FractionIconComponent from './icons/fraction.component';
     >
       <button
         (click)="inFractionForm.set(true)"
-        class="btn join-item btn-primary"
+        class="btn join-item btn-primary text-secondary"
         [class.btn-disabled]="inputIsDisabled || false"
       >
         <fraction-icon />
@@ -54,7 +54,7 @@ import FractionIconComponent from './icons/fraction.component';
       <!-- [disabled]="inputIsDisabled || false" -->
       <button
         (click)="handleSend()"
-        class="btn join-item btn-primary"
+        class="btn join-item btn-primary text-secondary"
         [class.btn-disabled]="inputIsDisabled || false"
       >
         <send-icon />

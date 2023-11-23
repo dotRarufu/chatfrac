@@ -40,11 +40,11 @@ import {
   examplesIntro1Messages,
   examplesIntro2Messages,
   examplesIntro3Messages,
-  examplesIntro4Messages,
-  examplesIntro5Messages,
-  examplesIntro6Messages,
+  // examplesIntro4Messages,
+  // examplesIntro5Messages,
+  // examplesIntro6Messages,
   examplesIntro7Messages,
-  examplesIntro8Messages,
+  // examplesIntro8Messages,
   examplesQuestions,
 } from '../examplesCategory';
 import { postTestQuestions } from '../postTestQuestions';
@@ -52,8 +52,8 @@ import {
   modelsIntro1Block,
   modelsIntro2Block,
   modelsIntro3Block,
-  modelsIntro4Block,
-  modelsIntro5Linear,
+  // modelsIntro4Block,
+  // modelsIntro5Linear,
   modelsIntro6Linear,
   modelsIntro7Linear,
   modelsIntro8Linear,
@@ -826,90 +826,6 @@ export class ShowMessageComponent implements OnInit {
                 type: 'Button',
                 label: 'Yes',
                 callback: () => {
-                  this.moveToPhase(Phases.EXAMPLES_INTRO_4);
-                  this.actionsService.content.set({ type: 'Input' });
-                },
-              });
-            };
-            this.showMessages(messages, undefined, showButton);
-          }
-          break;
-        case Phases.EXAMPLES_INTRO_4:
-          {
-            const introMessagesBubble = examplesIntro4Messages.map((m) =>
-              this.newBotMessage(m.content),
-            );
-
-            const messages: Message[] = [...introMessagesBubble];
-
-            const showButton = () => {
-              this.actionsService.content.set({
-                type: 'Button',
-                label: 'Yes',
-                callback: () => {
-                  this.moveToPhase(Phases.EXAMPLES_INTRO_5);
-                  this.actionsService.content.set({ type: 'Input' });
-                },
-              });
-            };
-            this.showMessages(messages, undefined, showButton);
-          }
-          break;
-        case Phases.EXAMPLES_INTRO_5:
-          {
-            const introMessagesBubble = examplesIntro5Messages.map((m) =>
-              this.newBotMessage(m.content),
-            );
-
-            const messages: Message[] = [...introMessagesBubble];
-
-            const showButton = () => {
-              this.actionsService.content.set({
-                type: 'Button',
-                label: 'Yes',
-                callback: () => {
-                  this.moveToPhase(Phases.EXAMPLES_INTRO_6);
-                  this.actionsService.content.set({ type: 'Input' });
-                },
-              });
-            };
-            this.showMessages(messages, undefined, showButton);
-          }
-          break;
-        case Phases.EXAMPLES_INTRO_6:
-          {
-            const introMessagesBubble = examplesIntro6Messages.map((m) =>
-              this.newBotMessage(m.content),
-            );
-
-            const messages: Message[] = [...introMessagesBubble];
-
-            const showButton = () => {
-              this.actionsService.content.set({
-                type: 'Button',
-                label: 'Yes',
-                callback: () => {
-                  this.moveToPhase(Phases.EXAMPLES_INTRO_7);
-                  this.actionsService.content.set({ type: 'Input' });
-                },
-              });
-            };
-            this.showMessages(messages, undefined, showButton);
-          }
-          break;
-        case Phases.EXAMPLES_INTRO_7:
-          {
-            const introMessagesBubble = examplesIntro8Messages.map((m) =>
-              this.newBotMessage(m.content),
-            );
-
-            const messages: Message[] = [...introMessagesBubble];
-
-            const showButton = () => {
-              this.actionsService.content.set({
-                type: 'Button',
-                label: 'Yes',
-                callback: () => {
                   this.moveToPhase(Phases.EXAMPLES_INTRO_7_1);
                   this.actionsService.content.set({ type: 'Input' });
                 },
@@ -918,6 +834,90 @@ export class ShowMessageComponent implements OnInit {
             this.showMessages(messages, undefined, showButton);
           }
           break;
+        // case Phases.EXAMPLES_INTRO_4:
+        //   {
+        //     const introMessagesBubble = examplesIntro4Messages.map((m) =>
+        //       this.newBotMessage(m.content),
+        //     );
+
+        //     const messages: Message[] = [...introMessagesBubble];
+
+        //     const showButton = () => {
+        //       this.actionsService.content.set({
+        //         type: 'Button',
+        //         label: 'Yes',
+        //         callback: () => {
+        //           this.moveToPhase(Phases.EXAMPLES_INTRO_5);
+        //           this.actionsService.content.set({ type: 'Input' });
+        //         },
+        //       });
+        //     };
+        //     this.showMessages(messages, undefined, showButton);
+        //   }
+        //   break;
+        // case Phases.EXAMPLES_INTRO_5:
+        //   {
+        //     const introMessagesBubble = examplesIntro5Messages.map((m) =>
+        //       this.newBotMessage(m.content),
+        //     );
+
+        //     const messages: Message[] = [...introMessagesBubble];
+
+        //     const showButton = () => {
+        //       this.actionsService.content.set({
+        //         type: 'Button',
+        //         label: 'Yes',
+        //         callback: () => {
+        //           this.moveToPhase(Phases.EXAMPLES_INTRO_6);
+        //           this.actionsService.content.set({ type: 'Input' });
+        //         },
+        //       });
+        //     };
+        //     this.showMessages(messages, undefined, showButton);
+        //   }
+        //   break;
+        // case Phases.EXAMPLES_INTRO_6:
+        //   {
+        //     const introMessagesBubble = examplesIntro6Messages.map((m) =>
+        //       this.newBotMessage(m.content),
+        //     );
+
+        //     const messages: Message[] = [...introMessagesBubble];
+
+        //     const showButton = () => {
+        //       this.actionsService.content.set({
+        //         type: 'Button',
+        //         label: 'Yes',
+        //         callback: () => {
+        //           this.moveToPhase(Phases.EXAMPLES_INTRO_7);
+        //           this.actionsService.content.set({ type: 'Input' });
+        //         },
+        //       });
+        //     };
+        //     this.showMessages(messages, undefined, showButton);
+        //   }
+        //   break;
+        // case Phases.EXAMPLES_INTRO_7:
+        //   {
+        //     const introMessagesBubble = examplesIntro8Messages.map((m) =>
+        //       this.newBotMessage(m.content),
+        //     );
+
+        //     const messages: Message[] = [...introMessagesBubble];
+
+        //     const showButton = () => {
+        //       this.actionsService.content.set({
+        //         type: 'Button',
+        //         label: 'Yes',
+        //         callback: () => {
+        //           this.moveToPhase(Phases.EXAMPLES_INTRO_7_1);
+        //           this.actionsService.content.set({ type: 'Input' });
+        //         },
+        //       });
+        //     };
+        //     this.showMessages(messages, undefined, showButton);
+        //   }
+        //   break;
         case Phases.EXAMPLES_INTRO_7_1:
           {
             const introMessagesBubble = examplesIntro7Messages.map((m) =>
@@ -1243,48 +1243,6 @@ export class ShowMessageComponent implements OnInit {
                 type: 'Button',
                 label: 'Next',
                 callback: () => {
-                  this.moveToPhase(Phases.MODELS_INTRO_4_BLOCK);
-                  this.actionsService.content.set({ type: 'Input' });
-                },
-              });
-            };
-            this.showMessages(messages, undefined, showButton);
-          }
-          break;
-        case Phases.MODELS_INTRO_4_BLOCK:
-          {
-            const introMessagesBubble = modelsIntro4Block.map((m) =>
-              this.newBotMessage(m.content),
-            );
-
-            const messages: Message[] = [...introMessagesBubble];
-
-            const showButton = () => {
-              this.actionsService.content.set({
-                type: 'Button',
-                label: 'Yes',
-                callback: () => {
-                  this.moveToPhase(Phases.MODELS_INTRO_5_LINEAR);
-                  this.actionsService.content.set({ type: 'Input' });
-                },
-              });
-            };
-            this.showMessages(messages, undefined, showButton);
-          }
-          break;
-        case Phases.MODELS_INTRO_5_LINEAR:
-          {
-            const introMessagesBubble = modelsIntro5Linear.map((m) =>
-              this.newBotMessage(m.content),
-            );
-
-            const messages: Message[] = [...introMessagesBubble];
-
-            const showButton = () => {
-              this.actionsService.content.set({
-                type: 'Button',
-                label: 'Next',
-                callback: () => {
                   this.moveToPhase(Phases.MODELS_INTRO_6_LINEAR);
                   this.actionsService.content.set({ type: 'Input' });
                 },
@@ -1293,6 +1251,48 @@ export class ShowMessageComponent implements OnInit {
             this.showMessages(messages, undefined, showButton);
           }
           break;
+        // case Phases.MODELS_INTRO_4_BLOCK:
+        // {
+        //   const introMessagesBubble = modelsIntro4Block.map((m) =>
+        //     this.newBotMessage(m.content),
+        //   );
+
+        //   const messages: Message[] = [...introMessagesBubble];
+
+        //   const showButton = () => {
+        //     this.actionsService.content.set({
+        //       type: 'Button',
+        //       label: 'Yes',
+        //       callback: () => {
+        //         this.moveToPhase(Phases.MODELS_INTRO_5_LINEAR);
+        //         this.actionsService.content.set({ type: 'Input' });
+        //       },
+        //     });
+        //   };
+        //   this.showMessages(messages, undefined, showButton);
+        // }
+        // break;
+        // case Phases.MODELS_INTRO_5_LINEAR:
+        //   {
+        //     const introMessagesBubble = modelsIntro5Linear.map((m) =>
+        //       this.newBotMessage(m.content),
+        //     );
+
+        //     const messages: Message[] = [...introMessagesBubble];
+
+        //     const showButton = () => {
+        //       this.actionsService.content.set({
+        //         type: 'Button',
+        //         label: 'Next',
+        //         callback: () => {
+        //           this.moveToPhase(Phases.MODELS_INTRO_6_LINEAR);
+        //           this.actionsService.content.set({ type: 'Input' });
+        //         },
+        //       });
+        //     };
+        //     this.showMessages(messages, undefined, showButton);
+        //   }
+        //   break;
         case Phases.MODELS_INTRO_6_LINEAR:
           {
             const introMessagesBubble = modelsIntro6Linear.map((m) =>

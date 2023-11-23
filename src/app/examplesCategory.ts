@@ -10,7 +10,7 @@ export const examplesIntro1Messages: MessageFormat[] = [
   {
     content: {
       text: {
-        videoLink: 'https://www.youtube.com/embed/Kzh04tWNDkQ',
+        videoLink: 'https://www.youtube.com/embed/N0aW74yE4Co',
       },
     },
   },
@@ -34,7 +34,7 @@ export const examplesIntro2Messages: MessageFormat[] = [
   {
     content: {
       text: {
-        videoLink: 'https://www.youtube.com/embed/opaJvQJyH00',
+        videoLink: 'https://www.youtube.com/embed/7Uny-f6LKOY',
       },
     },
   },
@@ -58,7 +58,7 @@ export const examplesIntro3Messages: MessageFormat[] = [
   {
     content: {
       text: {
-        videoLink: 'https://www.youtube.com/embed/yqI7uaEXOt8',
+        videoLink: 'https://www.youtube.com/embed/tiHV3ilDAqc',
       },
     },
   },
@@ -73,78 +73,78 @@ export const examplesIntro3Messages: MessageFormat[] = [
     },
   },
 ];
-export const examplesIntro4Messages: MessageFormat[] = [
-  {
-    content: {
-      text: "Let's proceed to our next example",
-    },
-  },
-  {
-    content: {
-      text: {
-        videoLink: 'https://www.youtube.com/embed/JYfWinTqrCY',
-      },
-    },
-  },
-  {
-    content: {
-      text: 'You can pause the video or adjust the speed of the video if you need to.',
-    },
-  },
-  {
-    content: {
-      text: 'Do you understand?',
-    },
-  },
-];
-export const examplesIntro5Messages: MessageFormat[] = [
-  {
-    content: {
-      text: "Let's proceed to our next example",
-    },
-  },
-  {
-    content: {
-      text: {
-        videoLink: 'https://www.youtube.com/embed/wFoH8ioQm88',
-      },
-    },
-  },
-  {
-    content: {
-      text: 'You can pause the video or adjust the speed of the video if you need to.',
-    },
-  },
-  {
-    content: {
-      text: 'Get it?',
-    },
-  },
-];
-export const examplesIntro6Messages: MessageFormat[] = [
-  {
-    content: {
-      text: "Let's continue",
-    },
-  },
-  {
-    content: {
-      text: {
-        videoLink: 'https://www.youtube.com/embed/UYkrQJrnoE0',
-      },
-    },
-  },
-  {
-    content: {
-      text: 'You can pause the video or adjust the speed of the video if you need to.',
-    },
-  },
-  {
-    content: {
-      text: 'Do you understand?',
-    },
-  },
-];
+// export const examplesIntro4Messages: MessageFormat[] = [
+//   {
+//     content: {
+//       text: "Let's proceed to our next example",
+//     },
+//   },
+//   {
+//     content: {
+//       text: {
+//         videoLink: 'https://www.youtube.com/embed/ByWXiPSV2V8',
+//       },
+//     },
+//   },
+//   {
+//     content: {
+//       text: 'You can pause the video or adjust the speed of the video if you need to.',
+//     },
+//   },
+//   {
+//     content: {
+//       text: 'Do you understand?',
+//     },
+//   },
+// ];
+// export const examplesIntro5Messages: MessageFormat[] = [
+//   {
+//     content: {
+//       text: "Let's proceed to our next example",
+//     },
+//   },
+//   {
+//     content: {
+//       text: {
+//         videoLink: 'https://www.youtube.com/embed/wFoH8ioQm88',
+//       },
+//     },
+//   },
+//   {
+//     content: {
+//       text: 'You can pause the video or adjust the speed of the video if you need to.',
+//     },
+//   },
+//   {
+//     content: {
+//       text: 'Get it?',
+//     },
+//   },
+// ];
+// export const examplesIntro6Messages: MessageFormat[] = [
+//   {
+//     content: {
+//       text: "Let's continue",
+//     },
+//   },
+//   {
+//     content: {
+//       text: {
+//         videoLink: 'https://www.youtube.com/embed/UYkrQJrnoE0',
+//       },
+//     },
+//   },
+//   {
+//     content: {
+//       text: 'You can pause the video or adjust the speed of the video if you need to.',
+//     },
+//   },
+//   {
+//     content: {
+//       text: 'Do you understand?',
+//     },
+//   },
+// ];
 export const examplesIntro7Messages: MessageFormat[] = [
   {
     content: {
@@ -154,7 +154,7 @@ export const examplesIntro7Messages: MessageFormat[] = [
   {
     content: {
       text: {
-        videoLink: 'https://www.youtube.com/embed/iPTvSUlRGYg',
+        videoLink: 'https://www.youtube.com/embed/ByWXiPSV2V8',
       },
     },
   },
@@ -174,38 +174,38 @@ export const examplesIntro7Messages: MessageFormat[] = [
     },
   },
 ];
-export const examplesIntro8Messages: MessageFormat[] = [
-  {
-    content: {
-      text: {
-        videoLink: 'https://www.youtube.com/embed/Sso_xpZqW5U',
-      },
-    },
-  },
-  {
-    content: {
-      text: {
-        videoLink: 'https://www.youtube.com/embed/iPTvSUlRGYg',
-      },
-    },
-  },
+// export const examplesIntro8Messages: MessageFormat[] = [
+//   {
+//     content: {
+//       text: {
+//         videoLink: 'https://www.youtube.com/embed/Sso_xpZqW5U',
+//       },
+//     },
+//   },
+//   {
+//     content: {
+//       text: {
+//         videoLink: 'https://www.youtube.com/embed/iPTvSUlRGYg',
+//       },
+//     },
+//   },
 
-  {
-    content: {
-      text: 'You can pause the video or adjust the speed of the video if you need to.',
-    },
-  },
-  {
-    content: {
-      text: 'Did you understand everything?',
-    },
-  },
-  {
-    content: {
-      text: 'You may go back and replay some clips if you still not understand things.',
-    },
-  },
-];
+//   {
+//     content: {
+//       text: 'You can pause the video or adjust the speed of the video if you need to.',
+//     },
+//   },
+//   {
+//     content: {
+//       text: 'Did you understand everything?',
+//     },
+//   },
+//   {
+//     content: {
+//       text: 'You may go back and replay some clips if you still not understand things.',
+//     },
+//   },
+// ];
 
 export const examplesQuestions: Question[] = [
   {
