@@ -7,99 +7,33 @@ export type MessageFormat = {
 export const introMessages1: MessageFormat[] = [
   {
     content: {
-      text: 'In this category, we will learn how to add subtract dissimilar fractions but before we proceed, let us know first what fractions is.',
+      text: 'In this category, we will learn how to add and subtract Rational Numbers but before we proceed, let us know first what Rational Number is.',
     },
   },
   {
     content: {
-      text: 'Fractions refers to a part of a whole.',
+      text: { imgSrc: 'assets/definitionCategory/new/real-numbers.png' },
     },
   },
   {
     content: {
-      text: 'Example',
+      text: 'What is a Rational Number?',
     },
   },
   {
     content: {
-      text: { imgSrc: 'assets/definitionCategory/fraction-example.png' },
+      text: 'A rational number, in Mathematics, can be defined as any number which can be represented in the form of p/q where q ≠ 0.',
     },
   },
   {
     content: {
-      text: 'Any number that is less than one (1) are called Proper Fractions. This is the kind of fraction that the numerator has the lowest number, and the denominator has the highest number.',
+      text: 'Also, we can say that any fraction fits under the category of rational numbers, where the denominator and numerator are integers and the denominator is not equal to zero.',
     },
   },
+
   {
     content: {
-      text: { imgSrc: 'assets/definitionCategory/proper-fraction.png' },
-    },
-  },
-  {
-    content: {
-      text: 'The line in the middle of the numbers is called the Vinculum or the Fraction Bar.',
-    },
-  },
-  {
-    content: {
-      text: 'The number above the bar is called Numerator.',
-    },
-  },
-  {
-    content: {
-      text: 'The number below the bar is called Denominator.',
-    },
-  },
-  {
-    content: {
-      text: 'Do you need a Tagalog-English Translation?',
-    },
-  },
-];
-export const introMessages1Taglish: MessageFormat[] = [
-  {
-    content: {
-      text: 'Pag-aaralan natin sa kategoryang ito kung paano mag-add at mag-subtract ng mga Dissimilar Fractions pero bago muna tayo pumunta sa parteng ’yan, alamin muna natin ang kahulugan ng fractions o kilala sa tawag na hating-bilang.',
-    },
-  },
-  {
-    content: {
-      text: 'Fractions refers to a part of a whole in other words ang fraction ay parte isang buo. Ibig sabihin mas maliit sila sa isang buo o sa isa.',
-    },
-  },
-  {
-    content: {
-      text: 'Example',
-    },
-  },
-  {
-    content: {
-      text: { imgSrc: 'assets/definitionCategory/fraction-example.png' },
-    },
-  },
-  {
-    content: {
-      text: 'Ang tawag sa mga hating bilang na mas mababa sa isa (1) ay tinatawag na Proper Fractions. Ito rin yung mga fraction na mas mababa ang number ng numerator kesa sa denominator.',
-    },
-  },
-  {
-    content: {
-      text: { imgSrc: 'assets/definitionCategory/proper-fraction.png' },
-    },
-  },
-  {
-    content: {
-      text: 'May linya sa pagitan ng dalawang numero kapag sinusulat ang fractions ito ay tinatawag na Vinculum o Fraction Bar.',
-    },
-  },
-  {
-    content: {
-      text: 'Ang nasa taas ng Bar ay tinatawag na Numerator',
-    },
-  },
-  {
-    content: {
-      text: 'Ang nasa ilalim naman ay tinatawag na Denominator.',
+      text: 'A rational number is any number that can be written as a fraction, where both the numerator and the denominator are integers, and the denominator is not equal to zero.',
     },
   },
 ];
@@ -107,493 +41,195 @@ export const introMessages1Taglish: MessageFormat[] = [
 export const introMessages2: MessageFormat[] = [
   {
     content: {
-      text: 'Let us proceed to the other types of fractions',
+      text: 'How to identify rational numbers?',
     },
   },
   {
     content: {
-      text: '1. Unit Fractions',
+      text: 'To identify if a number is rational or not,',
     },
   },
   {
     content: {
-      text: 'These are the fractions whose numerator is 1.',
+      text: 'It is represented in the form of p/q, where q≠0.',
     },
   },
   {
     content: {
-      text: 'Example:',
+      text: 'The ratio p/q can be further simplified and represented in decimal form.',
     },
   },
   {
     content: {
-      text: { imgSrc: 'assets/definitionCategory/unit-fraction.png' },
+      text: 'Examples: ',
     },
   },
   {
     content: {
-      text: '2. Improper Fractions',
+      text: { imgSrc: 'assets/definitionCategory/new/rational-numbers.png' },
     },
   },
   {
     content: {
-      text: 'These are the fractions whose numerator is greater than the denominator.',
+      text: 'Types of Rational Numbers',
     },
   },
   {
     content: {
-      text: 'Example:',
+      text: 'There are four types of rational numbers:',
     },
   },
   {
     content: {
-      text: { imgSrc: 'assets/definitionCategory/improper-fraction.png' },
+      text: 'Integers',
     },
   },
   {
     content: {
-      text: '3. Mixed Number',
+      text: 'Fractions made up of integers',
     },
   },
   {
     content: {
-      text: 'Combination of Whole Number and Fraction.',
+      text: 'Terminating decimal numbers',
     },
   },
   {
     content: {
-      text: 'Example:',
-    },
-  },
-  {
-    content: {
-      text: { imgSrc: 'assets/definitionCategory/mixed-number.png' },
-    },
-  },
-  {
-    content: {
-      text: 'Do you need a Tagalog-English Translation?',
+      text: 'Non-terminating decimal numbers with infinitely repeating patterns',
     },
   },
 ];
-export const introMessages2Taglish: MessageFormat[] = [
-  {
-    content: {
-      text: 'Bukod sa Proper Fraction ay mayroon pang iba’t ibang uri ng Fraction',
-    },
-  },
-  {
-    content: {
-      text: '1. Unit Fractions',
-    },
-  },
-  {
-    content: {
-      text: 'Ito ay ang mga fraction na ang numerator ay 1.',
-    },
-  },
-  {
-    content: {
-      text: 'Halimbawa:',
-    },
-  },
-  {
-    content: {
-      text: { imgSrc: 'assets/definitionCategory/unit-fraction.png' },
-    },
-  },
-  {
-    content: {
-      text: '2. Improper Fractions',
-    },
-  },
-  {
-    content: {
-      text: 'Ito naman ang mga fraction na mas mataas ang numerator nito kesa sa kanyang Denominator.',
-    },
-  },
-  {
-    content: {
-      text: 'Halimbawa:',
-    },
-  },
-  {
-    content: {
-      text: { imgSrc: 'assets/definitionCategory/improper-fraction.png' },
-    },
-  },
-  {
-    content: {
-      text: '3. Mixed Number',
-    },
-  },
-  {
-    content: {
-      text: 'Combination naman ito ng Whole Number at Fraction.',
-    },
-  },
-  {
-    content: {
-      text: 'Halimbawa:',
-    },
-  },
-  {
-    content: {
-      text: { imgSrc: 'assets/definitionCategory/mixed-number.png' },
-    },
-  },
-];
+
 export const introMessages3: MessageFormat[] = [
   {
     content: {
-      text: 'Well since you understand the types of fractions, let us proceed to the Kinds of Group Fractions.',
+      text: 'Integers',
     },
   },
   {
     content: {
-      text: '1. Similar Fractions',
+      text: 'Any integer can be converted cleanly into a fraction, and is a rational number.',
     },
   },
   {
     content: {
-      text: 'Fractions that have the same denominator.',
+      text: 'For example, 3 can be expressed as 3/1. And since both the numerator (3) and denominator (1) are integers, and the denominator is not 0, then 3 is a rational number. This works for negative integers like -2 (or -2/1) and -2006 (or -2006/1).',
     },
   },
   {
     content: {
-      text: 'Example:',
-    },
-  },
-  {
-    content: {
-      text: { imgSrc: 'assets/definitionCategory/similar-fraction.png' },
-    },
-  },
-  {
-    content: {
-      text: '2. Dissimilar Fractions',
-    },
-  },
-  {
-    content: {
-      text: 'Fractions that have different denominators.',
-    },
-  },
-  {
-    content: {
-      text: 'Example:',
-    },
-  },
-  {
-    content: {
-      text: { imgSrc: 'assets/definitionCategory/dissimilar-fraction.png' },
-    },
-  },
-  {
-    content: {
-      text: '3. Equivalent Fractions',
-    },
-  },
-  {
-    content: {
-      text: 'Fractions that have the same value.',
-    },
-  },
-  {
-    content: {
-      text: 'Examples:',
-    },
-  },
-  {
-    content: {
-      text: { imgSrc: 'assets/definitionCategory/equivalent-fraction-1.png' },
-    },
-  },
-  {
-    content: {
-      text: { imgSrc: 'assets/definitionCategory/equivalent-fraction-2.png' },
-    },
-  },
-  {
-    content: {
-      text: { imgSrc: 'assets/definitionCategory/equivalent-fraction-3.png' },
-    },
-  },
-];
-export const introMessages3Taglish: MessageFormat[] = [
-  {
-    content: {
-      text: 'Well since you understand the types of fractions, let us proceed to the Kinds of Group Fractions.',
-    },
-  },
-  {
-    content: {
-      text: '1. Similar Fractions',
-    },
-  },
-  {
-    content: {
-      text: 'Ito yung mga grupo ng fraction na ang denominator ay magkaparehas.',
-    },
-  },
-  {
-    content: {
-      text: 'Halimbawa:',
-    },
-  },
-  {
-    content: {
-      text: { imgSrc: 'assets/definitionCategory/similar-fraction.png' },
-    },
-  },
-  {
-    content: {
-      text: '2. Dissimilar Fractions',
-    },
-  },
-  {
-    content: {
-      text: 'Ito ang mga fraction na ang denominator nila ay magkakaiba.',
-    },
-  },
-  {
-    content: {
-      text: 'Halimbawa:',
-    },
-  },
-  {
-    content: {
-      text: { imgSrc: 'assets/definitionCategory/dissimilar-fraction.png' },
-    },
-  },
-  {
-    content: {
-      text: '3. Equivalent Fractions',
-    },
-  },
-  {
-    content: {
-      text: 'Mga Fraction na may same value or kapag nilagay natin siya into simplest form or lowest term ay pare-parehas yung mga makukuha na value.',
-    },
-  },
-  {
-    content: {
-      text: 'Halimbawa:',
-    },
-  },
-  {
-    content: {
-      text: { imgSrc: 'assets/definitionCategory/equivalent-fraction-1.png' },
-    },
-  },
-  {
-    content: {
-      text: { imgSrc: 'assets/definitionCategory/equivalent-fraction-2.png' },
-    },
-  },
-  {
-    content: {
-      text: { imgSrc: 'assets/definitionCategory/equivalent-fraction-3.png' },
-    },
-  },
-];
-const introMessages4Subtract: MessageFormat[] = [
-  {
-    content: {
-      text: 'Subtracting Dissimilar Fractions',
-    },
-  },
-  {
-    content: {
-      text: 'The Steps are the same, but it will be different in last step because you will subtract.',
+      text: 'The number 0 is also a rational number, because it can be converted into fraction. For example, 0/1, 0/-4, and 0/18,572 are all valid fractions, and meet the definition of a rational number.',
     },
   },
 
   {
     content: {
-      text: 'These are the steps on how to Subtract Dissimilar Fractions',
+      text: 'Fractions made up of integers',
     },
   },
   {
     content: {
-      text: 'Step 1: Determine the LCD of the Dissimilar Fractions',
+      text: 'Any fraction made up of integers is a rational number, as long as the denominator is not 0.',
     },
   },
   {
     content: {
-      text: {
-        imgSrc: 'assets/definitionCategory/subtract/step-1.png',
-      },
-    },
-  },
-  {
-    content: {
-      text: '5 and 10 are different denominators, the most important rule in adding Dissimilar Fractions is to make the denominators the same.',
-    },
-  },
-
-  {
-    content: {
-      text: '5 and 10 are different denominators, the most important rule in adding Dissimilar Fractions is to make the denominators the same.',
-    },
-  },
-  {
-    content: {
-      text: 'You can do it by listing.',
-    },
-  },
-  {
-    content: {
-      text: '5= 5, 10, 15, 20, 25',
-    },
-  },
-  {
-    content: {
-      text: '10= 10, 20, 30, 40, 50',
-    },
-  },
-  {
-    content: {
-      text: 'In this example, the LCD is 10.',
-    },
-  },
-  {
-    content: {
-      text: 'Step 2: Make the fractions similar by finding the LCD.',
+      text: 'For example, 1/3, -5/3, and 27/-463 are all rational numbers',
     },
   },
   {
     content: {
       text: {
-        imgSrc: 'assets/definitionCategory/subtract/step-2.png',
+        imgSrc: 'assets/definitionCategory/new/fractions-made-of-integers.png',
       },
     },
   },
   {
     content: {
-      text: 'So, we got the same denominator, Good Job. Proceed to the next step.',
+      text: 'Terminating Decimal Numbers',
     },
   },
   {
     content: {
-      text: 'Step 3: To get your new numerator, divide the LCD by the denominator of each fraction and multiply the quotient by its numerator.',
-    },
-  },
-
-  {
-    content: {
-      text: {
-        imgSrc: 'assets/definitionCategory/subtract/step-3.png',
-      },
+      text: 'Any decimal number that terminates, or ends at some point, is a rational number.',
     },
   },
   {
     content: {
-      text: 'Since 8/10 is the fraction that we change the denominator, we need to divide the denominator, which is 10 to the denominator of 8/5, which is 5, and 10 divided by 5 equals 2. The quotient will be multiplied to its numerator so 2 x 8= 16, so your new numerator becomes 16.',
+      text: 'For example, take the decimal number 0.5. This can be converted to 1/2, which means its a rational number.',
     },
   },
   {
     content: {
-      text: {
-        imgSrc: 'assets/definitionCategory/subtract/step-3-1.png',
-      },
+      text: "Even longer terminating decimal numbers can be cleanly converted into fractions. For instance, 0.0001 can be expressed as 1/10,000, meaning that it's a rational number.",
     },
   },
   {
     content: {
-      text: 'Step 4: Perform the operation.',
+      text: "As long as a decimal number eventually terminates, without rounding or approximation, it's a rational number.",
     },
   },
   {
     content: {
-      text: {
-        imgSrc: 'assets/definitionCategory/subtract/step-4.png',
-      },
+      text: 'Non-terminating Decimal Numbers With Infinitely Repeating Patterns',
     },
   },
   {
     content: {
-      text: 'Take note that you don’t need to change the value of denominator if they are the same.',
+      text: 'Decimal numbers that go on forever with repeating patterns are rational numbers. But this is a bit tricky, because the pattern must repeat infinitely.',
     },
   },
   {
     content: {
-      text: 'I hope you get the steps on Subtracting Dissimilar Fractions.',
+      text: "For example, take the number 0.33333... Even though this is often simplified as 0.33, the pattern of 3's after the decimal point repeat infinitely. This means that the number can be converted into the fraction 1/3, and is a rational number.",
     },
   },
 ];
+
 export const introMessages4: MessageFormat[] = [
   {
     content: {
-      text: 'Did you understand kinds of Group Fractions?',
+      text: 'Addition of Rational Numbers with Unlike Denominators',
     },
   },
   {
     content: {
-      text: 'Then let us know on how to Add and Subtract Dissimilar Fractions',
+      text: 'On adding rational numbers, here are the steps that should be followed:',
     },
   },
   {
     content: {
-      text: 'Adding Dissimilar Fractions',
+      text: 'Step 1. Find the common denominator by determining the LCD of the Rational Numbers with Unlike Denominators using listing method.',
     },
   },
   {
     content: {
-      text: 'These are the steps on how to Add Dissimilar Fractions',
+      text: 'The LCD or Least Common Denominator is the smallest number that can be used for all denominators of 2 or more fractions. It is commonly used in Addition and Subtraction of Dissimilar Fractions.',
     },
   },
-  {
-    content: {
-      text: 'Step 1: Determine the LCD of the Dissimilar Fractions',
-    },
-  },
-  {
-    content: {
-      text: 'The LCD or Least Common Denominator is the smallest number that can be used for all denominators of 2 or more fractions. It is commonly used in Addition and Subtraction of Dissimilar Fractions. Example',
-    },
-  },
+
   {
     content: {
       text: {
-        imgSrc: 'assets/definitionCategory/dissimilar-fraction-step-1.png',
+        imgSrc: 'assets/definitionCategory/new/rational-addition-example.png',
       },
     },
   },
   {
     content: {
-      text: '5 and 10 are different denominators, the most important rule in adding Dissimilar Fractions is to make the denominators the same.',
+      text: 'In the equation, the addends have unlike denominators which is 5 and 10. Once the denominators are dissimilar, it is important to determine first their LCD to make the denominators the same. One of the methods that can be use is listing method',
     },
   },
   {
     content: {
-      text: 'You can do it by listing.',
-    },
-  },
-  {
-    content: {
-      text: '5= 5, 10',
-    },
-  },
-  {
-    content: {
-      text: '10= 10',
-    },
-  },
-  {
-    content: {
-      text: 'In this example, the LCD is 10.',
-    },
-  },
-  {
-    content: {
-      text: 'Step 2: Make the fractions similar by finding the LCD.',
+      text: 'Step 2. Make the denominator similar by using the LCD.',
     },
   },
   {
     content: {
       text: {
-        imgSrc: 'assets/definitionCategory/dissimilar-fraction-step-2.png',
+        imgSrc: 'assets/definitionCategory/new/rational-addition-step-2.png',
       },
     },
   },
@@ -604,26 +240,37 @@ export const introMessages4: MessageFormat[] = [
   },
   {
     content: {
-      text: 'Step 3: To get your new numerator, divide the LCD by the denominator of each fraction and multiply the quotient by its numerator.',
+      text: 'Step 3: To get your new numerator, divide the LCD by the denominator of each number and multiply the quotient by its numerator.',
     },
   },
-
   {
     content: {
       text: {
-        imgSrc: 'assets/definitionCategory/dissimilar-fraction-step-3.png',
+        imgSrc: 'assets/definitionCategory/new/rational-addition-step-3-1.png',
       },
     },
   },
   {
     content: {
-      text: 'Since 8/10 is the fraction that we change the denominator, we need to divide the denominator, which is 10 to the denominator of 8/5, which is 5, and 10 divided by 5 equals 2. The quotient will be multiplied to its numerator so 2 x 8= 16, so your new numerator becomes 16.',
+      text: {
+        imgSrc: 'assets/definitionCategory/new/rational-addition-step-3-2.png',
+      },
+    },
+  },
+  {
+    content: {
+      text: 'Note: If the LCD and the denominator are just the same, just bring it down and then proceed with the other term or if there is no other term, proceed to Step 4.',
+    },
+  },
+  {
+    content: {
+      text: 'Now, substitute.',
     },
   },
   {
     content: {
       text: {
-        imgSrc: 'assets/definitionCategory/dissimilar-fraction-step-3-1.png',
+        imgSrc: 'assets/definitionCategory/new/rational-addition-step-3-3.png',
       },
     },
   },
@@ -635,89 +282,54 @@ export const introMessages4: MessageFormat[] = [
   {
     content: {
       text: {
-        imgSrc: 'assets/definitionCategory/dissimilar-fraction-step-4.png',
+        imgSrc: 'assets/definitionCategory/new/rational-addition-step-4-1.png',
       },
     },
   },
-  {
-    content: {
-      text: 'Take note that you don’t need to change the value of denominator if they are the same.',
-    },
-  },
-  {
-    content: {
-      text: 'I hope you get the steps on Adding Dissimilar Fractions.',
-    },
-  },
-  ...introMessages4Subtract,
 ];
-export const introMessages4Taglish: MessageFormat[] = [
+
+export const introMessages5: MessageFormat[] = [
   {
     content: {
-      text: 'Adding Dissimilar Fractions',
+      text: 'Subtraction of Rational Numbers with Unlike Denominators',
     },
   },
   {
     content: {
-      text: 'Ito ang mga hakbang kung paano mag-add ng dissimilar fractions.',
+      text: 'On subtracting rational numbers, here are the steps that should be followed:',
     },
   },
   {
     content: {
-      text: 'Step 1: Determine the LCD of the Dissimilar Fractions',
+      text: 'Step 1. Find the common denominator by determining the LCD of the Rational Numbers with Unlike Denominators using listing method.',
     },
   },
   {
     content: {
-      text: 'The LCD or Least Common Denominator is the smallest number that can be used for all denominators of 2 or more fractions. It is commonly used in Addition and Subtraction of Dissimilar Fractions. Example',
+      text: 'The LCD or Least Common Denominator is the smallest number that can be used for all denominators of 2 or more fractions. It is commonly used in Addition and Subtraction of Dissimilar Fractions.',
     },
   },
   {
     content: {
       text: {
-        imgSrc: 'assets/definitionCategory/dissimilar-fraction-step-1.png',
+        imgSrc: 'assets/definitionCategory/new/rational-subtraction-1.png',
       },
     },
   },
   {
     content: {
-      text: '5 and 10 are different denominators, the most important rule in adding Dissimilar Fractions is to make the denominators the same.',
+      text: 'In the equation, the two terms have unlike denominators which is 5 and 10. Once the denominators are dissimilar, it is important to determine first their LCD to make the denominators the same. One of the methods that can be use is listing method.',
     },
   },
   {
     content: {
-      text: 'You can do it by listing.',
-    },
-  },
-  {
-    content: {
-      text: '5 = 5, 10, 15, 20, 25',
-    },
-  },
-  {
-    content: {
-      text: '10 = 10, 20, 30, 40, 50',
-    },
-  },
-  {
-    content: {
-      text: 'Since 10 is their first similar multiple or their least common multiple, therefore, 10 is the LCD in this example.',
-    },
-  },
-  // {
-  //   content: {
-  //     text: 'In this example, the LCD is 10.',
-  //   },
-  // },
-  {
-    content: {
-      text: 'Step 2: Make the fractions similar by finding the LCD.',
+      text: 'Step 2. Make the denominator similar by using the LCD.',
     },
   },
   {
     content: {
       text: {
-        imgSrc: 'assets/definitionCategory/dissimilar-fraction-step-2.png',
+        imgSrc: 'assets/definitionCategory/new/rational-subtraction-2.png',
       },
     },
   },
@@ -728,26 +340,37 @@ export const introMessages4Taglish: MessageFormat[] = [
   },
   {
     content: {
-      text: 'Step 3: To get your new numerator, divide the LCD by the denominator of each fraction and multiply the quotient by its numerator.',
+      text: 'Step 3: To get your new numerator, divide the LCD by the denominator of each number and multiply the quotient by its numerator.',
     },
   },
-
   {
     content: {
       text: {
-        imgSrc: 'assets/definitionCategory/dissimilar-fraction-step-3.png',
+        imgSrc: 'assets/definitionCategory/new/rational-subtraction-3-1.png',
       },
     },
   },
   {
     content: {
-      text: 'Since 8/10 is the fraction that we change the denominator, we need to divide the denominator, which is 10 to the denominator of 8/5, which is 5, and 10 divided by 5 equals 2. The quotient will be multiplied to its numerator so 2 x 8= 16, so your new numerator becomes 16.',
+      text: {
+        imgSrc: 'assets/definitionCategory/new/rational-subtraction-3-2.png',
+      },
+    },
+  },
+  {
+    content: {
+      text: 'Note: If the LCD and the denominator are just the same, just bring it down and then proceed with the other term or if there is no other term, proceed to Step 4.',
+    },
+  },
+  {
+    content: {
+      text: 'Now, substitute.',
     },
   },
   {
     content: {
       text: {
-        imgSrc: 'assets/definitionCategory/dissimilar-fraction-step-3-1.png',
+        imgSrc: 'assets/definitionCategory/new/rational-subtraction-3-3.png',
       },
     },
   },
@@ -759,21 +382,43 @@ export const introMessages4Taglish: MessageFormat[] = [
   {
     content: {
       text: {
-        imgSrc: 'assets/definitionCategory/dissimilar-fraction-step-4.png',
+        imgSrc: 'assets/definitionCategory/new/rational-subtraction-4.png',
       },
     },
   },
+];
+
+export const introMessages6: MessageFormat[] = [
   {
     content: {
-      text: 'Take note that you don’t need to change the value of denominator if they are the same.',
+      text: 'When Adding and Subtracting Rational Numbers with Unlike Denominators, you need to remember that;',
     },
   },
   {
     content: {
-      text: 'I hope you get the steps on Adding Dissimilar Fractions.',
+      text: 'It is easy to simplify a fraction when denominators are alike.',
     },
   },
-  ...introMessages4Subtract,
+  {
+    content: {
+      text: 'The first step is always find their common denominator.',
+    },
+  },
+  {
+    content: {
+      text: 'Why fractions need to have first a common denominator before we add or subtract it?',
+    },
+  },
+  {
+    content: {
+      text: 'Why do you need to find equivalent fractions before subtracting fractions?',
+    },
+  },
+  {
+    content: {
+      text: 'To combine or compare parts of a whole.',
+    },
+  },
 ];
 
 export const definitionQuestions: Question[] = [

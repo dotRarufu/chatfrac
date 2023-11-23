@@ -28,13 +28,11 @@ import Question from '../types/Question';
 import {
   definitionQuestions,
   introMessages1,
-  introMessages1Taglish,
   introMessages2,
-  introMessages2Taglish,
   introMessages3,
-  introMessages3Taglish,
   introMessages4,
-  introMessages4Taglish,
+  introMessages5,
+  introMessages6,
 } from '../definitionCategory';
 import {
   examplesIntro1Messages,
@@ -62,7 +60,7 @@ import {
 } from '../modelsCategory';
 import { correctAnswerGifs } from '../correctAnswerGifs';
 
-const DELAY = 3500; // can make this random, for a better effect
+const DELAY = 100; // can make this random, for a better effect
 
 @Component({
   selector: 'show-message',
@@ -319,9 +317,7 @@ export class ShowMessageComponent implements OnInit {
           {
             const messages: Message[] = [
               this.newBotMessage({ text: 'Thank you.' }),
-              // this.newBotMessage({
-              //   text: 'In order to help you further, please proceed answering the pre-test.',
-              // }),
+
               this.newBotMessage({
                 text: "Before you continue your journey on improving your mastery level of Addition and Substraction of Dissimilar Fractions, let's see first how good you are in this matter.",
               }),
@@ -423,7 +419,6 @@ export class ShowMessageComponent implements OnInit {
 
         case Phases.DEFINITION_INTRO:
           {
-            console.log('def intro 1');
             const introMessagesBubble = introMessages1.map((m) =>
               this.newBotMessage(m.content),
             );
@@ -433,34 +428,6 @@ export class ShowMessageComponent implements OnInit {
               ...introMessagesBubble,
             ];
 
-            const showQuickReplies = () => {
-              this.actionsService.content.set({
-                type: 'QuickReply',
-                items: [
-                  {
-                    label: 'Yes',
-                    callback: () =>
-                      this.moveToPhase(Phases.DEFINITION_INTRO_TAGLISH),
-                  },
-                  {
-                    label: 'No',
-                    callback: () => this.moveToPhase(Phases.DEFINITION_INTRO_2),
-                  },
-                ],
-              });
-            };
-
-            this.showMessages(messages, undefined, showQuickReplies, 5000);
-          }
-          break;
-        case Phases.DEFINITION_INTRO_TAGLISH:
-          {
-            const introMessagesBubble = introMessages1Taglish.map((m) =>
-              this.newBotMessage(m.content),
-            );
-
-            const messages: Message[] = [...introMessagesBubble];
-
             const showButton = () => {
               this.actionsService.content.set({
                 type: 'Button',
@@ -469,20 +436,13 @@ export class ShowMessageComponent implements OnInit {
               });
             };
 
-            this.showMessages(
-              messages,
-              undefined,
-              () => {
-                showButton();
-              },
-              5000,
-            );
+            this.showMessages(messages, undefined, showButton);
           }
           break;
 
-        case Phases.DEFINITION_INTRO_2_TAGLISH:
+        case Phases.DEFINITION_INTRO_2:
           {
-            const introMessagesBubble = introMessages2Taglish.map((m) =>
+            const introMessagesBubble = introMessages2.map((m) =>
               this.newBotMessage(m.content),
             );
 
@@ -496,91 +456,12 @@ export class ShowMessageComponent implements OnInit {
               });
             };
 
-            this.showMessages(
-              messages,
-              undefined,
-              () => {
-                showButton();
-              },
-              5000,
-            );
-          }
-          break;
-        case Phases.DEFINITION_INTRO_2:
-          {
-            console.log('def intro 2');
-
-            const introMessagesBubble = introMessages2.map((m) =>
-              this.newBotMessage(m.content),
-            );
-
-            const messages: Message[] = [...introMessagesBubble];
-
-            const showQuickReplies = () => {
-              this.actionsService.content.set({
-                type: 'QuickReply',
-                items: [
-                  {
-                    label: 'Yes',
-                    callback: () =>
-                      this.moveToPhase(Phases.DEFINITION_INTRO_2_TAGLISH),
-                  },
-                  {
-                    label: 'No',
-                    callback: () => this.moveToPhase(Phases.DEFINITION_INTRO_3),
-                  },
-                ],
-              });
-            };
-
-            this.showMessages(messages, undefined, showQuickReplies, 5000);
+            this.showMessages(messages, undefined, showButton);
           }
           break;
         case Phases.DEFINITION_INTRO_3:
           {
-            console.log('def intro 3');
-
             const introMessagesBubble = introMessages3.map((m) =>
-              this.newBotMessage(m.content),
-            );
-
-            const messages: Message[] = [
-              ...introMessagesBubble,
-              this.newBotMessage({
-                text: 'Do you need a Tagalog-English Translation?',
-              }),
-            ];
-
-            const showQuickReplies = () => {
-              this.actionsService.content.set({
-                type: 'QuickReply',
-                items: [
-                  {
-                    label: 'Yes',
-                    callback: () =>
-                      this.moveToPhase(Phases.DEFINITION_INTRO_3_TAGLISH),
-                  },
-                  {
-                    label: 'No',
-                    callback: () => this.moveToPhase(Phases.DEFINITION_INTRO_4),
-                  },
-                ],
-              });
-            };
-
-            this.showMessages(
-              messages,
-              undefined,
-              () => {
-                showQuickReplies();
-              },
-              5000,
-            );
-          }
-          break;
-        case Phases.DEFINITION_INTRO_3_TAGLISH:
-          {
-            const introMessagesBubble = introMessages3Taglish.map((m) =>
               this.newBotMessage(m.content),
             );
 
@@ -594,64 +475,50 @@ export class ShowMessageComponent implements OnInit {
               });
             };
 
-            this.showMessages(
-              messages,
-              undefined,
-              () => {
-                showButton();
-              },
-              5000,
-            );
+            this.showMessages(messages, undefined, showButton);
           }
           break;
         case Phases.DEFINITION_INTRO_4:
           {
-            console.log('def intro 4');
-
             const introMessagesBubble = introMessages4.map((m) =>
               this.newBotMessage(m.content),
             );
 
-            const messages: Message[] = [
-              ...introMessagesBubble,
-              this.newBotMessage({
-                text: 'Do you need a Tagalog-English Translation?',
-              }),
-            ];
+            const messages: Message[] = [...introMessagesBubble];
 
-            const showQuickReplies = () => {
+            const showButton = () => {
               this.actionsService.content.set({
-                type: 'QuickReply',
-                items: [
-                  {
-                    label: 'Yes',
-                    callback: () =>
-                      this.moveToPhase(Phases.DEFINITION_INTRO_4_TAGLISH),
-                  },
-                  {
-                    label: 'No',
-                    callback: () =>
-                      this.moveToPhase(Phases.DEFINITION_INTRO_4_END),
-                  },
-                ],
+                type: 'Button',
+                label: 'Next',
+                callback: () => this.moveToPhase(Phases.DEFINITION_INTRO_5),
               });
             };
 
-            this.showMessages(
-              messages,
-              undefined,
-              () => {
-                showQuickReplies();
-              },
-              5000,
-            );
+            this.showMessages(messages, undefined, showButton);
           }
           break;
-        case Phases.DEFINITION_INTRO_4_TAGLISH:
+        case Phases.DEFINITION_INTRO_5:
           {
-            console.log('def intro 4 taglish');
+            const introMessagesBubble = introMessages5.map((m) =>
+              this.newBotMessage(m.content),
+            );
 
-            const introMessagesBubble = introMessages4Taglish.map((m) =>
+            const messages: Message[] = [...introMessagesBubble];
+
+            const showButton = () => {
+              this.actionsService.content.set({
+                type: 'Button',
+                label: 'Next',
+                callback: () => this.moveToPhase(Phases.DEFINITION_INTRO_6),
+              });
+            };
+
+            this.showMessages(messages, undefined, showButton);
+          }
+          break;
+        case Phases.DEFINITION_INTRO_6:
+          {
+            const introMessagesBubble = introMessages6.map((m) =>
               this.newBotMessage(m.content),
             );
 
@@ -665,16 +532,10 @@ export class ShowMessageComponent implements OnInit {
               });
             };
 
-            this.showMessages(
-              messages,
-              undefined,
-              () => {
-                showButton();
-              },
-              5000,
-            );
+            this.showMessages(messages, undefined, showButton);
           }
           break;
+
         case Phases.DEFINITION_INTRO_4_END:
           {
             const messages: Message[] = [
