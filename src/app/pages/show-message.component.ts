@@ -60,7 +60,7 @@ import {
 } from '../modelsCategory';
 import { correctAnswerGifs } from '../correctAnswerGifs';
 
-const DELAY = 100; // can make this random, for a better effect
+const DELAY = 3500; // can make this random, for a better effect
 
 @Component({
   selector: 'show-message',

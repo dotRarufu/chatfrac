@@ -9,7 +9,7 @@ import DownloadIconComponent from './icons/download.component';
   imports: [CommonModule, DownloadIconComponent],
   template: `
     <div
-      class=" bg-primary p-[16px] py-[8px] flex items-center justify-between h-[76px] shadow"
+      class="relative bg-primary p-[16px] py-[8px] flex items-center justify-between h-[76px] shadow"
     >
       <div class=" flex gap-[12px] items-center">
         <div class="avatar">
@@ -34,6 +34,11 @@ import DownloadIconComponent from './icons/download.component';
       >
         <download-icon />
       </div> -->
+      <div class="absolute bottom-0 right-0 flex gap-1 ">
+          <img class="aspect-square w-[46px]" src="assets/pips/sir-cj-removebg-preview.png" alt="1">
+          <img class="aspect-square w-[46px]" src="assets/pips/maam-ana-removebg-preview.png" alt="2">
+          <img class="aspect-square w-[46px]" src="assets/pips/sir-rodel-removebg-preview.png" alt="3">
+      </div>
     </div>
   `,
 })

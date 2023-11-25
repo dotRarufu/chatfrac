@@ -45,6 +45,7 @@ import ChatImageComponent from 'src/components/chat-image.component';
     ShowMessageComponent,
     ChatVideoComponent,
     ChatImageComponent,
+    HeaderComponent,
   ],
   template: `
     <div
@@ -54,7 +55,8 @@ import ChatImageComponent from 'src/components/chat-image.component';
 
       <div
         class="h-[calc(100vh-140px)] flex flex-col p-[16px] overflow-y-scroll overflow-x-clip scroll-smooth "
-        #scrollMe (scroll)="onScroll()"
+        #scrollMe
+        (scroll)="onScroll()"
       >
         <div class="flex-1">
           <div *ngFor="let message of messageService.messages()">
@@ -166,33 +168,32 @@ export default class ChatComponent implements AfterViewChecked {
     public actionsService: ActionsService,
     public stateService: StateService,
     public supabaseService: SupabaseService,
-  ) {
+  ) {}
 
-  }
-
-  disableScrollDown = false
+  disableScrollDown = false;
   @ViewChild('scrollMe') private myScrollContainer!: ElementRef;
   ngAfterViewChecked() {
     this.scrollToBottom();
-}
-
-onScroll() {
-  let element = this.myScrollContainer.nativeElement
-  let atBottom = element.scrollHeight - element.scrollTop === element.clientHeight
-  if (this.disableScrollDown && atBottom) {
-      this.disableScrollDown = false
-  } else {
-      this.disableScrollDown = true
   }
-}
 
-
-private scrollToBottom(): void {
-  if (this.disableScrollDown) {
-      return
+  onScroll() {
+    let element = this.myScrollContainer.nativeElement;
+    let atBottom =
+      element.scrollHeight - element.scrollTop === element.clientHeight;
+    if (this.disableScrollDown && atBottom) {
+      this.disableScrollDown = false;
+    } else {
+      this.disableScrollDown = true;
+    }
   }
-  try {
-      this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
-  } catch(err) { }
-}
+
+  private scrollToBottom(): void {
+    if (this.disableScrollDown) {
+      return;
+    }
+    try {
+      this.myScrollContainer.nativeElement.scrollTop =
+        this.myScrollContainer.nativeElement.scrollHeight;
+    } catch (err) {}
+  }
 }
